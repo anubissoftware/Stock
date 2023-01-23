@@ -1,0 +1,1673 @@
+c11:14:13 AM - Starting compilation in watch mode...
+
+
+11:14:19 AM - Found 0 errors. Watching for file changes.
+c11:17:31 AM - File change detected. Starting incremental compilation...
+
+
+11:17:31 AM - Found 0 errors. Watching for file changes.
+c11:17:44 AM - File change detected. Starting incremental compilation...
+
+
+11:17:44 AM - Found 0 errors. Watching for file changes.
+c11:17:57 AM - File change detected. Starting incremental compilation...
+
+
+11:17:58 AM - Found 0 errors. Watching for file changes.
+c11:18:18 AM - File change detected. Starting incremental compilation...
+
+
+11:18:18 AM - Found 0 errors. Watching for file changes.
+c11:21:32 AM - File change detected. Starting incremental compilation...
+
+
+11:21:32 AM - Found 0 errors. Watching for file changes.
+c11:22:35 AM - File change detected. Starting incremental compilation...
+
+
+11:22:35 AM - Found 0 errors. Watching for file changes.
+c11:23:23 AM - File change detected. Starting incremental compilation...
+
+
+11:23:23 AM - Found 0 errors. Watching for file changes.
+c11:24:06 AM - File change detected. Starting incremental compilation...
+
+
+11:24:06 AM - Found 0 errors. Watching for file changes.
+c11:24:50 AM - File change detected. Starting incremental compilation...
+
+
+11:24:50 AM - Found 0 errors. Watching for file changes.
+c11:33:07 AM - File change detected. Starting incremental compilation...
+
+
+11:33:07 AM - Found 0 errors. Watching for file changes.
+c11:34:23 AM - File change detected. Starting incremental compilation...
+
+
+11:34:23 AM - Found 0 errors. Watching for file changes.
+c11:35:28 AM - File change detected. Starting incremental compilation...
+
+
+11:35:28 AM - Found 0 errors. Watching for file changes.
+c11:35:37 AM - File change detected. Starting incremental compilation...
+
+
+11:35:37 AM - Found 0 errors. Watching for file changes.
+c11:40:09 AM - File change detected. Starting incremental compilation...
+
+
+11:40:09 AM - Found 0 errors. Watching for file changes.
+c11:41:54 AM - File change detected. Starting incremental compilation...
+
+
+11:41:54 AM - Found 0 errors. Watching for file changes.
+c11:42:57 AM - File change detected. Starting incremental compilation...
+
+
+11:42:57 AM - Found 0 errors. Watching for file changes.
+c11:44:02 AM - File change detected. Starting incremental compilation...
+
+
+11:44:02 AM - Found 0 errors. Watching for file changes.
+c11:44:48 AM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(125,52): error TS2345: Argument of type 'clientEnterpriseSchema' is not assignable to parameter of type 'string'.
+
+11:44:48 AM - Found 1 error. Watching for file changes.
+c11:44:57 AM - File change detected. Starting incremental compilation...
+
+
+11:44:57 AM - Found 0 errors. Watching for file changes.
+c11:45:16 AM - File change detected. Starting incremental compilation...
+
+
+11:45:16 AM - Found 0 errors. Watching for file changes.
+c11:45:41 AM - File change detected. Starting incremental compilation...
+
+
+11:45:41 AM - Found 0 errors. Watching for file changes.
+c11:46:02 AM - File change detected. Starting incremental compilation...
+
+
+11:46:02 AM - Found 0 errors. Watching for file changes.
+c11:51:02 AM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(130,22): error TS1003: Identifier expected.
+
+11:51:02 AM - Found 1 error. Watching for file changes.
+c11:51:10 AM - File change detected. Starting incremental compilation...
+
+
+11:51:11 AM - Found 0 errors. Watching for file changes.
+c11:51:42 AM - File change detected. Starting incremental compilation...
+
+
+11:51:42 AM - Found 0 errors. Watching for file changes.
+c11:53:01 AM - File change detected. Starting incremental compilation...
+
+
+11:53:01 AM - Found 0 errors. Watching for file changes.
+c11:53:32 AM - File change detected. Starting incremental compilation...
+
+
+11:53:32 AM - Found 0 errors. Watching for file changes.
+c11:53:34 AM - File change detected. Starting incremental compilation...
+
+
+11:53:34 AM - Found 0 errors. Watching for file changes.
+c11:54:39 AM - File change detected. Starting incremental compilation...
+
+
+11:54:39 AM - Found 0 errors. Watching for file changes.
+c11:54:59 AM - Starting compilation in watch mode...
+
+
+11:55:03 AM - Found 0 errors. Watching for file changes.
+c12:16:08 PM - File change detected. Starting incremental compilation...
+
+
+12:16:09 PM - Found 0 errors. Watching for file changes.
+c12:16:31 PM - File change detected. Starting incremental compilation...
+
+
+12:16:31 PM - Found 0 errors. Watching for file changes.
+c12:17:04 PM - File change detected. Starting incremental compilation...
+
+
+12:17:05 PM - Found 0 errors. Watching for file changes.
+c12:17:51 PM - File change detected. Starting incremental compilation...
+
+
+12:17:51 PM - Found 0 errors. Watching for file changes.
+c12:18:04 PM - File change detected. Starting incremental compilation...
+
+
+12:18:04 PM - Found 0 errors. Watching for file changes.
+c12:19:18 PM - File change detected. Starting incremental compilation...
+
+
+12:19:18 PM - Found 0 errors. Watching for file changes.
+c12:26:14 PM - File change detected. Starting incremental compilation...
+
+
+12:26:14 PM - Found 0 errors. Watching for file changes.
+c12:28:46 PM - File change detected. Starting incremental compilation...
+
+
+12:28:46 PM - Found 0 errors. Watching for file changes.
+c9:20:58 AM - Starting compilation in watch mode...
+
+
+9:21:03 AM - Found 0 errors. Watching for file changes.
+c1:10:38 PM - Starting compilation in watch mode...
+
+
+1:10:43 PM - Found 0 errors. Watching for file changes.
+c3:01:58 PM - Starting compilation in watch mode...
+
+
+3:02:02 PM - Found 0 errors. Watching for file changes.
+c4:50:44 PM - File change detected. Starting incremental compilation...
+
+
+4:50:45 PM - Found 0 errors. Watching for file changes.
+c4:53:02 PM - File change detected. Starting incremental compilation...
+
+
+4:53:02 PM - Found 0 errors. Watching for file changes.
+c4:54:05 PM - File change detected. Starting incremental compilation...
+
+src/routes/api.ts(1,47): error TS2459: Module '"./../controllers/clientController"' declares 'getProjects' locally, but it is not exported.
+
+4:54:05 PM - Found 1 error. Watching for file changes.
+c4:54:07 PM - File change detected. Starting incremental compilation...
+
+
+4:54:08 PM - Found 0 errors. Watching for file changes.
+c7:03:25 AM - Starting compilation in watch mode...
+
+
+7:03:30 AM - Found 0 errors. Watching for file changes.
+c7:10:47 AM - File change detected. Starting incremental compilation...
+
+
+7:10:47 AM - Found 0 errors. Watching for file changes.
+c7:16:57 AM - File change detected. Starting incremental compilation...
+
+
+7:16:57 AM - Found 0 errors. Watching for file changes.
+c7:17:31 AM - File change detected. Starting incremental compilation...
+
+
+7:17:31 AM - Found 0 errors. Watching for file changes.
+c7:17:47 AM - File change detected. Starting incremental compilation...
+
+
+7:17:47 AM - Found 0 errors. Watching for file changes.
+c7:18:04 AM - File change detected. Starting incremental compilation...
+
+
+7:18:04 AM - Found 0 errors. Watching for file changes.
+c7:28:00 AM - File change detected. Starting incremental compilation...
+
+
+7:28:00 AM - Found 0 errors. Watching for file changes.
+c7:30:32 AM - File change detected. Starting incremental compilation...
+
+
+7:30:32 AM - Found 0 errors. Watching for file changes.
+c7:31:27 AM - File change detected. Starting incremental compilation...
+
+
+7:31:27 AM - Found 0 errors. Watching for file changes.
+c7:34:17 AM - File change detected. Starting incremental compilation...
+
+
+7:34:17 AM - Found 0 errors. Watching for file changes.
+c7:34:26 AM - File change detected. Starting incremental compilation...
+
+
+7:34:26 AM - Found 0 errors. Watching for file changes.
+c7:35:41 AM - File change detected. Starting incremental compilation...
+
+
+7:35:41 AM - Found 0 errors. Watching for file changes.
+c7:37:44 AM - File change detected. Starting incremental compilation...
+
+
+7:37:44 AM - Found 0 errors. Watching for file changes.
+c7:38:17 AM - Starting compilation in watch mode...
+
+
+7:38:21 AM - Found 0 errors. Watching for file changes.
+c7:38:46 AM - File change detected. Starting incremental compilation...
+
+
+7:38:46 AM - Found 0 errors. Watching for file changes.
+c7:40:12 AM - File change detected. Starting incremental compilation...
+
+
+7:40:12 AM - Found 0 errors. Watching for file changes.
+c7:40:54 AM - File change detected. Starting incremental compilation...
+
+
+7:40:54 AM - Found 0 errors. Watching for file changes.
+c7:41:18 AM - File change detected. Starting incremental compilation...
+
+
+7:41:18 AM - Found 0 errors. Watching for file changes.
+c7:41:43 AM - File change detected. Starting incremental compilation...
+
+
+7:41:43 AM - Found 0 errors. Watching for file changes.
+c7:42:29 AM - File change detected. Starting incremental compilation...
+
+
+7:42:30 AM - Found 0 errors. Watching for file changes.
+c7:42:52 AM - File change detected. Starting incremental compilation...
+
+
+7:42:52 AM - Found 0 errors. Watching for file changes.
+c7:43:12 AM - File change detected. Starting incremental compilation...
+
+
+7:43:12 AM - Found 0 errors. Watching for file changes.
+c8:00:23 AM - File change detected. Starting incremental compilation...
+
+
+8:00:23 AM - Found 0 errors. Watching for file changes.
+c8:13:21 AM - File change detected. Starting incremental compilation...
+
+
+8:13:21 AM - Found 0 errors. Watching for file changes.
+c8:19:28 AM - File change detected. Starting incremental compilation...
+
+
+8:19:28 AM - Found 0 errors. Watching for file changes.
+c8:21:48 AM - File change detected. Starting incremental compilation...
+
+
+8:21:48 AM - Found 0 errors. Watching for file changes.
+c8:29:12 AM - File change detected. Starting incremental compilation...
+
+
+8:29:12 AM - Found 0 errors. Watching for file changes.
+c8:30:10 AM - File change detected. Starting incremental compilation...
+
+
+8:30:10 AM - Found 0 errors. Watching for file changes.
+c8:31:35 AM - File change detected. Starting incremental compilation...
+
+
+8:31:36 AM - Found 0 errors. Watching for file changes.
+c8:31:53 AM - File change detected. Starting incremental compilation...
+
+
+8:31:53 AM - Found 0 errors. Watching for file changes.
+c8:32:06 AM - File change detected. Starting incremental compilation...
+
+
+8:32:06 AM - Found 0 errors. Watching for file changes.
+c12:58:14 PM - Starting compilation in watch mode...
+
+
+12:58:21 PM - Found 0 errors. Watching for file changes.
+c1:15:42 PM - File change detected. Starting incremental compilation...
+
+
+1:15:45 PM - Found 0 errors. Watching for file changes.
+c2:23:17 PM - File change detected. Starting incremental compilation...
+
+
+2:23:19 PM - Found 0 errors. Watching for file changes.
+c6:43:29 PM - Starting compilation in watch mode...
+
+
+6:43:37 PM - Found 0 errors. Watching for file changes.
+c6:50:06 PM - File change detected. Starting incremental compilation...
+
+
+6:50:07 PM - Found 0 errors. Watching for file changes.
+c6:52:51 PM - File change detected. Starting incremental compilation...
+
+
+6:52:52 PM - Found 0 errors. Watching for file changes.
+c8:38:01 PM - Starting compilation in watch mode...
+
+
+8:38:04 PM - Found 0 errors. Watching for file changes.
+c8:54:05 PM - Starting compilation in watch mode...
+
+
+8:54:09 PM - Found 0 errors. Watching for file changes.
+c9:32:14 PM - File change detected. Starting incremental compilation...
+
+
+9:32:15 PM - Found 0 errors. Watching for file changes.
+c9:33:14 PM - File change detected. Starting incremental compilation...
+
+
+9:33:14 PM - Found 0 errors. Watching for file changes.
+c9:34:44 PM - File change detected. Starting incremental compilation...
+
+
+9:34:44 PM - Found 0 errors. Watching for file changes.
+c9:35:01 PM - File change detected. Starting incremental compilation...
+
+
+9:35:01 PM - Found 0 errors. Watching for file changes.
+c9:35:53 PM - File change detected. Starting incremental compilation...
+
+
+9:35:53 PM - Found 0 errors. Watching for file changes.
+c9:36:17 PM - File change detected. Starting incremental compilation...
+
+
+9:36:17 PM - Found 0 errors. Watching for file changes.
+c9:37:57 PM - File change detected. Starting incremental compilation...
+
+
+9:37:57 PM - Found 0 errors. Watching for file changes.
+c9:38:30 PM - File change detected. Starting incremental compilation...
+
+src/routes/api.ts(309,55): error TS2554: Expected 1 arguments, but got 2.
+
+9:38:30 PM - Found 1 error. Watching for file changes.
+c9:42:56 PM - File change detected. Starting incremental compilation...
+
+src/routes/api.ts(309,55): error TS2554: Expected 1 arguments, but got 2.
+
+9:42:56 PM - Found 1 error. Watching for file changes.
+c9:42:57 PM - File change detected. Starting incremental compilation...
+
+src/routes/api.ts(309,55): error TS2554: Expected 1 arguments, but got 2.
+
+9:42:57 PM - Found 1 error. Watching for file changes.
+c9:43:28 PM - File change detected. Starting incremental compilation...
+
+
+9:43:28 PM - Found 0 errors. Watching for file changes.
+c9:43:46 PM - File change detected. Starting incremental compilation...
+
+
+9:43:46 PM - Found 0 errors. Watching for file changes.
+c9:51:00 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(210,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(220,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+9:51:00 PM - Found 2 errors. Watching for file changes.
+c9:51:33 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(210,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(220,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+9:51:33 PM - Found 2 errors. Watching for file changes.
+c9:53:03 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(210,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(221,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+9:53:03 PM - Found 2 errors. Watching for file changes.
+c9:56:02 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(210,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(221,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+9:56:02 PM - Found 2 errors. Watching for file changes.
+c9:57:41 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(213,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+9:57:41 PM - Found 2 errors. Watching for file changes.
+c9:58:39 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(213,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+9:58:39 PM - Found 2 errors. Watching for file changes.
+c9:59:05 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(213,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+9:59:05 PM - Found 2 errors. Watching for file changes.
+c9:59:10 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(213,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+9:59:10 PM - Found 2 errors. Watching for file changes.
+c9:59:22 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(213,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+9:59:22 PM - Found 2 errors. Watching for file changes.
+c9:59:44 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(213,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+9:59:44 PM - Found 2 errors. Watching for file changes.
+c9:59:53 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(211,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(222,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+9:59:53 PM - Found 2 errors. Watching for file changes.
+c10:00:38 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(210,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(221,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+10:00:38 PM - Found 2 errors. Watching for file changes.
+c10:01:16 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(210,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(221,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+10:01:17 PM - Found 2 errors. Watching for file changes.
+c10:01:48 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(211,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(222,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+10:01:48 PM - Found 2 errors. Watching for file changes.
+c10:02:40 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+10:02:40 PM - Found 2 errors. Watching for file changes.
+c10:04:30 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(225,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+10:04:30 PM - Found 2 errors. Watching for file changes.
+c10:04:49 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(225,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+10:04:49 PM - Found 2 errors. Watching for file changes.
+c10:05:06 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+10:05:06 PM - Found 2 errors. Watching for file changes.
+c10:07:35 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+10:07:35 PM - Found 2 errors. Watching for file changes.
+c10:07:57 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+10:07:57 PM - Found 2 errors. Watching for file changes.
+c10:08:00 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+10:08:00 PM - Found 2 errors. Watching for file changes.
+c10:30:49 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+10:30:49 PM - Found 2 errors. Watching for file changes.
+c10:32:28 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+10:32:28 PM - Found 2 errors. Watching for file changes.
+c7:38:21 AM - Starting compilation in watch mode...
+
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+7:38:25 AM - Found 2 errors. Watching for file changes.
+c7:40:09 AM - Starting compilation in watch mode...
+
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+7:40:12 AM - Found 2 errors. Watching for file changes.
+c2:51:33 PM - Starting compilation in watch mode...
+
+c2:51:39 PM - Starting compilation in watch mode...
+
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+2:51:42 PM - Found 2 errors. Watching for file changes.
+c7:37:41 PM - Starting compilation in watch mode...
+
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+7:37:45 PM - Found 2 errors. Watching for file changes.
+c11:19:02 AM - Starting compilation in watch mode...
+
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+11:19:06 AM - Found 2 errors. Watching for file changes.
+c1:59:22 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+1:59:23 PM - Found 2 errors. Watching for file changes.
+c4:40:28 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+4:40:28 PM - Found 2 errors. Watching for file changes.
+c4:40:54 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+4:40:54 PM - Found 2 errors. Watching for file changes.
+c4:41:07 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+4:41:07 PM - Found 2 errors. Watching for file changes.
+c4:43:39 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+4:43:39 PM - Found 2 errors. Watching for file changes.
+c4:44:24 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+4:44:24 PM - Found 2 errors. Watching for file changes.
+c4:46:03 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(2,10): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+4:46:03 PM - Found 3 errors. Watching for file changes.
+c4:46:43 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(2,10): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+4:46:43 PM - Found 3 errors. Watching for file changes.
+c4:47:12 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(2,10): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+4:47:12 PM - Found 3 errors. Watching for file changes.
+c4:48:26 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+4:48:26 PM - Found 3 errors. Watching for file changes.
+c4:48:50 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+4:48:50 PM - Found 3 errors. Watching for file changes.
+c4:49:02 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+
+4:49:02 PM - Found 3 errors. Watching for file changes.
+c4:49:56 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/routes/api.ts(8,125): error TS2305: Module '"./../../../shared/index"' has no exported member 'quotationSchema'.
+
+4:49:57 PM - Found 4 errors. Watching for file changes.
+c5:21:19 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/routes/api.ts(8,125): error TS2305: Module '"./../../../shared/index"' has no exported member 'quotationSchema'.
+
+5:21:19 PM - Found 4 errors. Watching for file changes.
+c5:21:38 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/routes/api.ts(8,125): error TS2305: Module '"./../../../shared/index"' has no exported member 'quotationSchema'.
+
+5:21:38 PM - Found 4 errors. Watching for file changes.
+c5:38:03 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/routes/api.ts(8,125): error TS2305: Module '"./../../../shared/index"' has no exported member 'quotationSchema'.
+
+5:38:03 PM - Found 4 errors. Watching for file changes.
+c5:41:08 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/routes/api.ts(8,125): error TS2305: Module '"./../../../shared/index"' has no exported member 'quotationSchema'.
+
+5:41:08 PM - Found 4 errors. Watching for file changes.
+c5:41:37 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/routes/api.ts(8,125): error TS2305: Module '"./../../../shared/index"' has no exported member 'quotationSchema'.
+
+5:41:38 PM - Found 4 errors. Watching for file changes.
+c5:43:51 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/routes/api.ts(8,125): error TS2305: Module '"./../../../shared/index"' has no exported member 'quotationSchema'.
+
+5:43:51 PM - Found 4 errors. Watching for file changes.
+c5:56:10 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/routes/api.ts(8,125): error TS2305: Module '"./../../../shared/index"' has no exported member 'quotationSchema'.
+
+5:56:10 PM - Found 4 errors. Watching for file changes.
+c5:57:53 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/routes/api.ts(8,125): error TS2305: Module '"./../../../shared/index"' has no exported member 'quotationSchema'.
+
+5:57:53 PM - Found 4 errors. Watching for file changes.
+c5:59:44 PM - Starting compilation in watch mode...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/routes/api.ts(8,125): error TS2305: Module '"./../../../shared/index"' has no exported member 'quotationSchema'.
+
+5:59:48 PM - Found 4 errors. Watching for file changes.
+c6:00:18 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'productsInCartType'.
+src/controllers/accountingController.ts(3,30): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/routes/api.ts(8,125): error TS2305: Module '"./../../../shared/index"' has no exported member 'quotationSchema'.
+
+6:00:18 PM - Found 5 errors. Watching for file changes.
+c6:06:06 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'productsInCartType'.
+src/controllers/accountingController.ts(3,30): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/routes/api.ts(8,125): error TS2305: Module '"./../../../shared/index"' has no exported member 'quotationSchema'.
+
+6:06:06 PM - Found 5 errors. Watching for file changes.
+c6:06:12 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'productsInCartType'.
+src/controllers/accountingController.ts(3,30): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/routes/api.ts(8,125): error TS2305: Module '"./../../../shared/index"' has no exported member 'quotationSchema'.
+
+6:06:12 PM - Found 5 errors. Watching for file changes.
+c6:13:30 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'productsInCartType'.
+src/controllers/accountingController.ts(3,30): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/routes/api.ts(8,125): error TS2305: Module '"./../../../shared/index"' has no exported member 'quotationSchema'.
+
+6:13:30 PM - Found 5 errors. Watching for file changes.
+c6:14:45 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'productsInCartType'.
+src/controllers/accountingController.ts(3,30): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/routes/api.ts(8,125): error TS2305: Module '"./../../../shared/index"' has no exported member 'quotationSchema'.
+
+6:14:45 PM - Found 5 errors. Watching for file changes.
+c6:25:43 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'productsInCartType'.
+src/controllers/accountingController.ts(3,30): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/routes/api.ts(8,125): error TS2305: Module '"./../../../shared/index"' has no exported member 'quotationSchema'.
+
+6:25:43 PM - Found 5 errors. Watching for file changes.
+c6:32:09 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'productsInCartType'.
+src/controllers/accountingController.ts(3,30): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/routes/api.ts(8,125): error TS2305: Module '"./../../../shared/index"' has no exported member 'quotationSchema'.
+
+6:32:09 PM - Found 5 errors. Watching for file changes.
+c6:32:17 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'productsInCartType'.
+src/controllers/accountingController.ts(3,30): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/routes/api.ts(8,125): error TS2305: Module '"./../../../shared/index"' has no exported member 'quotationSchema'.
+
+6:32:17 PM - Found 5 errors. Watching for file changes.
+c6:32:32 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'productsInCartType'.
+src/controllers/accountingController.ts(3,30): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/routes/api.ts(8,125): error TS2305: Module '"./../../../shared/index"' has no exported member 'quotationSchema'.
+
+6:32:32 PM - Found 5 errors. Watching for file changes.
+c6:33:36 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'productsInCartType'.
+src/controllers/accountingController.ts(3,30): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/routes/api.ts(8,125): error TS2305: Module '"./../../../shared/index"' has no exported member 'quotationSchema'.
+
+6:33:36 PM - Found 5 errors. Watching for file changes.
+c6:34:20 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'productsInCartType'.
+src/controllers/accountingController.ts(3,30): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/routes/api.ts(8,125): error TS2305: Module '"./../../../shared/index"' has no exported member 'quotationSchema'.
+
+6:34:20 PM - Found 5 errors. Watching for file changes.
+c6:59:57 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(3,10): error TS2305: Module '"shared/index"' has no exported member 'productsInCartType'.
+src/controllers/accountingController.ts(3,30): error TS2305: Module '"shared/index"' has no exported member 'quotationSchema'.
+src/controllers/clientController.ts(212,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/controllers/clientController.ts(224,37): error TS2551: Property 'contact_name' does not exist on type 'projectSchema'. Did you mean 'contac_name'?
+src/routes/api.ts(8,125): error TS2305: Module '"./../../../shared/index"' has no exported member 'quotationSchema'.
+
+6:59:57 PM - Found 5 errors. Watching for file changes.
+c7:50:27 PM - File change detected. Starting incremental compilation...
+
+
+7:50:29 PM - Found 0 errors. Watching for file changes.
+c8:00:03 PM - File change detected. Starting incremental compilation...
+
+
+8:00:04 PM - Found 0 errors. Watching for file changes.
+c8:18:58 PM - File change detected. Starting incremental compilation...
+
+src/routes/api.ts(328,62): error TS1005: '=>' expected.
+
+8:19:00 PM - Found 1 error. Watching for file changes.
+c8:28:11 PM - File change detected. Starting incremental compilation...
+
+src/routes/api.ts(328,62): error TS1005: '=>' expected.
+
+8:28:11 PM - Found 1 error. Watching for file changes.
+c8:30:29 PM - File change detected. Starting incremental compilation...
+
+src/routes/api.ts(328,62): error TS1005: '=>' expected.
+
+8:30:30 PM - Found 1 error. Watching for file changes.
+c8:31:05 PM - File change detected. Starting incremental compilation...
+
+src/routes/api.ts(328,62): error TS1005: '=>' expected.
+
+8:31:05 PM - Found 1 error. Watching for file changes.
+c8:31:32 PM - File change detected. Starting incremental compilation...
+
+
+8:31:34 PM - Found 0 errors. Watching for file changes.
+c8:31:39 PM - File change detected. Starting incremental compilation...
+
+
+8:31:39 PM - Found 0 errors. Watching for file changes.
+c8:34:12 PM - File change detected. Starting incremental compilation...
+
+
+8:34:12 PM - Found 0 errors. Watching for file changes.
+c8:34:21 PM - File change detected. Starting incremental compilation...
+
+
+8:34:21 PM - Found 0 errors. Watching for file changes.
+c8:45:02 PM - Starting compilation in watch mode...
+
+
+8:45:07 PM - Found 0 errors. Watching for file changes.
+c8:52:02 PM - File change detected. Starting incremental compilation...
+
+
+8:52:05 PM - Found 0 errors. Watching for file changes.
+c9:05:33 PM - File change detected. Starting incremental compilation...
+
+
+9:05:34 PM - Found 0 errors. Watching for file changes.
+c9:16:03 PM - File change detected. Starting incremental compilation...
+
+
+9:16:05 PM - Found 0 errors. Watching for file changes.
+c11:22:41 AM - Starting compilation in watch mode...
+
+
+11:22:46 AM - Found 0 errors. Watching for file changes.
+c11:23:53 AM - Starting compilation in watch mode...
+
+
+11:23:57 AM - Found 0 errors. Watching for file changes.
+c11:24:24 AM - Starting compilation in watch mode...
+
+
+11:24:28 AM - Found 0 errors. Watching for file changes.
+c11:26:18 AM - File change detected. Starting incremental compilation...
+
+
+11:26:21 AM - Found 0 errors. Watching for file changes.
+c11:34:55 AM - File change detected. Starting incremental compilation...
+
+
+11:34:56 AM - Found 0 errors. Watching for file changes.
+c11:36:36 AM - File change detected. Starting incremental compilation...
+
+
+11:36:37 AM - Found 0 errors. Watching for file changes.
+c11:36:58 AM - File change detected. Starting incremental compilation...
+
+
+11:36:58 AM - Found 0 errors. Watching for file changes.
+c11:37:39 AM - File change detected. Starting incremental compilation...
+
+
+11:37:39 AM - Found 0 errors. Watching for file changes.
+c11:41:10 AM - File change detected. Starting incremental compilation...
+
+
+11:41:10 AM - Found 0 errors. Watching for file changes.
+c11:48:00 AM - File change detected. Starting incremental compilation...
+
+
+11:48:00 AM - Found 0 errors. Watching for file changes.
+c1:47:44 PM - File change detected. Starting incremental compilation...
+
+
+1:47:44 PM - Found 0 errors. Watching for file changes.
+c1:48:49 PM - File change detected. Starting incremental compilation...
+
+
+1:48:49 PM - Found 0 errors. Watching for file changes.
+c2:32:46 PM - File change detected. Starting incremental compilation...
+
+
+2:32:48 PM - Found 0 errors. Watching for file changes.
+c4:47:50 PM - Starting compilation in watch mode...
+
+c4:47:57 PM - Starting compilation in watch mode...
+
+
+4:48:00 PM - Found 0 errors. Watching for file changes.
+c5:07:23 PM - File change detected. Starting incremental compilation...
+
+
+5:07:24 PM - Found 0 errors. Watching for file changes.
+c5:50:11 PM - File change detected. Starting incremental compilation...
+
+
+5:50:11 PM - Found 0 errors. Watching for file changes.
+c6:18:20 PM - File change detected. Starting incremental compilation...
+
+
+6:18:21 PM - Found 0 errors. Watching for file changes.
+c6:19:42 PM - File change detected. Starting incremental compilation...
+
+
+6:19:42 PM - Found 0 errors. Watching for file changes.
+c6:20:31 PM - File change detected. Starting incremental compilation...
+
+
+6:20:31 PM - Found 0 errors. Watching for file changes.
+c6:20:57 PM - File change detected. Starting incremental compilation...
+
+
+6:20:57 PM - Found 0 errors. Watching for file changes.
+c6:22:03 PM - File change detected. Starting incremental compilation...
+
+
+6:22:03 PM - Found 0 errors. Watching for file changes.
+c6:23:41 PM - File change detected. Starting incremental compilation...
+
+
+6:23:41 PM - Found 0 errors. Watching for file changes.
+c6:27:17 PM - File change detected. Starting incremental compilation...
+
+
+6:27:17 PM - Found 0 errors. Watching for file changes.
+c7:45:02 PM - File change detected. Starting incremental compilation...
+
+
+7:45:02 PM - Found 0 errors. Watching for file changes.
+c7:45:08 PM - File change detected. Starting incremental compilation...
+
+
+7:45:09 PM - Found 0 errors. Watching for file changes.
+c7:51:42 PM - File change detected. Starting incremental compilation...
+
+src/routes/api.ts(342,30): error TS2554: Expected 4 arguments, but got 3.
+src/routes/api.ts(352,30): error TS2554: Expected 4 arguments, but got 3.
+
+7:51:43 PM - Found 2 errors. Watching for file changes.
+c7:51:44 PM - File change detected. Starting incremental compilation...
+
+
+7:51:44 PM - Found 0 errors. Watching for file changes.
+c7:58:53 PM - File change detected. Starting incremental compilation...
+
+
+7:58:54 PM - Found 0 errors. Watching for file changes.
+c7:59:12 PM - File change detected. Starting incremental compilation...
+
+
+7:59:13 PM - Found 0 errors. Watching for file changes.
+c8:57:08 PM - Starting compilation in watch mode...
+
+c8:57:15 PM - Starting compilation in watch mode...
+
+
+8:57:18 PM - Found 0 errors. Watching for file changes.
+c8:59:56 PM - File change detected. Starting incremental compilation...
+
+
+8:59:56 PM - Found 0 errors. Watching for file changes.
+c9:00:00 PM - File change detected. Starting incremental compilation...
+
+
+9:00:00 PM - Found 0 errors. Watching for file changes.
+c9:00:38 PM - File change detected. Starting incremental compilation...
+
+
+9:00:38 PM - Found 0 errors. Watching for file changes.
+c9:28:16 PM - File change detected. Starting incremental compilation...
+
+
+9:28:16 PM - Found 0 errors. Watching for file changes.
+c9:32:01 PM - File change detected. Starting incremental compilation...
+
+
+9:32:01 PM - Found 0 errors. Watching for file changes.
+c9:34:27 PM - File change detected. Starting incremental compilation...
+
+
+9:34:27 PM - Found 0 errors. Watching for file changes.
+c9:35:56 PM - File change detected. Starting incremental compilation...
+
+
+9:35:57 PM - Found 0 errors. Watching for file changes.
+c9:36:24 PM - File change detected. Starting incremental compilation...
+
+
+9:36:24 PM - Found 0 errors. Watching for file changes.
+c9:37:06 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(63,16): error TS2339: Property 'serial' does not exist on type 'quotationSchema'.
+
+9:37:06 PM - Found 1 error. Watching for file changes.
+c9:43:15 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(63,16): error TS2339: Property 'serial' does not exist on type 'quotationSchema'.
+
+9:43:15 PM - Found 1 error. Watching for file changes.
+c9:49:38 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(73,16): error TS2339: Property 'serial' does not exist on type 'quotationSchema'.
+
+9:49:39 PM - Found 1 error. Watching for file changes.
+c9:50:02 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(73,16): error TS2339: Property 'serial' does not exist on type 'quotationSchema'.
+
+9:50:02 PM - Found 1 error. Watching for file changes.
+c9:50:08 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(73,16): error TS2339: Property 'serial' does not exist on type 'quotationSchema'.
+
+9:50:08 PM - Found 1 error. Watching for file changes.
+c9:51:11 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(75,16): error TS2339: Property 'serial' does not exist on type 'quotationSchema'.
+
+9:51:11 PM - Found 1 error. Watching for file changes.
+c9:51:34 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(75,16): error TS2339: Property 'serial' does not exist on type 'quotationSchema'.
+
+9:51:34 PM - Found 1 error. Watching for file changes.
+c9:51:46 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(75,16): error TS2339: Property 'serial' does not exist on type 'quotationSchema'.
+
+9:51:46 PM - Found 1 error. Watching for file changes.
+c9:56:48 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(75,16): error TS2339: Property 'serial' does not exist on type 'quotationSchema'.
+
+9:56:48 PM - Found 1 error. Watching for file changes.
+c7:34:18 AM - Starting compilation in watch mode...
+
+src/controllers/accountingController.ts(75,16): error TS2339: Property 'serial' does not exist on type 'quotationSchema'.
+
+7:34:21 AM - Found 1 error. Watching for file changes.
+c7:58:49 AM - File change detected. Starting incremental compilation...
+
+
+7:58:51 AM - Found 0 errors. Watching for file changes.
+c8:06:02 AM - File change detected. Starting incremental compilation...
+
+
+8:06:02 AM - Found 0 errors. Watching for file changes.
+c8:07:05 AM - File change detected. Starting incremental compilation...
+
+
+8:07:07 AM - Found 0 errors. Watching for file changes.
+c9:07:04 AM - File change detected. Starting incremental compilation...
+
+
+9:07:04 AM - Found 0 errors. Watching for file changes.
+c9:07:16 AM - File change detected. Starting incremental compilation...
+
+
+9:07:17 AM - Found 0 errors. Watching for file changes.
+c9:07:18 AM - File change detected. Starting incremental compilation...
+
+
+9:07:18 AM - Found 0 errors. Watching for file changes.
+c9:07:35 AM - File change detected. Starting incremental compilation...
+
+
+9:07:35 AM - Found 0 errors. Watching for file changes.
+c9:08:02 AM - File change detected. Starting incremental compilation...
+
+
+9:08:02 AM - Found 0 errors. Watching for file changes.
+c10:14:52 AM - Starting compilation in watch mode...
+
+
+10:14:58 AM - Found 0 errors. Watching for file changes.
+c1:15:00 PM - File change detected. Starting incremental compilation...
+
+tsconfig.json(17,7): error TS6053: File '/home/fibiaan/AnubisSoftware/Apps/stock/shared' not found.
+
+1:15:02 PM - Found 1 error. Watching for file changes.
+c6:05:27 PM - Starting compilation in watch mode...
+
+
+6:05:31 PM - Found 0 errors. Watching for file changes.
+c7:25:01 PM - File change detected. Starting incremental compilation...
+
+
+7:25:04 PM - Found 0 errors. Watching for file changes.
+c7:26:33 PM - File change detected. Starting incremental compilation...
+
+
+7:26:33 PM - Found 0 errors. Watching for file changes.
+c7:26:41 PM - File change detected. Starting incremental compilation...
+
+
+7:26:41 PM - Found 0 errors. Watching for file changes.
+c9:04:38 PM - Starting compilation in watch mode...
+
+c9:04:46 PM - Starting compilation in watch mode...
+
+
+9:04:53 PM - Found 0 errors. Watching for file changes.
+c9:08:46 PM - File change detected. Starting incremental compilation...
+
+
+9:08:47 PM - Found 0 errors. Watching for file changes.
+c9:12:07 PM - File change detected. Starting incremental compilation...
+
+
+9:12:07 PM - Found 0 errors. Watching for file changes.
+c9:29:39 PM - File change detected. Starting incremental compilation...
+
+
+9:29:40 PM - Found 0 errors. Watching for file changes.
+c10:14:13 PM - File change detected. Starting incremental compilation...
+
+
+10:14:16 PM - Found 0 errors. Watching for file changes.
+c10:14:26 PM - File change detected. Starting incremental compilation...
+
+
+10:14:26 PM - Found 0 errors. Watching for file changes.
+c10:21:57 PM - Starting compilation in watch mode...
+
+
+10:22:00 PM - Found 0 errors. Watching for file changes.
+c8:29:03 AM - Starting compilation in watch mode...
+
+
+8:29:09 AM - Found 0 errors. Watching for file changes.
+c8:30:13 AM - Starting compilation in watch mode...
+
+
+8:30:19 AM - Found 0 errors. Watching for file changes.
+c1:24:16 PM - Starting compilation in watch mode...
+
+
+1:24:20 PM - Found 0 errors. Watching for file changes.
+c3:16:57 PM - Starting compilation in watch mode...
+
+
+3:17:00 PM - Found 0 errors. Watching for file changes.
+c8:32:58 PM - Starting compilation in watch mode...
+
+
+8:33:01 PM - Found 0 errors. Watching for file changes.
+c8:33:31 PM - File change detected. Starting incremental compilation...
+
+
+8:33:32 PM - Found 0 errors. Watching for file changes.
+c8:36:32 PM - File change detected. Starting incremental compilation...
+
+
+8:36:32 PM - Found 0 errors. Watching for file changes.
+c8:36:59 PM - File change detected. Starting incremental compilation...
+
+
+8:36:59 PM - Found 0 errors. Watching for file changes.
+c8:37:27 PM - File change detected. Starting incremental compilation...
+
+
+8:37:27 PM - Found 0 errors. Watching for file changes.
+c8:43:42 PM - File change detected. Starting incremental compilation...
+
+
+8:43:42 PM - Found 0 errors. Watching for file changes.
+c8:45:24 PM - Starting compilation in watch mode...
+
+
+8:45:27 PM - Found 0 errors. Watching for file changes.
+c8:46:45 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(90,9): error TS2322: Type 'string' is not assignable to type 'number'.
+
+8:46:46 PM - Found 1 error. Watching for file changes.
+c8:47:08 PM - File change detected. Starting incremental compilation...
+
+
+8:47:08 PM - Found 0 errors. Watching for file changes.
+c8:48:05 PM - File change detected. Starting incremental compilation...
+
+
+8:48:05 PM - Found 0 errors. Watching for file changes.
+c8:48:39 PM - File change detected. Starting incremental compilation...
+
+
+8:48:39 PM - Found 0 errors. Watching for file changes.
+c8:49:29 PM - File change detected. Starting incremental compilation...
+
+
+8:49:29 PM - Found 0 errors. Watching for file changes.
+c9:02:50 PM - Starting compilation in watch mode...
+
+
+9:02:53 PM - Found 0 errors. Watching for file changes.
+c9:17:01 PM - Starting compilation in watch mode...
+
+
+9:17:05 PM - Found 0 errors. Watching for file changes.
+c9:17:38 PM - File change detected. Starting incremental compilation...
+
+
+9:17:39 PM - Found 0 errors. Watching for file changes.
+c9:17:42 PM - File change detected. Starting incremental compilation...
+
+
+9:17:42 PM - Found 0 errors. Watching for file changes.
+c9:18:39 PM - File change detected. Starting incremental compilation...
+
+
+9:18:39 PM - Found 0 errors. Watching for file changes.
+c9:35:27 PM - File change detected. Starting incremental compilation...
+
+
+9:35:29 PM - Found 0 errors. Watching for file changes.
+c10:21:10 PM - File change detected. Starting incremental compilation...
+
+
+10:21:10 PM - Found 0 errors. Watching for file changes.
+c10:22:14 PM - File change detected. Starting incremental compilation...
+
+
+10:22:14 PM - Found 0 errors. Watching for file changes.
+c10:22:48 PM - File change detected. Starting incremental compilation...
+
+
+10:22:48 PM - Found 0 errors. Watching for file changes.
+c10:33:12 PM - File change detected. Starting incremental compilation...
+
+
+10:33:12 PM - Found 0 errors. Watching for file changes.
+c10:35:23 PM - File change detected. Starting incremental compilation...
+
+
+10:35:23 PM - Found 0 errors. Watching for file changes.
+c10:35:59 PM - File change detected. Starting incremental compilation...
+
+
+10:35:59 PM - Found 0 errors. Watching for file changes.
+c10:38:05 PM - File change detected. Starting incremental compilation...
+
+src/controllers/emailController.ts(12,5): error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Argument of type '{ host: string; port: string; auth: { user: string; pass: string; }; }' is not assignable to parameter of type 'TransportOptions | Transport<unknown>'.
+      Object literal may only specify known properties, and 'host' does not exist in type 'TransportOptions | Transport<unknown>'.
+
+10:38:05 PM - Found 1 error. Watching for file changes.
+c10:41:46 PM - File change detected. Starting incremental compilation...
+
+
+10:41:46 PM - Found 0 errors. Watching for file changes.
+c10:41:54 PM - File change detected. Starting incremental compilation...
+
+
+10:41:54 PM - Found 0 errors. Watching for file changes.
+c10:42:31 PM - File change detected. Starting incremental compilation...
+
+
+10:42:31 PM - Found 0 errors. Watching for file changes.
+c10:44:04 PM - File change detected. Starting incremental compilation...
+
+
+10:44:04 PM - Found 0 errors. Watching for file changes.
+c10:44:55 PM - File change detected. Starting incremental compilation...
+
+
+10:44:55 PM - Found 0 errors. Watching for file changes.
+c10:49:13 PM - File change detected. Starting incremental compilation...
+
+src/controllers/loginController.ts(82,19): error TS2554: Expected 4 arguments, but got 3.
+src/routes/api.ts(372,9): error TS2554: Expected 4 arguments, but got 3.
+
+10:49:13 PM - Found 2 errors. Watching for file changes.
+c10:50:20 PM - File change detected. Starting incremental compilation...
+
+src/controllers/loginController.ts(82,19): error TS2554: Expected 4 arguments, but got 3.
+src/routes/api.ts(372,9): error TS2554: Expected 4 arguments, but got 3.
+
+10:50:20 PM - Found 2 errors. Watching for file changes.
+c10:50:53 PM - File change detected. Starting incremental compilation...
+
+src/controllers/loginController.ts(82,19): error TS2554: Expected 4 arguments, but got 3.
+src/routes/api.ts(372,9): error TS2554: Expected 4 arguments, but got 3.
+
+10:50:53 PM - Found 2 errors. Watching for file changes.
+c10:50:59 PM - File change detected. Starting incremental compilation...
+
+src/controllers/loginController.ts(82,19): error TS2554: Expected 4 arguments, but got 3.
+src/routes/api.ts(372,9): error TS2554: Expected 4 arguments, but got 3.
+
+10:51:00 PM - Found 2 errors. Watching for file changes.
+c10:56:08 PM - File change detected. Starting incremental compilation...
+
+src/controllers/loginController.ts(82,19): error TS2554: Expected 4 arguments, but got 3.
+src/routes/api.ts(372,9): error TS2554: Expected 4 arguments, but got 3.
+
+10:56:09 PM - Found 2 errors. Watching for file changes.
+c10:56:21 PM - File change detected. Starting incremental compilation...
+
+
+10:56:22 PM - Found 0 errors. Watching for file changes.
+c10:56:23 PM - File change detected. Starting incremental compilation...
+
+
+10:56:23 PM - Found 0 errors. Watching for file changes.
+c10:56:49 PM - File change detected. Starting incremental compilation...
+
+
+10:56:49 PM - Found 0 errors. Watching for file changes.
+c10:57:22 PM - File change detected. Starting incremental compilation...
+
+
+10:57:22 PM - Found 0 errors. Watching for file changes.
+c10:58:57 PM - File change detected. Starting incremental compilation...
+
+
+10:58:58 PM - Found 0 errors. Watching for file changes.
+c9:20:55 AM - Starting compilation in watch mode...
+
+
+9:20:58 AM - Found 0 errors. Watching for file changes.
+c10:00:42 AM - File change detected. Starting incremental compilation...
+
+
+10:00:43 AM - Found 0 errors. Watching for file changes.
+c10:19:29 AM - File change detected. Starting incremental compilation...
+
+
+10:19:29 AM - Found 0 errors. Watching for file changes.
+c10:20:58 AM - File change detected. Starting incremental compilation...
+
+
+10:20:58 AM - Found 0 errors. Watching for file changes.
+c10:21:42 AM - File change detected. Starting incremental compilation...
+
+
+10:21:43 AM - Found 0 errors. Watching for file changes.
+c10:21:45 AM - File change detected. Starting incremental compilation...
+
+
+10:21:45 AM - Found 0 errors. Watching for file changes.
+c10:33:32 AM - File change detected. Starting incremental compilation...
+
+
+10:33:32 AM - Found 0 errors. Watching for file changes.
+c10:33:53 AM - File change detected. Starting incremental compilation...
+
+
+10:33:53 AM - Found 0 errors. Watching for file changes.
+c10:48:47 AM - File change detected. Starting incremental compilation...
+
+
+10:48:47 AM - Found 0 errors. Watching for file changes.
+c10:49:08 AM - File change detected. Starting incremental compilation...
+
+
+10:49:09 AM - Found 0 errors. Watching for file changes.
+c10:49:53 AM - File change detected. Starting incremental compilation...
+
+
+10:49:53 AM - Found 0 errors. Watching for file changes.
+c10:50:44 AM - File change detected. Starting incremental compilation...
+
+
+10:50:44 AM - Found 0 errors. Watching for file changes.
+c10:50:51 AM - File change detected. Starting incremental compilation...
+
+
+10:50:51 AM - Found 0 errors. Watching for file changes.
+c10:53:56 AM - File change detected. Starting incremental compilation...
+
+
+10:53:56 AM - Found 0 errors. Watching for file changes.
+c10:57:26 AM - File change detected. Starting incremental compilation...
+
+
+10:57:26 AM - Found 0 errors. Watching for file changes.
+c10:58:47 AM - File change detected. Starting incremental compilation...
+
+
+10:58:47 AM - Found 0 errors. Watching for file changes.
+c10:59:05 AM - File change detected. Starting incremental compilation...
+
+
+10:59:05 AM - Found 0 errors. Watching for file changes.
+c11:00:54 AM - File change detected. Starting incremental compilation...
+
+
+11:00:56 AM - Found 0 errors. Watching for file changes.
+c11:01:26 AM - File change detected. Starting incremental compilation...
+
+
+11:01:26 AM - Found 0 errors. Watching for file changes.
+c11:02:00 AM - File change detected. Starting incremental compilation...
+
+
+11:02:00 AM - Found 0 errors. Watching for file changes.
+c11:02:32 AM - File change detected. Starting incremental compilation...
+
+
+11:02:32 AM - Found 0 errors. Watching for file changes.
+c11:04:06 AM - File change detected. Starting incremental compilation...
+
+
+11:04:06 AM - Found 0 errors. Watching for file changes.
+c11:06:34 AM - File change detected. Starting incremental compilation...
+
+
+11:06:34 AM - Found 0 errors. Watching for file changes.
+c11:07:37 AM - File change detected. Starting incremental compilation...
+
+
+11:07:37 AM - Found 0 errors. Watching for file changes.
+c12:17:06 PM - Starting compilation in watch mode...
+
+
+12:17:12 PM - Found 0 errors. Watching for file changes.
+c12:18:41 PM - File change detected. Starting incremental compilation...
+
+
+12:18:42 PM - Found 0 errors. Watching for file changes.
+c12:20:06 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(168,24): error TS1003: Identifier expected.
+
+12:20:06 PM - Found 1 error. Watching for file changes.
+c12:22:19 PM - File change detected. Starting incremental compilation...
+
+
+12:22:19 PM - Found 0 errors. Watching for file changes.
+c12:23:43 PM - File change detected. Starting incremental compilation...
+
+
+12:23:43 PM - Found 0 errors. Watching for file changes.
+c12:41:27 PM - Starting compilation in watch mode...
+
+c12:41:34 PM - Starting compilation in watch mode...
+
+
+12:41:39 PM - Found 0 errors. Watching for file changes.
+c1:14:19 PM - File change detected. Starting incremental compilation...
+
+
+1:14:19 PM - Found 0 errors. Watching for file changes.
+c1:15:03 PM - File change detected. Starting incremental compilation...
+
+
+1:15:04 PM - Found 0 errors. Watching for file changes.
+c1:24:15 PM - File change detected. Starting incremental compilation...
+
+
+1:24:15 PM - Found 0 errors. Watching for file changes.
+c4:04:13 PM - Starting compilation in watch mode...
+
+
+4:04:17 PM - Found 0 errors. Watching for file changes.
+c4:05:23 PM - File change detected. Starting incremental compilation...
+
+
+4:05:26 PM - Found 0 errors. Watching for file changes.
+c4:06:08 PM - File change detected. Starting incremental compilation...
+
+
+4:06:08 PM - Found 0 errors. Watching for file changes.
+c4:07:06 PM - File change detected. Starting incremental compilation...
+
+
+4:07:06 PM - Found 0 errors. Watching for file changes.
+c4:08:09 PM - File change detected. Starting incremental compilation...
+
+
+4:08:10 PM - Found 0 errors. Watching for file changes.
+c4:08:22 PM - File change detected. Starting incremental compilation...
+
+
+4:08:24 PM - Found 0 errors. Watching for file changes.
+c4:08:32 PM - File change detected. Starting incremental compilation...
+
+
+4:08:32 PM - Found 0 errors. Watching for file changes.
+c4:09:55 PM - File change detected. Starting incremental compilation...
+
+src/routes/api.ts(42,11): error TS2322: Type 'string | boolean' is not assignable to type 'Boolean'.
+  Type 'string' is not assignable to type 'Boolean'.
+
+4:09:56 PM - Found 1 error. Watching for file changes.
+c4:10:02 PM - File change detected. Starting incremental compilation...
+
+
+4:10:03 PM - Found 0 errors. Watching for file changes.
+c4:10:21 PM - File change detected. Starting incremental compilation...
+
+
+4:10:21 PM - Found 0 errors. Watching for file changes.
+c4:11:05 PM - File change detected. Starting incremental compilation...
+
+
+4:11:05 PM - Found 0 errors. Watching for file changes.
+c4:11:26 PM - File change detected. Starting incremental compilation...
+
+
+4:11:26 PM - Found 0 errors. Watching for file changes.
+c4:12:32 PM - File change detected. Starting incremental compilation...
+
+
+4:12:32 PM - Found 0 errors. Watching for file changes.
+c4:13:05 PM - File change detected. Starting incremental compilation...
+
+
+4:13:05 PM - Found 0 errors. Watching for file changes.
+c4:13:39 PM - File change detected. Starting incremental compilation...
+
+
+4:13:40 PM - Found 0 errors. Watching for file changes.
+c4:14:07 PM - File change detected. Starting incremental compilation...
+
+
+4:14:07 PM - Found 0 errors. Watching for file changes.
+c4:14:13 PM - File change detected. Starting incremental compilation...
+
+
+4:14:13 PM - Found 0 errors. Watching for file changes.
+c4:14:54 PM - File change detected. Starting incremental compilation...
+
+
+4:14:54 PM - Found 0 errors. Watching for file changes.
+c4:17:00 PM - File change detected. Starting incremental compilation...
+
+
+4:17:00 PM - Found 0 errors. Watching for file changes.
+c4:17:30 PM - File change detected. Starting incremental compilation...
+
+
+4:17:31 PM - Found 0 errors. Watching for file changes.
+c4:17:32 PM - File change detected. Starting incremental compilation...
+
+
+4:17:32 PM - Found 0 errors. Watching for file changes.
+c4:19:15 PM - File change detected. Starting incremental compilation...
+
+
+4:19:15 PM - Found 0 errors. Watching for file changes.
+c4:19:46 PM - File change detected. Starting incremental compilation...
+
+
+4:19:46 PM - Found 0 errors. Watching for file changes.
+c4:20:33 PM - File change detected. Starting incremental compilation...
+
+
+4:20:33 PM - Found 0 errors. Watching for file changes.
+c4:20:42 PM - File change detected. Starting incremental compilation...
+
+
+4:20:42 PM - Found 0 errors. Watching for file changes.
+c4:20:57 PM - File change detected. Starting incremental compilation...
+
+
+4:20:57 PM - Found 0 errors. Watching for file changes.
+c4:24:37 PM - File change detected. Starting incremental compilation...
+
+
+4:24:37 PM - Found 0 errors. Watching for file changes.
+c4:30:08 PM - File change detected. Starting incremental compilation...
+
+
+4:30:08 PM - Found 0 errors. Watching for file changes.
+c4:31:10 PM - File change detected. Starting incremental compilation...
+
+
+4:31:10 PM - Found 0 errors. Watching for file changes.
+c4:32:37 PM - File change detected. Starting incremental compilation...
+
+
+4:32:37 PM - Found 0 errors. Watching for file changes.
+c4:32:49 PM - File change detected. Starting incremental compilation...
+
+
+4:32:49 PM - Found 0 errors. Watching for file changes.
+c4:33:38 PM - File change detected. Starting incremental compilation...
+
+
+4:33:38 PM - Found 0 errors. Watching for file changes.
+c4:42:55 PM - File change detected. Starting incremental compilation...
+
+
+4:42:55 PM - Found 0 errors. Watching for file changes.
+c4:47:34 PM - File change detected. Starting incremental compilation...
+
+
+4:47:34 PM - Found 0 errors. Watching for file changes.
+c4:52:31 PM - File change detected. Starting incremental compilation...
+
+
+4:52:31 PM - Found 0 errors. Watching for file changes.
+c4:52:33 PM - File change detected. Starting incremental compilation...
+
+
+4:52:33 PM - Found 0 errors. Watching for file changes.
+c9:29:06 AM - Starting compilation in watch mode...
+
+
+9:29:09 AM - Found 0 errors. Watching for file changes.
+c10:03:13 AM - Starting compilation in watch mode...
+
+c10:03:21 AM - Starting compilation in watch mode...
+
+
+10:03:24 AM - Found 0 errors. Watching for file changes.
+c2:25:07 PM - Starting compilation in watch mode...
+
+c2:25:15 PM - Starting compilation in watch mode...
+
+
+2:25:20 PM - Found 0 errors. Watching for file changes.
