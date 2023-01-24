@@ -14,7 +14,7 @@
 <script lang="ts" setup>
 import { onClickOutside } from '@vueuse/core';
 import { defineProps, ref, computed, defineEmits } from 'vue'
-import isDarkColor from 'is-dark-color'
+import lightDark from '@check-light-or-dark/color'
 import { Icon } from './Generics/generics';
 import { modalComp, type promiseResponse } from '@/classes/Modal';
 import language from '@/services/language';
@@ -28,6 +28,9 @@ export interface categoryTagProps {
         name: string
         id: number
     }
+}
+const isDarkColor = (color: string) => {
+    return lightDark(color) == 'dark'
 }
 const user = useAuthStore()
 const tag = ref(null)

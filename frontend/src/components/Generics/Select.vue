@@ -102,7 +102,7 @@
 import { defineProps, defineEmits, toRefs, ref, onBeforeMount, computed} from 'vue';
 import Icon from '@/components/Generics/Icon.vue'
 import { onClickOutside } from '@vueuse/core'
-import isDarkColor from 'is-dark-color'
+import lightDark from '@check-light-or-dark/color'
 import language from '@/services/language';
 
 export interface contentSelect {
@@ -123,6 +123,9 @@ const string = {
     Spanish : 'Seleccionar opción',
     English : 'Select option'
   }
+}
+const isDarkColor = (color: string) => {
+    return lightDark(color) == 'dark'
 }
 
 const emits = defineEmits(['update:modelValue'])
