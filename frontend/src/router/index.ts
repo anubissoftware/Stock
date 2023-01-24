@@ -67,6 +67,7 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized) => {
+  // debugger;
   const path = to.path
   let isIn = false
   
@@ -81,6 +82,7 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
   const token = user.token as token
   if ((isIn) && (token == undefined || token.expirate < moment().unix())) {
     // redirect the user to the login page
+    localStorage.removeItem('user')
     return { name: 'login' }
   }
   if (token && !readPer(to)) {
