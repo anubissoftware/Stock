@@ -1,8 +1,10 @@
 import router from '@/router'
 import { computed, reactive, watch, type ComputedRef, type UnwrapNestedRefs } from 'vue'
 import type { productSchema, productsInCartType, quotationSchema } from '@/schemas'
+import { useProductStore } from '@/stores/products';
 
 const key = 'ShoppingCartOurStock'
+
 
 export interface loadedTypes{
     loaded: boolean;
@@ -13,11 +15,6 @@ export interface loadedTypes{
 const route: ComputedRef<string> = computed((): string => {
     return router.currentRoute.value.path
 })
-const productsInfo: ComputedRef<Array<productSchema>> = computed(
-    (): Array<productSchema> => {
-        return []
-    }
-)
 export const loaded: UnwrapNestedRefs<loadedTypes> = reactive({
     loaded: false,
     editing: false,
@@ -40,7 +37,8 @@ watch(
 
 export const useShoppingCart = () => {
     const local = window.localStorage.getItem(key)
-    if(local && loaded.loaded){
+    const pdtos = useProductStore()
+    if(local && !loaded.loaded){
         loaded.loaded = true
         const arrays: Array<productsInCartType> = JSON.parse(local)
         arrays.map(pdto => productsInCart.push(pdto))
@@ -63,7 +61,7 @@ export const useShoppingCart = () => {
             useShoppingCart().updateStorage()
         },
         changeLocal: (event: any, id: number) => {
-            const product: Array<productSchema> = productsInfo.value.filter(pdto => pdto.id == id)
+            const product: Array<productSchema> = pdtos.listProducts.filter(pdto => pdto.id == id)
             const max = product[0].stock
             if(max && event.target.value > max){
                 productsInCart.map((pdto) => {
@@ -77,7 +75,7 @@ export const useShoppingCart = () => {
         addToProduct: (id: number) => {
             productsInCart.map((pdto) => {
                 if(pdto.id == id){
-                    const product: Array<productSchema> = productsInfo.value.filter((pto: any) => pto.id == pdto.id)
+                    const product: Array<productSchema> = pdtos.listProducts.filter((pto: any) => pto.id == pdto.id)
                     if(product[0].stock > pdto.amount){
                         pdto.amount++
                     }

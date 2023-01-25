@@ -165,7 +165,7 @@
 </template>
   
 <script setup lang="ts">
-import { computed, type ComputedRef, ref, onMounted, onBeforeUnmount } from 'vue';
+import { computed, type ComputedRef, ref, onMounted, onBeforeUnmount, onBeforeMount } from 'vue';
 import { Alert, Icon, Button, Input, Modal } from '@/components/Generics/generics'
 import AddItem from '@/components/NewItem.vue'
 import type { productSchema, productsInCartType, token } from '@/schemas'
@@ -183,7 +183,7 @@ import moment from 'moment';
 import { modalComp, type modalResponse } from '@/classes/Modal';
 import { currencyFormat } from '@/composables/utils';
 import { useProductStore } from '@/stores/products';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/auth'
 
 const route = useRoute()
 const router = useRouter()
@@ -369,19 +369,29 @@ const alertMessage = (title: string, description: string, type: string) => {
     }, 3000);
 }
 
+onBeforeMount(() => {
+    //console.log('validating quotation', loaded.quotation)
+    if (route.query.quote == '2' && Object.keys(loaded.quotation).length == 0) {
+        router.push({
+            name: 'quote'
+        })
+    }
+})
+
 onMounted(() => {
     if (isQuoteMode.value) {
         alertMessage('Modo de cotización',
             'Para crear una cotización, añada los productos al carrito y seleccione crear cotización',
             'success')
     }
+    console.log('onMounted', route.query.quote)
     if (route.query.quote == '1') {
         shopping.clearBasket()
     }
 })
 
 onBeforeUnmount(() => {
-    if (route.query.quote == '2') {
+    if (route.query.quote == '2' || route.query.quote == '1') {
         shopping.clearBasket()
         loaded.quotation = {}
     }
@@ -411,6 +421,7 @@ const addNewQuotation = async () => {
                 one_day: quote.one_day,
                 from: quote.one_day ? null : quote.min_date,
                 to: quote.one_day ? null : quote.max_date,
+                email: createQuotationComponent.value.clientEmail,
                 products: createQuotationComponent.value.products.map((pdto: productsInCartType) => {
                     pdto.days = quote.one_day ? 1 : (moment(pdto.end_rent ?? '', 'YYYY-MM-DD')).diff(moment(pdto.start_rent ?? '', 'YYYY-MM-DD'), 'days') + 1
                     return pdto
@@ -419,7 +430,7 @@ const addNewQuotation = async () => {
 
             console.log(payload)
             let { data } = await saveQuotation((auth.getUser.token as token).value, payload)
-            if (data.ok) {
+            if (data?.ok) {
                 shopping.clearBasket()
                 sidebarStatus.createQuotation = false
                 router.push({ name: 'quote' })

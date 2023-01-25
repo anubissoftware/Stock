@@ -100,8 +100,7 @@ import Droppable from '@/components/Generics/Droppable.vue';
 import { uploadEnterpriseImage } from '@/services/enterprise'
 import Header2 from '@/components/Header2.vue';
 import socket from '@/composables/socket'
-import { useAuthStore } from '@/stores/auth';
-import { useProductStore } from '@/stores/products';
+import { useAuthStore } from '@/stores/auth'
 import { useSettingsStore } from '@/stores/settings';
 import type { token } from '@/schemas';
 

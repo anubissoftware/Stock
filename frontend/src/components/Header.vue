@@ -71,7 +71,7 @@ import { useRouter, type Router } from 'vue-router'
 import Cart from './Cart.vue';
 import { useShoppingCart } from '@/composables/ShoppingCart';
 import language from '@/services/language';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/auth'
 import { useProductStore } from '@/stores/products';
 
 const shopping = useShoppingCart()

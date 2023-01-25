@@ -71,7 +71,7 @@ import moment from 'moment';
 import { editPer, writePer } from '@/composables/permissions';
 import { useRouter } from 'vue-router';
 import { sidebarStatus } from '@/composables/sidebarStatus';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/auth'
 
 
 export interface clientProps {

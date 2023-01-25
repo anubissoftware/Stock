@@ -17,7 +17,7 @@ import Alert from './components/Generics/Alert.vue';
 import type { notificationSchema, modulesSchema, token } from '@/schemas'
 import { backendURL } from '@/config'
 import socket from '@/composables/socket'
-import { useAuthStore } from './stores/auth';
+import { useAuthStore } from './stores/auth'
 import { useProductStore } from './stores/products';
 
 const showMessage = ref(false)

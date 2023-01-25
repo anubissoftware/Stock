@@ -85,7 +85,7 @@ import { modalComp, type modalResponse } from '@/classes/Modal';
 import Tag from '@/components/Generics/Tag.vue';
 import { useShoppingCart, loaded } from '@/composables/ShoppingCart';
 import { useProductStore } from '@/stores/products';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/auth'
 
 const cancelToken: Ref<AbortController | undefined> = ref(undefined)
 const router = useRouter()
@@ -223,6 +223,7 @@ const editQuotation = async () => {
         one_day: quotation.one_day == 1 ? true : false,
         email: quotation.email
     }
+    console.log('data', loaded.quotation)
     data.forEach((element: quotationDetailSchema) => {
         shopping.addProduct({
             amount: element.amount,
@@ -235,6 +236,7 @@ const editQuotation = async () => {
             value: element.value,
             renting: element.value
         })
+        console.log(shopping.listProducts())
     });
 
     router.push({

@@ -43,7 +43,7 @@ import { computed, ref, type Ref } from 'vue';
 import CategoryTag from './categoryTag.vue';
 import { Input, Button, Icon } from './Generics/generics';
 import type { categoryQuery, token, categorySchema } from '@/schemas';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores
 import { useProductStore } from '@/stores/products'
 
 const userStore = useAuthStore()

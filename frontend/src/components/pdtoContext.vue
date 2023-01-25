@@ -31,7 +31,7 @@ import { modalComp, type promiseResponse } from '@/classes/Modal';
 import { deprecateProduct, sellProduct, buyProduct, wholesaleProduct, deleteItemService, craftProduct } from '@/services/product';
 import { useShoppingCart } from '@/composables/ShoppingCart';
 import { writePer, editPer } from '@/composables/permissions';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/auth'
 import type { token } from '@/schemas';
 
 export interface contextProps {

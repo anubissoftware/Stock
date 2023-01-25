@@ -22,6 +22,12 @@ export const listQuotations = (token: string, filter: string, signal: any) => {
     })
 }
 
+export const listAllQuotation = (id: string) => {
+    return ApiCLient.get('/quotation/all', {
+        params: { id },
+    })
+}
+
 export const quotationDetail = (body: any) => {
     return ApiCLient.get('/quotation/detail', {
         params: { id: body.id }

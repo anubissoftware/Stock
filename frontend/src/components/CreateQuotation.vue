@@ -22,7 +22,7 @@
         </div>
 
         <div class="laptop:w-1/2 phone:w-full pr-2 pb-6">
-            <CheckBox class="" color="black" :content="'¿La cotización es para alquiler?'"
+            <CheckBox class="" :readonly="route.query.quote == '2'" color="black" :content="'¿La cotización es para alquiler?'"
                 :label="'¿La cotización es para alquiler?'" size="md" type="text" required v-model="whoQuotate.renting"
                 @update:model-value="setProductsDates()" />
         </div>
@@ -94,16 +94,16 @@
 </template>
 
 <script lang="ts" setup>
-import { useShoppingCart, productsInCart } from '@/composables/ShoppingCart';
+import { useShoppingCart, productsInCart, loaded } from '@/composables/ShoppingCart';
 import { getClients, listAllProjects } from '@/services/clients';
 import moment from 'moment';
 import { computed, ref, type Ref, onBeforeMount, type ComputedRef, nextTick, defineExpose, defineProps } from 'vue';
 import { useRoute } from 'vue-router';
-import type { clientschema, projectSchema, productsInCartType, token } from '@/schemas';
+import type { clientschema, projectSchema, productsInCartType, token, quotationSchema } from '@/schemas';
 import { Icon } from './Generics/generics';
 import { Input, Autocomplete, CheckBox } from './Generics/generics';
 import { currencyFormat } from '@/composables/utils';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/auth'
 
 export interface createQuotationProps {
     editable?: {
@@ -187,7 +187,11 @@ const clientEmail = ref('')
 const getProjects = async (value: string) => {
     whoQuotate.value.project = ''
     if (typeof whoQuotate.value.client == 'object') {
-        clientEmail.value = whoQuotate.value.client.contact_email
+        if(Object.keys(loaded.quotation).length > 0){
+            clientEmail.value = (loaded.quotation as quotationSchema).email ?? ''
+        }else{
+            clientEmail.value = whoQuotate.value.client.contact_email
+        }
         if (cancelToken.value) {
             cancelToken.value.abort
         }
@@ -254,7 +258,7 @@ const totalDue = computed(() => {
     return currencyFormat(total)
 })
 
-defineExpose({ canSave, whoQuotate, totalDue, products })
+defineExpose({ canSave, whoQuotate, totalDue, products, clientEmail })
 
 
 const setProductsDates = () => {
@@ -274,6 +278,20 @@ onBeforeMount(() => {
         props.value.editable.client = true
         props.value.editable.dates = true
         props.value.editable.products = true
+    }
+    if (Object.keys(loaded.quotation).length > 0) {
+        console.log('setting data')
+        const quote: quotationSchema = loaded.quotation as quotationSchema
+        whoQuotate.value.min_date = moment(quote.min_date).format('YYYY-MM-DD')
+        whoQuotate.value.max_date = moment(quote.max_date).format('YYYY-MM-DD')
+        whoQuotate.value.renting = quote.renting ?? false
+        if(quote.rent_min_date){
+            whoQuotate.value.rent_min_date = moment(quote.rent_min_date).format('YYYY-MM-DD')
+        }
+        if(quote.rent_max_date){
+            whoQuotate.value.rent_max_date = moment(quote.rent_max_date).format('YYYY-MM-DD')
+        }
+        whoQuotate.value.one_day = quote.one_day == true 
     }
     console.log()
 })

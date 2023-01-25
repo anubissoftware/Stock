@@ -3,6 +3,8 @@ import { createRouter, createWebHistory, type RouteLocationNormalized } from 'vu
 import Login from '@/views/LoginView.vue'
 import moment from 'moment';
 import { readPer } from '@/composables/permissions';
+import { useAuthStore } from '@/stores/auth';
+import { useShoppingCart } from '@/composables/ShoppingCart';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -70,6 +72,11 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
   // debugger;
   const path = to.path
   let isIn = false
+  const store = useAuthStore()
+
+  if(from.path == '/dashboard/mystock' && (from.query.quote == '1' || from.query.quote == '2')){
+    useShoppingCart().clearBasket()
+  }
   
   const routes = ['/dashboard']
   routes.forEach((route) => {
@@ -77,12 +84,10 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
       isIn = true
     }
   })
-  let user = JSON.parse(localStorage.getItem('user') || '{}')
-  console.log('user', user)
-  const token = user.token as token
+  const token = store.getUser.token as token
   if ((isIn) && (token == undefined || token.expirate < moment().unix())) {
     // redirect the user to the login page
-    localStorage.removeItem('user')
+    store.logOut()
     return { name: 'login' }
   }
   if (token && !readPer(to)) {

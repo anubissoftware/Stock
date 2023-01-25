@@ -16,9 +16,14 @@ export interface quotationSchema {
     creation: string
     client_name?: string
     stage: number
+    min_date?: string
+    max_date?: string
+    renting?: boolean
+    rent_min_date?: string
+    rent_max_date?: string
 }
 
-export interface quotationDetailSchema{
+export interface quotationDetailSchema {
     id: number
     item_id: number
     extras: string

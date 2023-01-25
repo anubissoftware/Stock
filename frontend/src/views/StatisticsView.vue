@@ -19,7 +19,7 @@ import { Chart } from 'chart.js/auto'
 import moment from 'moment';
 import language from '@/services/language';
 import Header2 from '@/components/Header2.vue';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/auth'
 import { useProductStore } from '@/stores/products';
 
 const string = {

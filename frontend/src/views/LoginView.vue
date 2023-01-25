@@ -204,6 +204,7 @@ import {LoginApi, ValidateEmail, ValidateCellphone, RegisterNewUser, ActivateCus
 import {Alert, Input, Button, CheckBox} from '@/components/Generics/generics'
 import type { userSchema } from '@/schemas';
 import { useAuthStore } from '@/stores/auth';
+
     enum typeLogin {
         in = 'sign in',
         out = 'register'

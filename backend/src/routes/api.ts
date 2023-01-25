@@ -1,4 +1,4 @@
-import { quotationDetail, sendQuotationEmail, updateQuotationStage } from './../controllers/accountingController';
+import { editQuotation, getAllQuotation, quotationDetail, sendQuotationEmail, updateQuotationStage } from './../controllers/accountingController';
 import { addClient, deleteClient, deleteProject, editClient, getProjects, readClients, saveProject } from './../controllers/clientController';
 import { loginCustomer, setTokenCustomer } from '../controllers/customerController';
 import { activateCustomer, menusInRol } from './../controllers/loginController';
@@ -17,7 +17,6 @@ import moment from 'moment'
 import { OkPacket } from "mysql";
 import { validateEnterprise } from '../controllers/enterpriseController';
 import { createNewQuotation, deleteQuotation, listQuotations } from '../controllers/accountingController';
-import { sendEmail } from '../controllers/emailController';
 
 declare global {
     namespace Express {
@@ -322,17 +321,15 @@ export default (app: Express, io: Server): void => {
     })
 
     app.post('/quotation/', middleware, async (req: Request, res: Response) => {
-        const data: quotationSchema = await createNewQuotation(req, res)
+        let data: quotationSchema | any;
+        if(req.body.id){
+            data = await editQuotation(req, res)
+        }else{
+            data = await createNewQuotation(req, res)
+            
+        }
         //create ws
         if(data?.id){
-            io.to('e' + req.userData.enterprise_id).emit('quotationChange', data)
-        }
-    })
-
-    app.post('/quotation/update', middleware, async (req: Request, res: Response) => {
-        const data: quotationSchema | undefined = undefined
-
-        if(data.id){
             io.to('e' + req.userData.enterprise_id).emit('quotationChange', data)
         }
     })
@@ -368,6 +365,8 @@ export default (app: Express, io: Server): void => {
     app.get('/quotation/', middleware, listQuotations)
 
     app.get('/quotation/detail', quotationDetail)
+
+    app.get('/quotation/all', getAllQuotation)
 
     app.post('/quotation/resend', middleware, async (req: Request, res: Response) => {
         sendQuotationEmail(req.body.quotation_id, req, res, io)

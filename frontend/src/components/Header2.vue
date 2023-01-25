@@ -47,8 +47,7 @@
                         <Icon icon="qr_code_scanner" />
                         <span class="phone:hidden laptop:flex">{{ string.scan[language] }}</span>
                     </button>
-
-                    <Cart v-if="shopping.showCart()" @quotate="handleQuotation()"/>
+                    <Cart v-if="showCart" @quotate="handleQuotation()"/>
 
                     <!-- NOTIFICATION ELEMENT -->
                     <button class="px-2 py-1 flex justify-center rounded-lg 
@@ -88,7 +87,7 @@ import language from '@/services/language';
 import Cart from './Cart.vue';
 import { onClickOutside } from '@vueuse/core';
 import type { notificationSchema } from '@/schemas';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/auth'
 import { useProductStore } from '@/stores/products';
 
 const auth = useAuthStore()
@@ -99,6 +98,10 @@ const helperContainer = ref()
 
 onClickOutside(helperContainer, () => {
     setHelper(false)
+})
+
+const showCart = computed(() => {
+    return shopping.showCart()
 })
 
 const logout = () => {

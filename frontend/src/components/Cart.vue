@@ -18,7 +18,7 @@
             <div v-if="shopping.listProducts().length > 0" class="tablet:max-h-[40vh] phone:max-h-[70vh] overflow-y-scroll">
                 <div v-for="(item, index) in shopping.listProducts()" :key="index"
                     class="py-1 px-2 flex flex-row justify-between flex-wrap">
-                    <img :src="'#'" class=" w-1/4 h-auto" alt="">
+                    <img :src="getImageUrl('Recurso 7@2x.png')" class=" w-1/4 h-auto" alt="">
                     <div class=" w-2/4 text-start flex flex-col">
                         <span class=" font-bold text-sm">{{ item.name }}</span>
                         <span>Price: {{ currencyFormat(item.value * item.amount, false) }}</span>
@@ -102,8 +102,12 @@ import {quotate} from '@/composables/permissions'
 import { sidebarStatus } from '@/composables/sidebarStatus';
 import { useRouter } from 'vue-router';
 import { currencyFormat } from '@/composables/utils';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/auth'
 import type { token } from '@/schemas';
+
+const getImageUrl = (name: string) => {
+    return new URL(`../assets/logo/${name}`, import.meta.url).href
+}
 
 const ShoppingList = ref(null)
 const router = useRouter()

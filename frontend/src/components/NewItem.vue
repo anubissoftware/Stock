@@ -292,7 +292,7 @@ import { getCategories, getUnits, createProduct, getItems} from '@/services/prod
 import { modalComp, type modalResponse } from '@/classes/Modal';
 import language from '@/services/language';
 import { useProductStore } from '@/stores/products';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/auth'
 import type { productSchema, token } from '@/schemas';
 
 

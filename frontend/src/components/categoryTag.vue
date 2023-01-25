@@ -20,7 +20,7 @@ import { modalComp, type promiseResponse } from '@/classes/Modal';
 import language from '@/services/language';
 import { deleteCategory } from '@/services/product'
 import type { categoryQuery, token } from '@/schemas';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/auth'
 
 export interface categoryTagProps {
     category: {

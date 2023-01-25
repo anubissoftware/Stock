@@ -7,6 +7,10 @@ export const includesAny = (str: string, vals: Array<string>) => {
     return con
 }
 
+export const getImageUrl = (name: string) => {
+    return new URL(`../../lib/Carousel/assets/${name}`, import.meta.url).href
+}
+
 export const currencyFormat = (amount: number, fromZero = true): string => {
     const formater = new Intl.NumberFormat('en-US', {
         style: 'currency',

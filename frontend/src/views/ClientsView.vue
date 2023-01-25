@@ -88,7 +88,7 @@ import socket from '@/composables/socket'
 import { setHelper, sidebarStatus } from '@/composables/sidebarStatus';
 import ClientProjects from '@/components/ClientProjects.vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter()
 const strings = {

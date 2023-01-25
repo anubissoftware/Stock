@@ -23,7 +23,7 @@
             @keyup.up="listNavigation('up')"
             @keyup.down="listNavigation('down')" 
             @keyup.enter="setModelValue()" />
-      <label for="input" class="absolute text-base font-bold left-0 top-[50%] -translate-y-1/2 bg-white 
+      <label for="input" class="absolute text-base font-bold left-0 top-[50%] -translate-y-1/2 bg-transparent 
             py-0 px-1 my-0 mx-2
             text-gray-600 ease-out transition-all duration-200
              origin-top-left pointer-events-none" :style="{ '--bgColor': props.notificationColor }"
@@ -161,12 +161,12 @@ const itemsList = computed(
 input:focus+label {
   color: var(--bgColor);
   top: 0;
-  transform: translateY(-50%) scale(0.9) !important;
+  transform: translateY(-73%) scale(0.9) !important;
 }
 
 input:not(:placeholder-shown)+label {
   top: 0;
-  transform: translateY(-50%) scale(0.9) !important;
+  transform: translateY(-73%) scale(0.9) !important;
 }
 
 input:not(:focus)::placeholder {
