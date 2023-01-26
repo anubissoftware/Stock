@@ -79,3 +79,38 @@ export const getQuotationForClient = (body: {id: string}) => {
     })
 }
 
+export const getDispatch = (token: string, filter: string, signal: any) => {
+    return ApiCLient.get('/dispatch', {
+        headers: {
+            'authorization': `bearer ${token}`
+        },
+        params: { filter },
+        signal
+    })
+}
+
+export const getDispatchDetail = (token: string, body: {id: number}) => {
+    return ApiCLient.get('/dispatch/detail', {
+        headers: {
+            'authorization': `bearer ${token}`
+        },
+        params: { id: body.id }
+    })
+}
+
+export const createDispatch = (token: string, body:any) => {
+    return ApiCLient.post('/dispatch', { ...body }, {
+        headers: {
+            'authorization': `bearer ${token}`
+        },
+    })
+}
+
+export const updateDispatch = (token: string, body:any) => {
+    return ApiCLient.post('/dispatch/update', { ...body }, {
+        headers: {
+            'authorization': `bearer ${token}`
+        },
+    })
+}
+

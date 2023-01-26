@@ -11,7 +11,7 @@
             icon="visibility" />
             <input name="input" :placeholder="props.placeholder" class="text-base outline-none border-2 border-solid
             border-gray-500 px-3 text-gray-500 transition-all duration-100 ease-out rounded-md
-            w-full
+            w-full accent-primary
             " 
             :readonly="props.readonly ?? false"
             :class="[
@@ -20,6 +20,7 @@
                 props.size == 'lg' ? 'py-4' : 
                 props.size == 'md' ? 'py-2' :
                 props.size == 'sm' ? 'py-1' : 'py-2',
+                props.disabled ? 'bg-gray-100 cursor-not-allowed' : '',
                 props.notificationColor ? `border-${props.notificationColor}-700` : 'border-gray-500',
                 props.prependIcon ? 'pl-10' : null
             ]" 
@@ -27,6 +28,7 @@
             :type="viewPassword == false ? props.type : 'text'"
             autocomplete="off"
             :required="props.required"
+            :disabled="props.disabled"
             />
             <label v-if="props.label" for="input" class="absolute text-base font-bold top-[50%] -translate-y-1/2 bg-transparent  
             py-0 px-1 my-0 mx-2
@@ -69,6 +71,7 @@ export interface contentInput {
   hintColor?: string
   typeColor?: boolean
   readonly?: boolean
+  disabled?: boolean
 }
 const emits = defineEmits(['update:modelValue'])
 const props = defineProps<contentInput>()

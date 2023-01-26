@@ -35,4 +35,6 @@ export interface quotationDetailSchema {
     days: number
 
     name?: string
+    amount_avaliable?: number
+    dispatching?: number
 }

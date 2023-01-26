@@ -1,4 +1,4 @@
-import { editQuotation, getAllQuotation, quotationDetail, sendQuotationEmail, updateQuotationStage } from './../controllers/accountingController';
+import { createNewDispatch, dispatchDetail, dispatchUpdate, editQuotation, getAllQuotation, listDispatch, quotationDetail, sendQuotationEmail, updateQuotationStage } from './../controllers/accountingController';
 import { addClient, deleteClient, deleteProject, editClient, getProjects, readClients, saveProject } from './../controllers/clientController';
 import { loginCustomer, setTokenCustomer } from '../controllers/customerController';
 import { activateCustomer, menusInRol } from './../controllers/loginController';
@@ -6,7 +6,7 @@ import { saveEnterpriseLogo } from './../controllers/mediaController';
 import { validateEmail, validateCellphone, registerUser } from '../controllers/loginController';
 import { sellItems, buyItems, craftItems, expireItems, listPublishedProducts, listHistoric,listAllProducts, registerProduct, removeProduct, updateProduct } from '../controllers/productController';
 import { getUnits } from '../controllers/unitController';
-import { categoryQuery, productToEmit, decreaseStock, modulesSchema, clientEnterpriseSchema, projectSchema, quotationSchema,  userData, UserLogin, userLogOut } from '@/shared';
+import { categoryQuery, productToEmit, decreaseStock, modulesSchema, clientEnterpriseSchema, projectSchema, quotationSchema,  userData, UserLogin, userLogOut, dispatchScheme } from '@/shared';
 import { deleteCategory, getCategories, saveCategory, updateCategory } from '../controllers/categoryController';
 import { Express, NextFunction, Request, Response } from "express"
 import { Server } from "socket.io"
@@ -405,4 +405,22 @@ export default (app: Express, io: Server): void => {
 
     app.get('/quotation/document', generateQuotationDocument)
 
+    //Dispatch
+    app.post('/dispatch/', middleware, async (req: Request, res: Response) => {
+        const data: dispatchScheme = await createNewDispatch(req, res)
+        //create ws
+        if(data?.id){
+            io.to('e' + req.userData.enterprise_id).emit('dispatchCreate', data)
+        }
+    })
+
+    app.get('/dispatch/', middleware, listDispatch)
+    app.get('/dispatch/detail', middleware, dispatchDetail)
+    app.post('/dispatch/update', middleware, async (req: Request, res: Response) => {
+        const data: Array<string> = await dispatchUpdate(req, res)
+        //create ws
+        if(data){
+            io.to('e' + req.userData.enterprise_id).emit('dispatchUpdate', data)
+        }
+    })
 }

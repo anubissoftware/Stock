@@ -64,6 +64,11 @@ const router = createRouter({
       path: "/quotations",
       name: "quotations",
       component: async () => import('@/views/ClientQuotation.vue')
+    },
+    {
+      path: "/dashboard/dispatch",
+      name: "dispatch",
+      component: async () => import('@/views/DispatchView.vue')
     }
   ]
 })

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { OkPacket } from "mysql";
-import { productsInCartType, quotationSchema } from "@/shared";
+import { productsInCartType, quotationSchema, dispatchDetailSchema, dispatchScheme } from "@/shared";
 import { DataBase, initDatabase } from "../classes/db";
 import { sendEmail } from "./emailController";
 import { join } from 'path'
@@ -345,3 +345,127 @@ export const generateQuotationDocument = async (req: Request, res: Response) => 
         quotation: qot[0]
     })
 } 
+
+
+//Dispatch 
+
+export const createNewDispatch = async (req:Request, res: Response): Promise<dispatchScheme | null> => { 
+    const values: dispatchScheme = req.body 
+    const getSerial: string = `fd`
+    const getSerialV: Array<string> = [
+        req.userData.enterprise_id.toString()
+    ]
+    const queryDispatch: string = "INSERT INTO dispatching (out_store, received, quotation_id, created_by) VALUES (?, ?, ?, ?) "
+    
+    const db: DataBase = await initDatabase(res)
+    db.connection.beginTransaction()
+    const valuesDispatch: Array<string> = [
+        values.out_store, values.received, 
+        values.quotation_id.toString(), values.created_by.toString()
+    ]
+    const resp: OkPacket = await db.insertQuery(queryDispatch, valuesDispatch)
+    
+    try{
+        const pdtos: Array<dispatchDetailSchema> = req.body.products
+        let query: string = "INSERT INTO dispatchingDetail (quotation_detail_id, dispatch_id, amount ) VALUES "
+        let value: Array<string> = []
+        pdtos.forEach((pdto, index) => {
+            query += "(?, ?, ?)"
+            query += (pdtos.length - 1) == index ? ' ' : ', '
+            value = [...value,
+                pdto.quotation_detail_id.toString(),
+                resp.insertId.toString(),
+                pdto.amount.toString(), 
+            ]
+
+            //Update quotationDetail
+            const queryQuotationDetail: string = `UPDATE quotationDetail SET dispatching = dispatching + ? WHERE id = ?`
+            const values: Array<string> = [
+                pdto.amount.toString(), pdto.quotation_detail_id.toString()
+            ]
+            db.updateQuery(queryQuotationDetail, values)
+        })
+        db.insertQuery(query, value)
+
+    }catch(err){
+        console.log(err)
+        db.connection.rollback()
+        res.end()
+        return null
+    }
+    db.connection.commit()
+    db.closeConnection()    
+
+    if(resp.insertId){
+        values.id = resp.insertId
+        res.json({
+            ok: true
+        })
+        return values
+    }else{
+        res.status(204)
+        res.end()
+        return null
+    }
+}
+
+export const listDispatch = async (req: Request, res: Response) => {
+    const query = `SELECT d.*, q.serial as quotation_serial, q.client_id, c.name FROM dispatching AS d
+    INNER JOIN quotation AS q ON d.quotation_id = q.id
+    INNER JOIN clients AS c ON q.client_id = c.id
+    WHERE enterprise_id = ?
+    ORDER BY d.created_at DESC
+    `
+    const values = [
+        req.userData.enterprise_id.toString()
+    ]
+    const db: DataBase = await initDatabase(res)
+    const resp: Array<dispatchScheme> = await db.readQuery<dispatchScheme>(query, values)
+    db.closeConnection()
+    if(resp.length > 0){
+        res.json(resp)
+    }else{
+        res.end()
+    }
+    return
+}
+
+export const dispatchDetail = async (req: Request, res: Response) => {
+    const payload = req.query
+    const query: string = `SELECT dd.*, p.name, qd.amount as amount_avaliable, qd.dispatching FROM dispatchingDetail as dd
+    INNER JOIN quotationDetail AS qd ON dd.quotation_detail_id = qd.id
+    INNER JOIN products AS p ON p.id = qd.item_id
+    WHERE dispatch_id = ?`
+    const values: Array<string> = [
+        payload.id.toString()
+    ]
+    const db: DataBase = await initDatabase(res)
+    const rps: any = await db.readQuery(query, values)
+    db.closeConnection()
+    res.json(rps)
+}
+
+export const dispatchUpdate = async (req: Request, res: Response) => {
+    try {
+        const payload = req.body
+        const query: string = "UPDATE dispatching SET out_store = ?, received = ? WHERE id = ?"
+        const values: Array<string> = [
+            payload.out_store.toString(), payload.received.toString(), payload.id.toString()
+        ]
+        const db: DataBase = await initDatabase(res)
+        const rps: OkPacket = await db.updateQuery(query, values)
+        console.log(rps)
+        db.closeConnection()
+        if (rps.affectedRows > 0) {
+            res.json({
+                ok: true
+            })
+            return payload
+        } else {
+            res.status(204)
+            res.end()
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}

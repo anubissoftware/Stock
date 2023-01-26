@@ -2199,3 +2199,48 @@ src/controllers/accountingController.ts(327,11): error TS2741: Property 'id' is 
 
 
 6:04:21 PM - Found 0 errors. Watching for file changes.
+c12:32:47 AM - Starting compilation in watch mode...
+
+
+12:32:48 AM - Found 0 errors. Watching for file changes.
+c12:32:57 AM - Starting compilation in watch mode...
+
+
+12:33:03 AM - Found 0 errors. Watching for file changes.
+c12:33:15 AM - Starting compilation in watch mode...
+
+
+12:33:22 AM - Found 0 errors. Watching for file changes.
+c12:34:35 AM - File change detected. Starting incremental compilation...
+
+
+12:34:36 AM - Found 0 errors. Watching for file changes.
+c12:34:59 AM - File change detected. Starting incremental compilation...
+
+
+12:35:03 AM - Found 0 errors. Watching for file changes.
+c12:35:50 AM - File change detected. Starting incremental compilation...
+
+src/shared/index.ts(10,15): error TS2307: Cannot find module './schemas/dispatchSchema' or its corresponding type declarations.
+
+12:35:51 AM - Found 1 error. Watching for file changes.
+c12:35:53 AM - File change detected. Starting incremental compilation...
+
+
+12:35:56 AM - Found 0 errors. Watching for file changes.
+c12:35:58 AM - File change detected. Starting incremental compilation...
+
+
+12:35:59 AM - Found 0 errors. Watching for file changes.
+c12:36:54 AM - File change detected. Starting incremental compilation...
+
+
+12:36:54 AM - Found 0 errors. Watching for file changes.
+c7:57:00 AM - Starting compilation in watch mode...
+
+
+7:57:08 AM - Found 0 errors. Watching for file changes.
+c8:06:58 AM - Starting compilation in watch mode...
+
+
+8:07:06 AM - Found 0 errors. Watching for file changes.
