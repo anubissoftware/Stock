@@ -16,7 +16,7 @@ export const updateQuotationStage = async (id: number, stage: number, res: Respo
         UPDATE quotation SET stage = ?, updated_by = ? WHERE id = ?
     `
     const values: Array<string> = [
-        stage.toString(), req.userData.id.toString(), id.toString()
+        stage.toString(), req.userData?.id.toString() ?? null, id.toString()
     ]
     const db: DataBase = await initDatabase(res)
     const rps: OkPacket = await db.updateQuery(query, values)
@@ -36,7 +36,7 @@ export const quotationDetail = async (req: Request, res: Response) => {
     const rps: any = await db.readQuery(query, values)
     db.closeConnection()
     res.json(rps)
-} 
+}
 
 export const getAllQuotation = async (req: Request, res: Response) => {
     const payload = req.query.id as string
@@ -49,11 +49,11 @@ export const getAllQuotation = async (req: Request, res: Response) => {
     const db: DataBase = await initDatabase(res)
     const result: any = await db.readQuery(query, values)
     const eValues: Array<string> = [
-        result[0].enterprise_id ?? '0'   
+        result[0].enterprise_id ?? '0'
     ]
     const ent = await db.readQuery(eQuery, eValues)
     db.closeConnection()
-    res.json({quotation: result, enterprise: ent[0]})
+    res.json({ quotation: result, enterprise: ent[0] })
     return
 }
 
@@ -73,43 +73,43 @@ export const editQuotation = async (req: Request, res: Response): Promise<quotat
     const values: quotationSchema = req.body
     const query: string = "UPDATE quotation SET `value` = ?, min_validity = ?, max_validity = ?, `from` = ?, `to` = ?, email = ?, updated_by = ? WHERE enterprise_id = ? AND id = ?"
     const qvalues: Array<string> = [
-        values.value.toString(), values.min_validity, values.max_validity, values.from, values.to, 
+        values.value.toString(), values.min_validity, values.max_validity, values.from, values.to,
         values.email, req.userData.id.toString(), req.userData.enterprise_id.toString(),
         values.id.toString()
     ]
     const db: DataBase = await initDatabase(res)
     let rsp: OkPacket
-    try{
+    try {
         db.connection.beginTransaction()
         rsp = await db.updateQuery(query, qvalues)
-        if(rsp.affectedRows == 0){
+        if (rsp.affectedRows == 0) {
             throw new Error('No updated quotation: ' + values.id)
         }
         const pdtos: Array<productsInCartType> = req.body.products
-        for(const pdto of pdtos){
-            if(pdto.id){
+        for (const pdto of pdtos) {
+            if (pdto.id) {
                 const pdtoQuery: string = "UPDATE quotationDetail SET amount = ?, `value` = ?, `from` = ?, `to` = ?, days = ? WHERE id = ?"
                 const pdtoValues: Array<string> = [
                     pdto.amount.toString(), pdto.value.toString(), pdto.start_rent ? moment(pdto.start_rent).format('YYYY-MM-DD') : null,
-                    pdto.end_rent ?moment(pdto.end_rent).format('YYYY-MM-DD') : null, pdto.days?.toString(), pdto.id.toString()
+                    pdto.end_rent ? moment(pdto.end_rent).format('YYYY-MM-DD') : null, pdto.days?.toString(), pdto.id.toString()
                 ]
                 const rspto: OkPacket = await db.updateQuery(pdtoQuery, pdtoValues)
-                if(rspto.affectedRows == 0){
+                if (rspto.affectedRows == 0) {
                     throw new Error('No updated detail quotation: ' + pdto.id)
                 }
-            }else{
+            } else {
                 const pdtoQuery: string = "INSERT INTO quotationDetail (item_id, amount, `value`, quotation_id, `from`, `to`, `days`) VALUES (?, ?, ?, ?, ?, ?, ?)"
                 const pdtoValues: Array<string> = [
                     pdto.id.toString(), pdto.amount.toString(), pdto.value.toString(),
                     values.id.toString(), pdto.start_rent ?? null, pdto.end_rent ?? null, pdto.days?.toString()
                 ]
                 const rspto: OkPacket = await db.insertQuery(pdtoQuery, pdtoValues)
-                if(rspto.affectedRows == 0){
+                if (rspto.affectedRows == 0) {
                     throw new Error('No inserted detail quotation: ' + pdto)
                 }
             }
         }
-    }catch(err){    
+    } catch (err) {
         console.log(err)
         res.end()
         db.connection.rollback()
@@ -129,7 +129,7 @@ export const editQuotation = async (req: Request, res: Response): Promise<quotat
         res.end()
         return null
     }
-    return 
+    return
 }
 
 
@@ -322,3 +322,26 @@ export const listQuotations = async (req: Request, res: Response) => {
     }
     return
 }
+
+export const generateQuotationDocument = async (req: Request, res: Response) => {
+    const payload: string = req.query.id.toString()
+    
+    const query: string = `SELECT e.* FROM quotation AS q INNER JOIN enterprise AS e ON e.id = q.enterprise_id WHERE q.id = ? `
+    const values: Array<string> = [
+        payload
+    ]
+    const db: DataBase = await initDatabase(res)
+
+    const qQuery: string = `SELECT * FROM quotation WHERE id = ?`
+    const qValues: Array<string> = [
+        payload
+    ] 
+
+    const ent = await db.readQuery(query, values)
+    const qot = await db.readQuery(qQuery, qValues)
+    db.closeConnection()
+    res.json({
+        enterprise: ent[0],
+        quotation: qot[0]
+    })
+} 

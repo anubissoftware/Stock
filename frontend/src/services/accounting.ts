@@ -65,3 +65,17 @@ export const approveQuotation = (token: string, body: {id: number}) => {
         },
     })
 }
+export const clientRejectQuotation = (body: {id: string, enterpriseId: string}) => {
+    return ApiCLient.post('/quotation/client/reject', {...body})
+}
+
+export const clientApproveQuotation = (body: {id: string, enterpriseId: string}) => {
+    return ApiCLient.post('/quotation/client/approve', {...body})
+}
+
+export const getQuotationForClient = (body: {id: string}) => {
+    return ApiCLient.get('/quotation/document', {
+        params: {...body}
+    })
+}
+

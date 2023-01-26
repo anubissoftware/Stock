@@ -16,7 +16,7 @@ import { login, setToken, unSetToken, validateToken } from "../controllers/userC
 import moment from 'moment'
 import { OkPacket } from "mysql";
 import { validateEnterprise } from '../controllers/enterpriseController';
-import { createNewQuotation, deleteQuotation, listQuotations } from '../controllers/accountingController';
+import { createNewQuotation, deleteQuotation, listQuotations, generateQuotationDocument } from '../controllers/accountingController';
 
 declare global {
     namespace Express {
@@ -362,6 +362,32 @@ export default (app: Express, io: Server): void => {
         }
     })
 
+    app.post('/quotation/client/reject', async (req: Request, res: Response) => {
+        const payload: any = req.body
+        const stage: number = 1
+        const reject = await updateQuotationStage(payload.id, stage, res, req)
+
+        if(reject){
+            res.json({
+                ok: true
+            })
+            io.to('e'+ payload.enterpriseId).emit('quotationChange', {stage, id: payload.id})
+        }
+    })
+
+    app.post('/quotation/client/approve', async (req: Request, res: Response) => {
+        const payload: any = req.body
+        const stage: number = 2
+        const approved = await updateQuotationStage(payload.id, stage, res, req)
+
+        if(approved){
+            res.json({
+                ok: true
+            })
+            io.to('e'+ payload.enterpriseId).emit('quotationChange', {stage, id: payload.id})
+        }
+    })
+
     app.get('/quotation/', middleware, listQuotations)
 
     app.get('/quotation/detail', quotationDetail)
@@ -375,5 +401,8 @@ export default (app: Express, io: Server): void => {
     app.get('/email', (req: Request, res: Response) => {
         sendQuotationEmail(57, req, res)
     })
+
+
+    app.get('/quotation/document', generateQuotationDocument)
 
 }
