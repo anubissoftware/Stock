@@ -2,7 +2,8 @@
     <Header2>
         <template v-slot:mainContainer>
             <div class="p-10 flex flex-col items-start min-h-[70vh]">
-                <div class="pb-4 flex tablet:flex-row justify-between items-center w-full phone:flex-col phone:items-start">
+                <div
+                    class="pb-4 flex tablet:flex-row justify-between items-center w-full phone:flex-col phone:items-start">
                     <h1 class="flex flex-row justify-center laptop:text-4xl py-2 phone:text-2xl">
                         <span class="text-left">
                             {{ strings.title[language] }}
@@ -13,18 +14,28 @@
                         </div>
                     </h1>
                     <div class="flex h-fit ">
-                        <Button v-if="writePer" 
-                        @click="modalDispatch = true, dispatchSelected = {}, creationDispatch = true, editingDispatch = false"  
-                        exactColor color="secondary" icon="Add" 
-                        :content=strings.newDispatch[language] />
+                        <Button v-if="writePer"
+                            @click="modalDispatch = true, dispatchSelected = {}, creationDispatch = true, editingDispatch = false"
+                            exactColor color="secondary" icon="Add" :content=strings.newDispatch[language] />
                     </div>
                 </div>
                 <Input class="my-2 px-2 tablet:w-1/2 phone:w-full rounded-lg border-solid outline-secondary"
-                    :placeholder=strings.search[language] :label=strings.search[language] v-model="filter" 
-                    @update:model-value="listDispatchs()"/>
-    
-                <DataTable :header="headers" :data="dispatchs" :configTable="configTable" @open-context="handleContextMenu" />
-    
+                    :placeholder=strings.search[language] :label=strings.search[language] v-model="filter"
+                    @update:model-value="listDispatchs()" />
+
+                <div class="flex items-center flex-wrap">
+                    <span class="italic font-bold px-5">
+                        Filtros:
+                    </span>
+                    <Tag title="Relanded" v-if="relanded" v-model="relanded" @click="unSetDispatch()" />
+                    <Tag title="This month" />
+                    <Tag title="Last Month" />
+                    <!--    <Tag title="" /> -->
+                </div>
+
+                <DataTable :header="headers" :data="dispatchs" :configTable="configTable"
+                    @open-context="handleContextMenu" />
+
                 <Modal v-if="modalDispatch" @close="modalDispatch = false, creationDispatch = true">
                     <template v-slot:header>
                         <div v-if="creationDispatch">
@@ -34,21 +45,24 @@
                             Dispatch, Quotation {{ dispatchSelected.quotation_serial.toString(36) }}
                         </div>
                     </template>
-    
+
                     <template v-slot:body>
-                        <DispatchCreationForm :dispatch="dispatchSelected" @update="updateFinal" :creation="creationDispatch" :editing="editingDispatch" />
+                        <DispatchCreationForm :dispatch="dispatchSelected" @update="updateFinal"
+                            :creation="creationDispatch" :editing="editingDispatch" />
                     </template>
-    
+
                     <template v-slot:actions>
                         <div v-if="creationDispatch" class="flex w-full">
                             <Button exactColor color="third" class="mr-2" icon="close" content="Cancelar"
                                 @click="modalDispatch = false; unSetDispatch()" />
-                            <Button exactColor color="primary" icon="save" content="Guardar" @click="addNewDispatch()" />
+                            <Button exactColor color="primary" icon="save" content="Guardar"
+                                @click="addNewDispatch()" />
                         </div>
                         <div v-if="editingDispatch" class="flex w-full">
                             <Button exactColor color="third" class="mr-2" icon="close" content="Cancelar"
                                 @click="modalDispatch = false; unSetDispatch()" />
-                            <Button exactColor color="primary" icon="update" content="Actualizar" @click="updateChangesDispatch()" />
+                            <Button exactColor color="primary" icon="update" content="Actualizar"
+                                @click="updateChangesDispatch()" />
                         </div>
                     </template>
                 </Modal>
@@ -83,6 +97,7 @@ import ContextMenu from '@/components/context/ContextMenu.vue';
 import socket from '@/composables/socket';
 import { setHelper } from '@/composables/sidebarStatus';
 import { useRouter } from 'vue-router';
+import Tag from '@/components/Generics/Tag.vue';
 
 const router = useRouter()
 const strings = {
@@ -127,8 +142,17 @@ const dispatchSelected: Ref<dispatchScheme | any> = ref(dispatchCache)
 
 const dispatchs: Ref<Array<dispatchScheme>> = ref([])
 
+const relanded: Ref<boolean> = ref(router.currentRoute.value.query.action ? true : false)
+
 // Creating section functions 
 const unSetDispatch = () => {
+    if (router.currentRoute.value.query.id) {
+        let query = Object.assign({}, router.currentRoute.value.query);
+        delete query.id;
+        delete query.action;
+        router.replace({ query });
+        listDispatchs()
+    }
     dispatchSelected.value = dispatchCache
 }
 
@@ -146,25 +170,37 @@ const isClientCreated: ComputedRef<boolean> = computed(() => {
 const modalDispatch: Ref<boolean> = ref(false)
 const close = () => { contextMenuData.value.show = false }
 const store = useAuthStore()
-const creationDispatch: Ref<boolean> = ref(true) 
-const editingDispatch: Ref<boolean> = ref(false) 
+const creationDispatch: Ref<boolean> = ref(true)
+const editingDispatch: Ref<boolean> = ref(false)
 
 onBeforeMount(async () => {
+    if (router.currentRoute.value.query.id && router.currentRoute.value.query.action == '1') {
+        modalDispatch.value = true
+        dispatchSelected.value = {}
+        creationDispatch.value = true
+        editingDispatch.value = false
+    }
     await listDispatchs()
 })
 
 const cancelToken: Ref<AbortController | undefined> = ref()
+const filter: Ref<string> = ref('')
 
 const listDispatchs = async () => {
 
-    if(cancelToken.value != undefined){
+    if (cancelToken.value != undefined) {
         cancelToken.value.abort()
     }
 
     cancelToken.value = new AbortController();
+    let filters: any = {}
+    if (router.currentRoute.value.query.id && router.currentRoute.value.query.action == '0' && relanded.value) {
+        console.log(router.currentRoute.value.query)
+        filters['q.id'] = router.currentRoute.value.query.id
+    }
 
-    let { data } = await getDispatch((store.getUser.token as token).value, filter.value, cancelToken.value.signal)
-    if(!data) return
+    let { data } = await getDispatch((store.getUser.token as token).value, { 'c.name': filter.value, ...filters }, cancelToken.value.signal)
+    if (!data) return
     cancelToken.value = undefined
     dispatchs.value = data
     console.log(dispatchs)
@@ -175,7 +211,7 @@ onMounted(() => {
         dispatchs.value.unshift(body)
     })
     socket.socket?.on('dispatchUpdate', (body: dispatchScheme) => {
-        console.log('Dispatch actualizado ws',body)
+        console.log('Dispatch actualizado ws', body)
         let dispatchToChange = dispatchs.value.find(dispatch => dispatch.id == body.id)
         if (dispatchToChange) {
             dispatchToChange.out_store = body.out_store
@@ -194,12 +230,13 @@ const configTable = ref({
 })
 
 const headers = ref([
-    { title: 'Ref', accesor: 'quotation_serial', config: { hex: true }, sort: true, sortDirection: 'up', width: 'phone:w-[20%] tablet:w-[20%] tablet:flex phone:block' },
-    { title: 'Salida de la tienda', accesor: 'clientout_store_name', config: { timeformat: true }, sort: true, sortDirection: 'up', width: 'phone:w-[80%] tablet:w-[40%] tablet:flex phone:block' },
-    { title: 'Recibida', accesor: 'received', config: { timeformat: true }, sort: true, sortDirection: 'up', width: 'phone:w-[40%] tablet:w-[40%] tablet:flex phone:hidden' }
+    { title: 'Cot.', accesor: 'quotation_serial', config: { hex: true }, sort: true, sortDirection: 'up', width: 'phone:w-[20%] tablet:w-[10%] phone:flex' },
+    { title: 'Cliente', accesor: 'name', sort: true, sortDirection: 'up', width: 'phone:w-[35%] tablet:w-[30%] phone:flex' },
+    { title: 'Salida de la tienda', accesor: 'clientout_store_name', config: { timeformat: true }, sort: true, sortDirection: 'up', width: 'phone:w-[35%] tablet:w-[25%] phone:flex' },
+    { title: 'Recibida', accesor: 'received', config: { timeformat: true }, sort: true, sortDirection: 'up', width: 'tablet:w-[25%] tablet:flex phone:hidden' },
+    { title: '', accesor: '', sort: false, sortDirection: 'up', width: 'phone:w-[10%] tablet:w-[10%] phone:flex' }
 ])
 
-const filter: Ref<string> = ref('')
 
 const handleContextMenu = (body: any) => {
     const event: PointerEvent = body.event
@@ -216,7 +253,7 @@ const handleContextMenu = (body: any) => {
 
 const viewDetail = async () => {
     console.log(dispatchSelected)
-    let {data} = await getDispatchDetail((store.getUser.token as token).value,{id: dispatchSelected.value.id})
+    let { data } = await getDispatchDetail((store.getUser.token as token).value, { id: dispatchSelected.value.id })
     dispatchSelected.value.detail = data
     creationDispatch.value = false
     modalDispatch.value = true
@@ -224,7 +261,7 @@ const viewDetail = async () => {
 
 const editDispatch = async () => {
     console.log(dispatchSelected)
-    let {data} = await getDispatchDetail((store.getUser.token as token).value,{id: dispatchSelected.value.id})
+    let { data } = await getDispatchDetail((store.getUser.token as token).value, { id: dispatchSelected.value.id })
     dispatchSelected.value.detail = data
     editingDispatch.value = true
     creationDispatch.value = false
@@ -236,7 +273,7 @@ const addNewDispatch = async () => {
     dispatchSelected.value.products = []
     let products = dispatchSelected.value.detail
     for (const product of products) {
-        if (product.toDispatch != 0 ) {
+        if (product.toDispatch != 0) {
             const productToDispatch = {
                 quotation_detail_id: product.id,
                 amount: product.amount
@@ -246,7 +283,7 @@ const addNewDispatch = async () => {
     }
     dispatchSelected.value.created_by = store.getUser.id
     console.log(dispatchSelected.value)
-    let creationResult = await createDispatch((store.getUser.token as token).value, dispatchSelected.value )
+    let creationResult = await createDispatch((store.getUser.token as token).value, dispatchSelected.value)
     if (creationResult.status == 200) {
         modalDispatch.value = false
         unSetDispatch()
@@ -254,7 +291,7 @@ const addNewDispatch = async () => {
 }
 
 const updateChangesDispatch = async () => {
-    const result = await updateDispatch((store.getUser.token as token).value, dispatchSelected.value )
+    const result = await updateDispatch((store.getUser.token as token).value, dispatchSelected.value)
     if (result.status == 200) {
         modalDispatch.value = false
         unSetDispatch()

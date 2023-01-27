@@ -426,7 +426,9 @@ const addNewQuotation = async () => {
                 products: createQuotationComponent.value.products.map((pdto: productsInCartType) => {
                     pdto.days = quote.one_day ? 1 : (moment(pdto.end_rent ?? '', 'YYYY-MM-DD')).diff(moment(pdto.start_rent ?? '', 'YYYY-MM-DD'), 'days') + 1
                     return pdto
-                })
+                }),
+                discount: quote.discount,
+                taxing: quote.taxing
             }
 
             console.log(payload)

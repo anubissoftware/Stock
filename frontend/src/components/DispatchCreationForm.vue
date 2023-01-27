@@ -3,8 +3,8 @@
     <div class="flex flex-row w-full flex-wrap">
         <div v-if="props.creation" class="w-full pb-6">
             <CheckBox class="" color="black" :content="'Filtrar cotizaciones por cliente'"
-                    :label="'Filtrar cotizaciones por cliente'" size="md" type="text" required
-                    v-model="filterByClient" @update:model-value="client = {}"/>
+                :label="'Filtrar cotizaciones por cliente'" size="md" type="text" required v-model="filterByClient"
+                @update:model-value="client = {}" />
         </div>
         <template v-if="props.creation">
             <div v-if="filterByClient" class="w-full pr-2 pb-6">
@@ -17,24 +17,30 @@
                 v-model="dispatch.name" @update:model-value="updateValue()" :disabled="!props.creation" />
         </div>
         <div class="w-full pr-2 pb-6">
-            <Select v-if="props.creation" class="w-full" color="black" label="Quotation" v-model="quotation" :items="quotationsListed" size="md"
-                type="text" value="serial" required @update:model-value="updateValue()" />
-            <Input v-else class=" w-full " color="black" :placeholder="'Cotización'" :label="'Cotización'" size="md" type="text"
-                required v-model="dispatch.quotation_serial" @update:model-value="updateValue()" :disabled="!props.creation"  />
+            <Select v-if="props.creation" class="w-full" color="black" label="Quotation" v-model="quotation"
+                :items="quotationsListed" size="md" type="text" value="serial" required
+                @update:model-value="updateValue()" />
+            <Input v-else class=" w-full " color="black" :placeholder="'Cotización'" :label="'Cotización'" size="md"
+                type="text" required v-model="dispatch.quotation_serial" @update:model-value="updateValue()"
+                :disabled="!props.creation" />
         </div>
         <div class="laptop:w-1/2 phone:w-full pr-2 pb-6">
             <CheckBox v-if="props.creation" class="py-2" color="black" :content="'Agregar fecha de salida'"
-                    :label="'Agregar fecha de salida'" size="md" type="text" required
-                    v-model="checkDateOut" @update:model-value="client = {}"/>
-            <Input v-if="!props.creation || checkDateOut" class=" w-full py-4" color="black" placeholder="Fecha de salida" label="Fecha salida bodega (Y-M-D)" size="md"
-                required :type="props.creation || props.editing ? 'datetime-local' : 'text'" v-model="dispatch.out_store" @update:model-value="updateValue()" :disabled="!props.creation && !props.editing"  />
+                :label="'Agregar fecha de salida'" size="md" type="text" required v-model="checkDateOut"
+                @update:model-value="client = {}" />
+            <Input v-if="!props.creation || checkDateOut" class=" w-full py-4" color="black"
+                placeholder="Fecha de salida" label="Fecha salida bodega (Y-M-D)" size="md" required
+                :type="props.creation || props.editing ? 'datetime-local' : 'text'" v-model="dispatch.out_store"
+                @update:model-value="updateValue()" :disabled="!props.creation && !props.editing" />
         </div>
         <div class="laptop:w-1/2 phone:w-full pr-2 pb-6">
             <CheckBox v-if="props.creation" class="py-2" color="black" :content="'Agrega fecha de recibido'"
-                    :label="'Agrega fecha de recibido'" size="md" type="text" required
-                    v-model="checkDateReceived" @update:model-value="client = {}"/>
-            <Input v-if="!props.creation || checkDateReceived" class=" w-full py-4" color="black" placeholder="Fecha de entrega" label="Fecha entrega cliente (Y-M-D)" size="md"
-                required :type="props.creation || props.editing ? 'datetime-local' : 'text'" v-model="dispatch.received" @update:model-value="updateValue()" :disabled="!props.creation && !props.editing"  />
+                :label="'Agrega fecha de recibido'" size="md" type="text" required v-model="checkDateReceived"
+                @update:model-value="client = {}" />
+            <Input v-if="!props.creation || checkDateReceived" class=" w-full py-4" color="black"
+                placeholder="Fecha de entrega" label="Fecha entrega cliente (Y-M-D)" size="md" required
+                :type="props.creation || props.editing ? 'datetime-local' : 'text'" v-model="dispatch.received"
+                @update:model-value="updateValue()" :disabled="!props.creation && !props.editing" />
         </div>
 
         <Divider class="my-4" />
@@ -44,51 +50,48 @@
                 Productos
             </div>
             <template v-for="(detail, index) in dispatch.detail" :key="index">
-                <div class="flex flex-col w-full border-2 rounded-xl py-2 px-2 mb-2"
-                :class="[detail.amount_avaliable - detail.dispatching == 0 ? 'border-green-700' : null,
-                        props.editing ? 'bg-gray-100': '']">
+                <div class="flex flex-col w-full border-2 rounded-xl py-2 px-2 mb-2" :class="[detail.amount_avaliable - detail.dispatching == 0 ? 'border-green-700' : null,
+                props.editing ? 'bg-gray-100' : '']">
                     <div class="flex flex-row justify-between w-full items-center">
                         <div class="flex flex-col justify-start items-start">
                             <span class="font-bold">{{ detail.name }}</span>
-                            <span class="text-xs" >{{'Amount:' +  detail.amount_avaliable }}</span>
-                            <span class="text-xs" >{{ 'Dispatching:' + detail.dispatching }}</span>
+                            <span class="text-xs">{{ 'Amount:' + detail.amount_avaliable }}</span>
+                            <span class="text-xs">{{ 'Dispatching:' + detail.dispatching }}</span>
 
                         </div>
                         <span class="px-2" v-if="!props.creation">{{ detail.amount }}</span>
-                        <input v-else 
-                            :max="detail.amount_avaliable - detail.dispatching" 
-                            :min="0" 
+                        <input v-else :max="detail.amount_avaliable - detail.dispatching" :min="0"
                             class="border rounded-md text-center w-20 outline-primary border-primary"
-                            :class="[!creation || (detail.amount_avaliable - detail.dispatching == 0) ? 'border-green-700' : '']" 
-                            type="number" 
-                            :disabled="!creation || (detail.amount_avaliable - detail.dispatching == 0)" 
-                            v-model="detail.amount"
-                            @blur="validateAmount(detail)"
-                        >
+                            :class="[!creation || (detail.amount_avaliable - detail.dispatching == 0) ? 'border-green-700' : '']"
+                            type="number" :disabled="!creation || (detail.amount_avaliable - detail.dispatching == 0)"
+                            v-model="detail.amount" @blur="validateAmount(detail)">
                     </div>
-                    <div v-if="detail.amount_avaliable - detail.dispatching == 0" class="flex flex-col py-1 text-xs text-green-700">
+                    <div v-if="detail.amount_avaliable - detail.dispatching == 0"
+                        class="flex flex-col py-1 text-xs text-green-700">
                         Producto totalmente entregado
                     </div>
                 </div>
-    
+
             </template>
         </template>
     </div>
 </template>
 <script lang="ts" setup>
 import { Input, Select, Divider, CheckBox } from './Generics/generics';
-import { defineProps, defineEmits, ref, onBeforeMount, type Ref , computed} from 'vue';
+import { defineProps, defineEmits, ref, onBeforeMount, type Ref, computed } from 'vue';
 import moment from 'moment';
 import { getClients } from '@/services/clients'
 import { listQuotations, quotationDetail } from '@/services/accounting'
 import { useAuthStore } from '@/stores/auth'
 import type { clientEnterpriseSchema, dispatchScheme, quotationDetailSchema, quotationSchema, token } from '@/schemas';
+import { useRouter } from 'vue-router';
 
 export interface DispatchCreationProps {
-    dispatch: dispatchScheme, 
+    dispatch: dispatchScheme,
     creation: boolean,
     editing: boolean
 }
+const router = useRouter()
 const props = defineProps<DispatchCreationProps>()
 const store = useAuthStore()
 const emits = defineEmits(['update'])
@@ -117,22 +120,32 @@ const listInfo = async () => {
     let cancelToken = new AbortController();
 
     let { data } = await getClients((store.getUser.token as token).value, '', cancelToken.signal)
-    if(!data) return
+    if (!data) return
     clients.value = data
     if (!props.creation) {
         client.value = clients.value.filter((client) => {
             if (client.id == props.dispatch.client_id) {
                 return client
             }
-        })[0]  
+        })[0]
+    }
+    let filter: any = {
+        'q.stage': '2,3'
+    }
+    if (router.currentRoute.value.query.id) {
+        const query = router.currentRoute.value.query
+        filter['q.id'] = query.id
+
     }
 
-    let quotationResponse = await listQuotations((store.getUser.token as token).value, '', cancelToken.signal)
-    if(!quotationResponse.data) return
-    let quotationsApproved = quotationResponse.data.filter((quotation : quotationSchema) => {
-        return quotation.stage >= 2
-    })
+    let quotationResponse = await listQuotations((store.getUser.token as token).value, filter, cancelToken.signal)
+    if (!quotationResponse.data) return
+    let quotationsApproved = quotationResponse.data
     quotations.value = quotationsApproved
+    if(router.currentRoute.value.query.id){
+        quotation.value = quotations.value[0]
+        updateValue()
+    }
 }
 
 const quotationsListed = computed(() => {
@@ -163,9 +176,9 @@ const updateValue = async () => {
 const listDetailQuotation = async () => {
     //
     console.log(quotation)
-    let { data } = await quotationDetail({id: quotation.value.id})
+    let { data } = await quotationDetail({ id: quotation.value.id })
     console.log(data)
-    data.map((detail: any)=> {
+    data.map((detail: any) => {
         detail.amount_avaliable = detail.amount
         delete detail['amount']
         detail.amount = 0
@@ -173,8 +186,8 @@ const listDetailQuotation = async () => {
     dispatch.value.detail = data
 }
 const validateAmount = (detail: quotationDetailSchema) => {
-    let maxAmount = (detail.amount_avaliable?? 0) - (detail.dispatching ?? 0)
-    if (detail.amount > maxAmount){
+    let maxAmount = (detail.amount_avaliable ?? 0) - (detail.dispatching ?? 0)
+    if (detail.amount > maxAmount) {
         detail.amount = maxAmount
     }
 }

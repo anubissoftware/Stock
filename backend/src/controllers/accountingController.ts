@@ -71,11 +71,11 @@ export const updateQuotation = async (req: Request, res: Response): Promise<quot
 
 export const editQuotation = async (req: Request, res: Response): Promise<quotationSchema | null> => {
     const values: quotationSchema = req.body
-    const query: string = "UPDATE quotation SET `value` = ?, min_validity = ?, max_validity = ?, `from` = ?, `to` = ?, email = ?, updated_by = ? WHERE enterprise_id = ? AND id = ?"
+    const query: string = "UPDATE quotation SET `value` = ?, min_validity = ?, max_validity = ?, `from` = ?, `to` = ?, email = ?, updated_by = ?, discount = ?, taxing = ? WHERE enterprise_id = ? AND id = ?"
     const qvalues: Array<string> = [
         values.value.toString(), values.min_validity, values.max_validity, values.from, values.to,
-        values.email, req.userData.id.toString(), req.userData.enterprise_id.toString(),
-        values.id.toString()
+        values.email, req.userData.id.toString(), values.discount.toString(), values.taxing.toString(), 
+        req.userData.enterprise_id.toString(), values.id.toString()
     ]
     const db: DataBase = await initDatabase(res)
     let rsp: OkPacket
@@ -83,6 +83,7 @@ export const editQuotation = async (req: Request, res: Response): Promise<quotat
         db.connection.beginTransaction()
         rsp = await db.updateQuery(query, qvalues)
         if (rsp.affectedRows == 0) {
+            console.log(rsp)
             throw new Error('No updated quotation: ' + values.id)
         }
         const pdtos: Array<productsInCartType> = req.body.products
@@ -139,7 +140,7 @@ export const createNewQuotation = async (req: Request, res: Response): Promise<q
     const getSerialV: Array<string> = [
         req.userData.enterprise_id.toString()
     ]
-    const queryQuotation: string = "INSERT INTO quotation (`value`, client_id, project_id, min_validity, max_validity, isRenting, one_day, `from`, `to`, user, enterprise_id, `serial`, email)       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) "
+    const queryQuotation: string = "INSERT INTO quotation (`value`, client_id, project_id, min_validity, max_validity, isRenting, one_day, `from`, `to`, user, enterprise_id, `serial`, email, taxing, discount)       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) "
 
     const db: DataBase = await initDatabase(res)
     db.connection.beginTransaction()
@@ -149,7 +150,8 @@ export const createNewQuotation = async (req: Request, res: Response): Promise<q
         values.value.toString(), values.client_id.toString(), values.project_id?.toString(),
         values.min_validity, values.max_validity, values.isRenting ? '1' : '0',
         values.one_day && values.isRenting ? '1' : '0', values.from, values.to, req.userData.id.toString(),
-        req.userData.enterprise_id.toString(), nextSerial, values.email
+        req.userData.enterprise_id.toString(), nextSerial, values.email, values.taxing.toString(), 
+        values.discount.toString() 
     ]
     const resp: OkPacket = await db.insertQuery(queryQuotation, valuesQuotation)
 
@@ -312,7 +314,7 @@ export const listQuotations = async (req: Request, res: Response) => {
     const values = [
         req.userData.enterprise_id.toString()
     ]
-    const db: DataBase = await initDatabase(res)
+    const db: DataBase = await initDatabase(res, req)
     const resp: Array<quotationSchema> = await db.readQuery<quotationSchema>(query, values)
     db.closeConnection()
     if (resp.length > 0) {
@@ -419,7 +421,7 @@ export const listDispatch = async (req: Request, res: Response) => {
     const values = [
         req.userData.enterprise_id.toString()
     ]
-    const db: DataBase = await initDatabase(res)
+    const db: DataBase = await initDatabase(res, req)
     const resp: Array<dispatchScheme> = await db.readQuery<dispatchScheme>(query, values)
     db.closeConnection()
     if(resp.length > 0){

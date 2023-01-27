@@ -21,6 +21,8 @@ export interface quotationSchema {
     renting?: boolean
     rent_min_date?: string
     rent_max_date?: string
+    discount: number
+    taxing: number
 }
 
 export interface quotationDetailSchema {

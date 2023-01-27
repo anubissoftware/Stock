@@ -352,6 +352,8 @@ onBeforeMount(() => {
             whoQuotate.value.rent_max_date = moment(quote.rent_max_date).format('YYYY-MM-DD')
         }
         whoQuotate.value.one_day = quote.one_day == true
+        whoQuotate.value.taxing = quote.taxing
+        whoQuotate.value.discount = quote.discount
     }
     console.log()
 })

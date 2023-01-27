@@ -16,6 +16,8 @@ export interface quotationSchema {
     creation: string
     client_name?: string
     stage: number
+    taxing: number
+    discount: number
 }
 
 export interface quotationDetailSchema{

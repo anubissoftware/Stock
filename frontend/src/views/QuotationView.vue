@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <Input class="my-2 px-2 py-2 tablet:w-1/2 phone:w-full rounded-lg border-solid outline-secondary"
-                    :placeholder="'Filtrar'" :label="'Filtrar'" v-model="filter" />
+                    :placeholder="'Filtrar'" :label="'Filtrar'" v-model="filter"  @update:model-value="getQuotations()"/>
 
                 <div class="flex items-center flex-wrap">
                     <span class="italic font-bold px-5">
@@ -41,8 +41,18 @@
                         <div @click="deleteQuotation()" v-if="quoteSelected.stage == 0">
                             Eliminar
                         </div>
-                        <div v-if="quoteSelected.stage >= 3">
+                        <div v-if="quoteSelected.stage == 2 || quoteSelected.stage == 3"
+                            @click="creatingDispatch()"
+                        >
+                            Crear remisión
+                        </div>
+                        <div v-if="quoteSelected.stage >= 3"
+                            @click="watchDispatches()"
+                            >
                             Ver remisiones
+                        </div>
+                        <div v-if="quoteSelected.stage == 4 || quoteSelected.stage == 5">
+                            Crear devolución
                         </div>
                         <div v-if="quoteSelected.stage >= 5">
                             Ver devoluciones
@@ -54,7 +64,7 @@
                             Ver Factura
                         </div>
                         <div v-if="quoteSelected.stage == 0" @click="resendingQuotation(); contextOptions.show = false">
-                            Reenviar
+                            Enviar correo
                         </div>
                         <div v-if="quoteSelected.stage == 0" @click="approvingQuotation()">
                             Aprobar
@@ -143,7 +153,7 @@ const headers = ref([
     { title: 'Ref', accesor: 'serial', config: { hex: true }, sort: true, sortDirection: 'up', width: 'phone:w-[10%] tablet:w-[10%] tablet:flex phone:block' },
     { title: 'Nombre del cliente', accesor: 'client_name', sort: true, sortDirection: 'up', width: 'phone:w-[35%] tablet:w-[25%] tablet:flex phone:block' },
     { title: 'Valor', accesor: 'value', config: { money: true }, sort: true, sortDirection: 'up', width: 'phone:w-[45%] tablet:w-[35%] tablet:flex phone:hidden' },
-    { title: 'Límite de validez', accesor: 'max_validity', sort: true, config: { timeformat: true }, sortDirection: 'up', width: 'phone:w-[45%] tablet:w-[20%] tablet:flex phone:block' },
+    { title: 'Fecha de creación', accesor: 'creation', sort: true, config: { timeformat: true }, sortDirection: 'up', width: 'phone:w-[45%] tablet:w-[20%] tablet:flex phone:block' },
     { title: '', accesor: '', sort: false, sortDirection: 'up', width: 'phone:w-[10%] tablet:w-[10%] tablet:flex phone:block' },
 ])
 
@@ -186,7 +196,7 @@ const getQuotations = async () => {
 
     cancelToken.value = new AbortController()
 
-    let { data } = await listQuotations((auth.getUser.token as token).value, filter.value, cancelToken.value.signal)
+    let { data } = await listQuotations((auth.getUser.token as token).value, {'c.name': filter.value}, cancelToken.value.signal)
     cancelToken.value = undefined
     if (data) {
         quotations.value = data
@@ -221,9 +231,10 @@ const editQuotation = async () => {
         rent_min_date: quotation.from,
         rent_max_date: quotation.to,
         one_day: quotation.one_day == 1 ? true : false,
-        email: quotation.email
+        email: quotation.email,
+        discount: quotation.discount,
+        taxing: quotation.taxing
     }
-    console.log('data', loaded.quotation)
     data.forEach((element: quotationDetailSchema) => {
         shopping.addProduct({
             amount: element.amount,
@@ -236,7 +247,6 @@ const editQuotation = async () => {
             value: element.value,
             renting: element.value
         })
-        console.log(shopping.listProducts())
     });
 
     router.push({
@@ -263,6 +273,20 @@ const rejectingQuotation = () => {
     })
 }
 
+const watchDispatches = () =>{
+    router.push({
+        name: 'dispatch',
+        query: {id: quoteSelected.value.id, action: 0},
+    })
+}
+
+const creatingDispatch = () => {
+    router.push({
+        name: 'dispatch',
+        query: {id: quoteSelected.value.id, action: 1}
+    })
+}
+
 const approvingQuotation = () => {
     const item: quotationSchema = quoteSelected.value as quotationSchema
     modalComp.modal.show({
@@ -285,7 +309,6 @@ const handleContext = (body: any) => {
     if (!editPer) return
     const event: PointerEvent = body.event
     const item: quotationSchema = body.item
-    console.log(item)
     contextOptions.value.left = event.x
     contextOptions.value.top = event.y
     contextOptions.value.show = true

@@ -12,12 +12,12 @@ export const saveQuotation = (token: string, body: any) => {
     })
 }
 
-export const listQuotations = (token: string, filter: string, signal: any) => {
+export const listQuotations = (token: string, filter: any, signal: any) => {
     return ApiCLient.get('/quotation', {
         headers: {
             'authorization': `bearer ${token}`
         },
-        params: { filter },
+        params: { ...filter },
         signal
     })
 }
@@ -79,12 +79,12 @@ export const getQuotationForClient = (body: {id: string}) => {
     })
 }
 
-export const getDispatch = (token: string, filter: string, signal: any) => {
+export const getDispatch = (token: string, filter: any, signal: any) => {
     return ApiCLient.get('/dispatch', {
         headers: {
             'authorization': `bearer ${token}`
         },
-        params: { filter },
+        params: { ...filter },
         signal
     })
 }
