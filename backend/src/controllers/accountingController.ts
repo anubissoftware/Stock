@@ -87,15 +87,15 @@ export const editQuotation = async (req: Request, res: Response): Promise<quotat
         }
         const pdtos: Array<productsInCartType> = req.body.products
         for (const pdto of pdtos) {
-            if (pdto.id) {
+            if (pdto.detail_id) {
                 const pdtoQuery: string = "UPDATE quotationDetail SET amount = ?, `value` = ?, `from` = ?, `to` = ?, days = ? WHERE id = ?"
                 const pdtoValues: Array<string> = [
                     pdto.amount.toString(), pdto.value.toString(), pdto.start_rent ? moment(pdto.start_rent).format('YYYY-MM-DD') : null,
-                    pdto.end_rent ? moment(pdto.end_rent).format('YYYY-MM-DD') : null, pdto.days?.toString(), pdto.id.toString()
+                    pdto.end_rent ? moment(pdto.end_rent).format('YYYY-MM-DD') : null, pdto.days?.toString(), pdto.detail_id.toString()
                 ]
                 const rspto: OkPacket = await db.updateQuery(pdtoQuery, pdtoValues)
                 if (rspto.affectedRows == 0) {
-                    throw new Error('No updated detail quotation: ' + pdto.id)
+                    throw new Error('No updated detail quotation: ' + pdto.detail_id)
                 }
             } else {
                 const pdtoQuery: string = "INSERT INTO quotationDetail (item_id, amount, `value`, quotation_id, `from`, `to`, `days`) VALUES (?, ?, ?, ?, ?, ?, ?)"

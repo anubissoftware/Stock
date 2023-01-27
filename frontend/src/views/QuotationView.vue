@@ -230,7 +230,7 @@ const editQuotation = async () => {
             days: element.days,
             start_rent: element.from,
             detail_id: element.id,
-            id: element.id,
+            id: element.item_id,
             end_rent: element.to,
             name: element.name ?? '',
             value: element.value,

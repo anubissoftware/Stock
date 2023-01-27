@@ -60,14 +60,37 @@ export const useShoppingCart = () => {
             productsInCart.push(el)
             useShoppingCart().updateStorage()
         },
+        restoreValueFromStore: (item: productsInCartType, renting: boolean) => {
+            const product: Array<productSchema> = pdtos.listProducts.filter(pdto => pdto.id == item.id)
+            const value = renting ? product[0].rent : product[0].price
+            console.log('value', value)
+            productsInCart.map((pdto) => {
+                if(pdto.id == item.id){
+                    console.log('setting')
+                    if(item.detail_id){
+                        pdto.value = value
+                        pdto.renting = value
+                    }else{
+                        if(renting){
+                            pdto.renting = value
+                        }else{
+                            pdto.value = value
+                        }
+                    }
+                }
+                return pdto
+            })
+            useShoppingCart().updateStorage()
+        },
         changeLocal: (event: any, id: number) => {
             const product: Array<productSchema> = pdtos.listProducts.filter(pdto => pdto.id == id)
             const max = product[0].stock
             if(max && event.target.value > max){
                 productsInCart.map((pdto) => {
                     if(pdto.id == id){
-                        pdto.amount == max
+                        pdto.amount = max
                     }
+                    return pdto
                 })
             }
             useShoppingCart().updateStorage()

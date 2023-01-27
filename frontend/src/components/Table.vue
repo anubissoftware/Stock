@@ -409,6 +409,7 @@ const addNewQuotation = async () => {
     }).then( async (r: modalResponse) => {
         if (r.success) {
             const quote = createQuotationComponent.value.whoQuotate
+            
             const payload = {
                 value: createQuotationComponent.value.totalDue.replaceAll('$', '').replaceAll(',', ''),
                 id: route.query.id ?? null,

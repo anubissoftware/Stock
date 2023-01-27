@@ -11,9 +11,9 @@
         "@/*" : [
           "./src/*"
         ]
-      }
+      },
+      "lib": ["ES2021"]
     },
-    "lib": ["es2015"],
     "exclude": [
       "node_modules/**",
       "public/**"

@@ -12,8 +12,29 @@
         </div>
 
         <div class="laptop:w-1/2 phone:w-full pr-2 pb-6">
+            <Input class=" w-full " color="black" placeholder="Valor liquidado" label="Valor liquidado" size="md"
+                type="text" required @update:model-value="null" :disabled="true" v-model="totalDue" />
+        </div>
+
+        <div class="laptop:w-1/2 phone:w-full pr-2 pb-6 relative">
+            <Input class=" w-full" color="black" placeholder="Impuestos" label="Impuestos" size="md" type="text"
+                required @update:model-value="null" :disabled="props.editable?.client && false" v-model="whoQuotate.taxing" />
+            <span class="absolute top-3 right-3 text-gray-400">
+                {{ taxes }}
+            </span>
+        </div>
+
+        <div class="laptop:w-1/2 phone:w-full pr-2 pb-6 relative">
+            <Input class=" w-full" color="black" placeholder="Descuento" label="Descuento" size="md" type="text"
+                required @update:model-value="null" :disabled="props.editable?.client && false" v-model="whoQuotate.discount" />
+            <span class="absolute top-3 right-3 text-gray-400">
+                {{ discount }}
+            </span>
+        </div>
+
+        <div class="laptop:w-1/2 phone:w-full pr-2 pb-6">
             <Input class=" w-full " color="black" placeholder="Valor total" label="Valor total" size="md" type="text"
-                required @update:model-value="null" :readonly="true" v-model="totalDue" />
+                required @update:model-value="null" :disabled="true" v-model="finalDue" />
         </div>
 
         <div class="laptop:w-1/2 phone:w-full pr-2 pb-6" v-if="displayInputs.projects">
@@ -22,9 +43,9 @@
         </div>
 
         <div class="laptop:w-1/2 phone:w-full pr-2 pb-6">
-            <CheckBox class="" :readonly="route.query.quote == '2'" color="black" :content="'¿La cotización es para alquiler?'"
-                :label="'¿La cotización es para alquiler?'" size="md" type="text" required v-model="whoQuotate.renting"
-                @update:model-value="setProductsDates()" />
+            <CheckBox class="" :readonly="route.query.quote == '2'" color="black"
+                :content="'¿La cotización es para alquiler?'" :label="'¿La cotización es para alquiler?'" size="md"
+                type="text" required v-model="whoQuotate.renting" @update:model-value="setProductsDates()" />
         </div>
 
         <div class="w-full pr-2 pb-6">
@@ -76,10 +97,19 @@
                 <span class="absolute top-1 right-1" @click="shopping.deleteProduct(item)">
                     <Icon class="cursor-pointer hover:scale-110 duration-200" icon="delete" />
                 </span>
-                <span class="font-bold italic text-lg">
+                <span class="w-full text-left font-bold italic text-lg">
                     {{ item.name }}
                 </span>
-                <span class="pl-1 self-end">
+                <div class="tablet:w-1/3 phone:w-2/3 relative">
+                    <input type="number" v-model="item.value" v-if="!whoQuotate.renting"
+                        class=" w-full h-8 pr-2 outline-primary border-primary border rounded text-center phone:text-right"
+                        @change="null">
+                    <input type="number" v-model="item.renting" v-else
+                        class=" w-full h-8 pr-2 outline-primary border-primary border rounded text-center phone:text-right">
+                    <Icon class="w-4 h-4 absolute left-1 top-1 cursor-pointer" icon="settings_backup_restore"
+                        @click="shopping.restoreValueFromStore(item, whoQuotate.renting)" />
+                </div>
+                <span class="pl-3 self-end">
                     {{ ' x' + item.amount }}
                 </span>
                 <span class="w-full text-left" v-if="!whoQuotate.renting">
@@ -120,7 +150,9 @@ export interface whoQuotateType {
     renting: boolean,
     rent_min_date: string,
     rent_max_date: string,
-    one_day: boolean
+    one_day: boolean,
+    taxing: number,
+    discount: number
 }
 
 const route = useRoute()
@@ -153,7 +185,9 @@ const whoQuotate: Ref<whoQuotateType> = ref({
     renting: false,
     rent_min_date: moment().add(1, 'd').format('YYYY-MM-DD'),
     rent_max_date: moment().add(2, 'd').format('YYYY-MM-DD'),
-    one_day: true
+    one_day: true,
+    taxing: 0,
+    discount: 0
 })
 
 const canSave: ComputedRef<boolean> = computed(() => {
@@ -178,7 +212,7 @@ const displayInputs = computed(() => {
 const products: ComputedRef<Array<productsInCartType>> = computed(() => {
     let pdtos = productsInCart
     if (whoQuotate.value.renting) {
-        pdtos = pdtos.filter(pdto => (pdto.renting ?? 0) > 0)
+        pdtos = pdtos.filter(pdto => pdto.renting != null)
     }
     return pdtos
 })
@@ -187,9 +221,9 @@ const clientEmail = ref('')
 const getProjects = async (value: string) => {
     whoQuotate.value.project = ''
     if (typeof whoQuotate.value.client == 'object') {
-        if(Object.keys(loaded.quotation).length > 0){
+        if (Object.keys(loaded.quotation).length > 0) {
             clientEmail.value = (loaded.quotation as quotationSchema).email ?? ''
-        }else{
+        } else {
             clientEmail.value = whoQuotate.value.client.contact_email
         }
         if (cancelToken.value) {
@@ -258,6 +292,32 @@ const totalDue = computed(() => {
     return currencyFormat(total)
 })
 
+const taxes = computed(() => {
+    return currencyFormat(
+        (parseInt((totalDue.value as any).replaceAll('$', '').replaceAll(',', ''))
+        - parseInt((totalDue.value as any).replaceAll('$', '').replaceAll(',', ''))
+        * ((whoQuotate.value.discount ?? 0) / 100)
+        )
+        * ((whoQuotate.value.taxing ?? 0) / 100)
+    )
+})
+
+const discount = computed(() => {
+    return currencyFormat(
+        parseInt((totalDue.value as any).replaceAll('$', '').replaceAll(',', ''))
+        * ((whoQuotate.value.discount ?? 0) / 100)
+    )
+})
+
+const finalDue = computed(() => {
+    // Preguntar cómo se aplican los descuentos e impuestos
+    return currencyFormat(
+        parseInt((totalDue.value as any).replaceAll('$', '').replaceAll(',', ''))
+        * (1 - (whoQuotate.value.discount ?? 0) / 100)
+        * (1 + (whoQuotate.value.taxing ?? 0) / 100)
+    )
+})
+
 defineExpose({ canSave, whoQuotate, totalDue, products, clientEmail })
 
 
@@ -285,14 +345,26 @@ onBeforeMount(() => {
         whoQuotate.value.min_date = moment(quote.min_date).format('YYYY-MM-DD')
         whoQuotate.value.max_date = moment(quote.max_date).format('YYYY-MM-DD')
         whoQuotate.value.renting = quote.renting ?? false
-        if(quote.rent_min_date){
+        if (quote.rent_min_date) {
             whoQuotate.value.rent_min_date = moment(quote.rent_min_date).format('YYYY-MM-DD')
         }
-        if(quote.rent_max_date){
+        if (quote.rent_max_date) {
             whoQuotate.value.rent_max_date = moment(quote.rent_max_date).format('YYYY-MM-DD')
         }
-        whoQuotate.value.one_day = quote.one_day == true 
+        whoQuotate.value.one_day = quote.one_day == true
     }
     console.log()
 })
 </script>
+
+<style scoped>
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+</style>

@@ -179,7 +179,7 @@ const addToCart = () => {
         name: props.product.name,
         amount: 1,
         value: props.product.price,
-        renting: props.product.rent ?? 0
+        renting: props.product.rent
     })
     emit('close')
 }
