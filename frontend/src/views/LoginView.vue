@@ -19,7 +19,7 @@
                 </span>
                 <span 
                 @click="changeMode(typeLogin.out)"
-                class="text-xl font-bold mb-10 py-1 px-3  cursor-pointer"
+                class="hidden text-xl font-bold mb-10 py-1 px-3  cursor-pointer"
                 :class="[
                     mode == 'register' ? 
                     'text-primary border-b-primary border-b-4 ' : 

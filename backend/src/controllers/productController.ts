@@ -114,7 +114,26 @@ export const registerProduct = async (req: Request, res: Response): Promise<prod
 }
 
 export const updateProduct = async (req: Request, res: Response): Promise<object> => {
-    res.json({ message: 'Service not available' })
+    const pdtBody = req.body
+    //Remove properties
+    delete pdtBody.showAction
+    delete pdtBody.creation
+    pdtBody.categories = JSON.stringify({values: [pdtBody.categories.id]})
+    const keysBody = Object.keys(pdtBody)
+    if (pdtBody && keysBody.length > 0 && pdtBody.id) {
+        let values: Array<string> = [pdtBody.id.toString()]
+        const db: DataBase = await initDatabase(res);
+        const response: OkPacket = await db.updateQueryDynamic('products', pdtBody, values);
+        if (response.affectedRows > 0) {
+            res.status(200)
+            res.end()
+            return pdtBody
+        } else {
+            res.status(204)
+            res.end()
+            return null
+        }
+    }
     res.end()
     return null
 }

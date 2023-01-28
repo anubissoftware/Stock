@@ -11,8 +11,11 @@
             @keyup.esc="closeComponent()"
             >
             <template v-slot:header>
-                <div v-if="!initEditRecipe" class="font-bold">
+                <div v-if="!initEditRecipe && props.process == 'creation'" class="font-bold">
                     {{ string.addNew[language] }}
+                </div>
+                <div v-if="props.process == 'edit'" class="font-bold">
+                    {{ string.editTitle[language] }}
                 </div>
                 <div v-if="initEditRecipe">
                     {{ string.editRecipe[language] }}
@@ -32,6 +35,7 @@
                         <Input 
                             class="phone:mb-4 phone:w-full tablet:mb-0 tablet:mr-8 tablet:w-1/2"
                             color="black"
+                            :disabled="props.process == 'edit'"
                             :placeholder= string.nameHolder[language]
                             :label= string.name[language]
                             v-model="newItem.name"
@@ -40,6 +44,7 @@
                             required
                         />
                         <Input
+                            :disabled="props.process == 'edit'"
                             class="phone:w-full tablet:w-1/2"
                             color="black"
                             placeholder="Stock producto"
@@ -79,14 +84,13 @@
                             v-model="newItem.categories"
                             size="md"
                             :items="categories"
-                            value="name"
-                            chips
+                            :value="'name'"
                             required
                             
                         />
                     </div>
                     <!-- Unidades -->
-                    <div
+                    <!-- <div
                     v-if="categories.length !== 0 && false"
                     class="flex tablet:flex-row phone:flex-col 
                     tablet:justify-between tablet:items-center 
@@ -97,15 +101,15 @@
                             color="black"
                             :label= string.units[language]
                             v-model="newItem.unit"
-                            :items="units"
+                            :items="categories"
                             size="md"
                             type="text"
                             value="notation"
                             required
                         />
-                    </div>
+                    </div> -->
                     <!-- Recipe? -->
-                    <div class="flex flex-row 
+                    <div class="hidden flex-row 
                     tablet:justify-between tablet:items-center 
                     phone:justify-between phone:items-start 
                     pb-6">
@@ -272,23 +276,30 @@
             </template>
 
             <template v-slot:actions>
-                <div v-if="!initEditRecipe" class="flex w-full">
+                <div v-if="!initEditRecipe && props.process == 'creation'" class="flex w-full">
                     <Button exactColor color="third" class="mr-2" icon="close" :content= string.cancel[language] @click="closeComponent()" />
                     <Button exactColor color="primary" icon="save" :content= string.save[language] @click="confirmAddItem()" />
                 </div>
-                <div v-if="initEditRecipe" class="flex w-full">
+                <!-- <div v-if="initEditRecipe" class="flex w-full">
                     <Button exactColor color="third" class="mr-2" icon="close" :content= string.cancel[language] @click="initEditRecipe = false" />
                     <Button exactColor color="secondary" icon="done" :content= string.saveRecipe[language] @click="finishRecipe()" />
+                </div> -->
+                <div v-if="props.process == 'edit'" class="flex w-full">
+                    <Button exactColor color="third" class="mr-2" icon="close" :content= string.cancel[language] @click="closeComponent()" />
+                    <Button exactColor color="secondary" icon="done" :content= string.edit[language] @click="confirmEditItem()" />
                 </div>
             </template>
+            <Alert v-show="alertMessageContent.show" @close="alertMessageContent.show = false"
+            :title="alertMessageContent.title" :description="alertMessageContent.description"
+            :type="alertMessageContent.type" />
         </Modal>
     </transition>
 </template>
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, computed, type Ref, type ComputedRef, defineEmits } from 'vue';
-import { Modal, Divider, Autocomplete, Button, Icon ,Input, Select, Switch } from '@/components/Generics/generics'
+import { onMounted, onUnmounted, ref, computed, type Ref, type ComputedRef, defineEmits, defineProps } from 'vue';
+import { Modal, Divider, Autocomplete, Button, Icon ,Input, Select, Switch, Alert } from '@/components/Generics/generics'
 import { Item } from '@/classes/Item'
-import { getCategories, getUnits, createProduct, getItems} from '@/services/product';
+import { getCategories, getUnits, createProduct, getItems, updateItemService} from '@/services/product';
 import { modalComp, type modalResponse } from '@/classes/Modal';
 import language from '@/services/language';
 import { useProductStore } from '@/stores/products';
@@ -296,10 +307,21 @@ import { useAuthStore } from '@/stores/auth'
 import type { productSchema, token } from '@/schemas';
 
 
+
+export interface DispatchCreationProps {
+    process: 'creation' | 'edit',
+    product?: any
+}
+const props = defineProps<DispatchCreationProps>()
+
 const string = {
     addNew: {
         Spanish: 'Agregar nuevo item',
         English: 'Add new item'
+    },
+    editTitle: {
+        Spanish: 'Editar item',
+        English: 'Edit item'
     },
     recipe: {
         Spanish: 'Es receta',
@@ -385,6 +407,10 @@ const string = {
         Spanish : 'Guardar producto',
         English : 'Save item'
     },
+    edit : {
+        Spanish : 'Editar producto',
+        English : 'Edit item'
+    },
     saveRecipe : {
         Spanish : 'Guardar receta',
         English : 'Save recipe'
@@ -418,6 +444,13 @@ const string = {
 
 }
 
+const alertMessageContent: any = ref({
+    title: '',
+    description: '',
+    type: '',
+    show: false
+})
+
 const emit = defineEmits<{(e: 'close'): void}>()
 const socket = ref()
 const pdto = useProductStore()
@@ -426,6 +459,7 @@ const newItem: Ref<Item> = ref(new Item())
 
 const units: Ref<Array<any>> = ref([])
 const categories: ComputedRef<Array<any>> = computed(() => {
+    console.log('categories', pdto.listCategories)
     return pdto.listCategories
 })
 const products: ComputedRef<Array<any>> = computed(() => {
@@ -457,7 +491,13 @@ onMounted(async () => {
     //Get units
     const token = auth.getUser.token as token
     let getUn = await getUnits(token.value)
-    units.value = getUn.data    
+    units.value = getUn.data 
+    if (props.product != null){
+        let categoriesResult = categories.value.find((cat) => cat.id == JSON.parse(props.product.categories).values[0]);
+        props.product.categories = categoriesResult
+        newItem.value = props.product as Item
+        console.log(newItem.value)
+    }  
 })
 onUnmounted(() => {
     // socket.value.disconnect()
@@ -468,6 +508,19 @@ const closeComponent = () => {
     emit('close')
     return
 }
+
+const alertMessage = (title: string, description: string, type: string) => {
+    alertMessageContent.value = {
+        title,
+        description,
+        type,
+        show: true
+    }
+    setTimeout(() => {
+        alertMessageContent.value.show = false
+    }, 3000);
+}
+
 const confirmAddItem = async () => {
 
     if (Object.keys(newItem.value.categories[0]).length == 0) {
@@ -497,6 +550,31 @@ const confirmAddItem = async () => {
         })
         
     }
+}
+
+const confirmEditItem = async () => {
+    if (Object.keys(newItem.value.categories).length == 0) {
+        someDetails.value = true
+        details.value = 'Deben asignarse categoria al producto'
+    }
+    modalComp.modal.show({
+        title: 'Confirmar edicion',
+        description: 'Deseas terminar la edición del producto?',
+        inputValue: ''
+    })
+    .then( async (response : boolean) => {
+        if (response) {
+            const token = auth.getUser.token as token
+            const response = await updateItemService(token.value, newItem.value as unknown as productSchema)
+            if (response.status == 200) {
+                closeComponent()
+            } else {
+                alertMessage('Algo salio mal',
+                'Vuelve a interlo mas tarde',
+                'error')
+            }
+        }
+    })
 }
 
 const reformatItem = async () => {

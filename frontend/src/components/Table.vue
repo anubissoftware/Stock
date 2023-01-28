@@ -12,7 +12,7 @@
             </h1>
             <div class="flex h-fit ">
                 <Button v-if="writePer" exactColor color="secondary" icon="Add" :content=strings.newItem[language]
-                    @click="dialogAddItem = true" />
+                    @click="procesDialog = 'creation', dialogItem = true" />
             </div>
         </div>
         <!-- Filtro -->
@@ -135,9 +135,10 @@
         </div>
         <PdtoContext ref="productContextMenu" v-if="contextProductData.show" :top="contextProductData.top"
             :left="contextProductData.left" :product="itemSelected"
+            @edit="editItem"
             @close="contextProductData.show = false; itemSelected = null" />
         <!-- Modal add Item -->
-        <AddItem v-if="dialogAddItem" @close="dialogAddItem = false" />
+        <AddItem v-if="dialogItem" :process="procesDialog" :product="productToEdit" @close="dialogItem = false, productToEdit = null" />
 
         <Modal v-if="sidebarStatus.createQuotation" @close="sidebarStatus.createQuotation = false">
             <template v-slot:header>
@@ -157,7 +158,6 @@
         </Modal>
 
         <!-- Actions decisions modals -->
-
         <Alert v-show="alertMessageContent.show" @close="alertMessageContent.show = false"
             :title="alertMessageContent.title" :description="alertMessageContent.description"
             :type="alertMessageContent.type" />
@@ -165,7 +165,7 @@
 </template>
   
 <script setup lang="ts">
-import { computed, type ComputedRef, ref, onMounted, onBeforeUnmount, onBeforeMount } from 'vue';
+import { computed, type ComputedRef, ref, onMounted, onBeforeUnmount, onBeforeMount, type Ref } from 'vue';
 import { Alert, Icon, Button, Input, Modal } from '@/components/Generics/generics'
 import AddItem from '@/components/NewItem.vue'
 import type { productSchema, productsInCartType, token } from '@/schemas'
@@ -184,6 +184,7 @@ import { modalComp, type modalResponse } from '@/classes/Modal';
 import { currencyFormat } from '@/composables/utils';
 import { useProductStore } from '@/stores/products';
 import { useAuthStore } from '@/stores/auth'
+import socket from '@/composables/socket'
 
 const route = useRoute()
 const router = useRouter()
@@ -319,8 +320,11 @@ const alertMessageContent: any = ref({
     type: '',
     show: false
 })
+
 const itemSelected: any = ref({})
-const dialogAddItem = ref(false)
+const dialogItem = ref(false)
+const procesDialog:Ref<'creation' | 'edit'> = ref('creation')
+const productToEdit = ref(null)
 const filter = ref('')
 
 const openProductContext = (event: MouseEvent, product: productSchema) => {
@@ -379,12 +383,18 @@ onBeforeMount(() => {
 })
 
 onMounted(() => {
+    socket.socket?.on('productUpdated', (body: any) => {
+        console.log('Se actualizo producto', body)
+        alertMessage(`Producto ${body.name} actualizado`,
+            'Proceso completado.',
+            'success')
+    })
+
     if (isQuoteMode.value) {
         alertMessage('Modo de cotización',
             'Para crear una cotización, añada los productos al carrito y seleccione crear cotización',
             'success')
     }
-    console.log('onMounted', route.query.quote)
     if (route.query.quote == '1') {
         shopping.clearBasket()
     }
@@ -440,6 +450,13 @@ const addNewQuotation = async () => {
             }
         }
     })
+}
+
+const editItem = (product: any) => {
+    console.log(product)
+    productToEdit.value = product
+    dialogItem.value = true
+    procesDialog.value = 'edit'
 }
 
 </script>

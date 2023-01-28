@@ -1,6 +1,6 @@
 
 <template>
-    <div class="right-click-menu flex flex-col select-none" ref="contextMenu" :style="{ top: place.x, left: place.y }">
+    <div class="right-click-menu flex flex-col rounded-xl select-none" ref="contextMenu" :style="{ top: place.x, left: place.y }">
         <div @click="sellItem()" v-if="product?.price != 0 && editPer">
             Sell
         </div>
@@ -22,6 +22,9 @@
         <div v-if="(product?.price != 0 || product?.rent) && editPer" @click="addToCart()">
             Add to cart
         </div>
+        <div v-if="(product?.price != 0 || product?.rent) && editPer" @click="emit('edit', product), emit('close')">
+            Edit Item
+        </div>
     </div>
 </template>
 
@@ -32,6 +35,7 @@ import { deprecateProduct, sellProduct, buyProduct, wholesaleProduct, deleteItem
 import { useShoppingCart } from '@/composables/ShoppingCart';
 import { writePer, editPer } from '@/composables/permissions';
 import { useAuthStore } from '@/stores/auth'
+import AddItem from '@/components/NewItem.vue'
 import type { token } from '@/schemas';
 
 export interface contextProps {
@@ -40,7 +44,7 @@ export interface contextProps {
     product: any
 }
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'edit'])
 const props = defineProps<contextProps>()
 
 const shopping = useShoppingCart()
