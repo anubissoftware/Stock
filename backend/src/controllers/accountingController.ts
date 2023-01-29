@@ -452,7 +452,7 @@ export const dispatchUpdate = async (req: Request, res: Response) => {
         const payload = req.body
         const query: string = "UPDATE dispatching SET out_store = ?, received = ? WHERE id = ?"
         const values: Array<string> = [
-            payload.out_store.toString(), payload.received.toString(), payload.id.toString()
+            payload.out_store?.toString(), payload.received?.toString(), payload.id.toString()
         ]
         const db: DataBase = await initDatabase(res)
         const rps: OkPacket = await db.updateQuery(query, values)

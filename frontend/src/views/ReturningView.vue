@@ -66,9 +66,6 @@
                             <Button exactColor color="primary" icon="update" content="Actualizar"
                                 @click="updateChangesReturn()" />
                         </div>
-                        <Alert v-show="alertMessageContent.show" @close="alertMessageContent.show = false"
-                        :title="alertMessageContent.title" :description="alertMessageContent.description"
-                        :type="alertMessageContent.type" />
                     </template>
                 </Modal>
                 <ContextMenu class="right-click-menu" @close="contextMenuData.show = false" :top="contextMenuData.top"
@@ -101,6 +98,7 @@ import ReturnCreationForm from '@/components/ReturnCreationForm.vue';
 import ContextMenu from '@/components/context/ContextMenu.vue';
 import socket from '@/composables/socket';
 import { setHelper } from '@/composables/sidebarStatus';
+import { alertMessageApp} from '@/composables/alertFunction'
 import { useRouter } from 'vue-router';
 import Tag from '@/components/Generics/Tag.vue';
 
@@ -135,21 +133,15 @@ const strings = {
         English: "There aren't returns registered"
     }
 }
-const alertMessageContent: any = ref({
-    title: '',
-    description: '',
-    type: '',
-    show: false
-})
 const alertMessage = (title: string, description: string, type: string) => {
-    alertMessageContent.value = {
+    alertMessageApp.value = {
         title,
         description,
         type,
         show: true
     }
     setTimeout(() => {
-        alertMessageContent.value.show = false
+        alertMessageApp.value.show = false
     }, 3000);
 }
 const returnCache = {
@@ -326,7 +318,7 @@ const addNewReturn = async () => {
             if (creationResult.status == 200) {
                 modalReturn.value = false
                 alertMessage(`Proceso completado`,
-                '',
+                'Devolucion hecha',
                 'success');
                 unSetReturn()
             }

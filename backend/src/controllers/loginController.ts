@@ -4,6 +4,11 @@ import { DataBase, initDatabase } from "../classes/db";
 import { Request, Response } from "express";
 import moment from 'moment'
 import { sendEmail } from "./emailController";
+import { OAuth2Client } from 'google-auth-library'
+import * as dotenv from 'dotenv'
+import { join } from 'path'
+import {env} from 'process'
+dotenv.config({ path: join(__dirname, '../../', '.env') })
 
 const generateNumber = (length: number): number => {
     return Math.floor(Math.pow(10, length - 1) + Math.random() * (Math.pow(10, length) - Math.pow(10, length - 1) - 1));
@@ -157,4 +162,15 @@ export const menusInRol = async (req: Request, rolId: number, db: DataBase): Pro
     })
 
     return Menus
+}
+
+export const googleLogin = async (req: Request, res: Response) :Promise<any> => {
+    const {token} = req.body
+    const client = new OAuth2Client(env.GOOGLE_CLIENT_ID);
+    const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: env.GOOGLE_CLIENT_ID
+    });
+    const payload = ticket.getPayload();
+    console.log(payload)
 }

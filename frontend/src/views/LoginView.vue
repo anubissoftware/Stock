@@ -177,10 +177,7 @@
                 </div>
                 <!-- Other Logins -->
                 <div class="flex phone:flex-col justify-center items-center tablet:flex-row gap-3">
-                    <button class=" flex gap-4 justify-center items-center border-2 p-2 rounded-xl w-fit hover:bg-gray-50">
-                        <img class=" tablet:w-8 phone:w-4" :src="''" alt="">
-                        <span>Sign up with Google</span>
-                    </button>
+                    <button id="googleButton" />
                 </div>
             </template>
         </div>
@@ -197,13 +194,14 @@
   </template>
   
 <script setup lang="ts">
-import { onMounted, ref, type Ref } from 'vue';
+import { onMounted, ref, type Ref, inject } from 'vue';
 import { useRouter, type Router } from 'vue-router'
 import md5 from 'md5'
 import {LoginApi, ValidateEmail, ValidateCellphone, RegisterNewUser, ActivateCustomer} from '@/services/login'
 import {Alert, Input, Button, CheckBox} from '@/components/Generics/generics'
 import type { userSchema } from '@/schemas';
 import { useAuthStore } from '@/stores/auth';
+import { alertMessageApp } from '@/composables/alertFunction';
 
     enum typeLogin {
         in = 'sign in',
@@ -246,7 +244,36 @@ import { useAuthStore } from '@/stores/auth';
             user.value = remindUser
             remindMe.value = true
         }
+        addConfigGoogle()
     })
+    
+    const addConfigGoogle = () => {
+        const googleClientId = '821546163620-umb951me6kvskm7idoje2tvvaasbmlpl.apps.googleusercontent.com'
+        const app: any = window
+        app.google.accounts.id.initialize({
+            client_id: googleClientId,
+            callback: loginGoogle, 
+            cancel_on_tap_outside: true,
+            login_uri:'http://localhost:8080/login'
+            });
+        app.google.accounts.id.renderButton(
+            document.getElementById("googleButton"),
+            { theme: "outline", size: "medium" }  // customization attributes
+          );
+        app.google.accounts.id.prompt(eventGoogle);
+    }
+    const eventGoogle = (event:any) => {
+        console.log(event)
+    }
+
+    const loginGoogle = (token: any) => {
+        window.focus()
+        console.log('Google toke',token)
+    }
+
+    const addGoogleScript = () => {
+
+    }
 
     /**
      * Validar disponibilidad del email

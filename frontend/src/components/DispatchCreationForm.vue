@@ -27,20 +27,20 @@
         <div class="laptop:w-1/2 phone:w-full pr-2 pb-6">
             <CheckBox v-if="props.creation" class="py-2" color="black" :content="'Agregar fecha de salida'"
                 :label="'Agregar fecha de salida'" size="md" type="text" required v-model="checkDateOut"
-                @update:model-value="client = {}" />
+                @update:model-value="updateValue()"
+                 />
             <Input v-if="!props.creation || checkDateOut" class=" w-full py-4" color="black"
                 placeholder="Fecha de salida" label="Fecha salida bodega (Y-M-D)" size="md" required
                 :type="props.creation || props.editing ? 'datetime-local' : 'text'" v-model="dispatch.out_store"
-                @update:model-value="updateValue()" :disabled="!props.creation && !props.editing" />
+                 :disabled="!props.creation && !props.editing" @update:model-value="updateValue()" />
         </div>
         <div class="laptop:w-1/2 phone:w-full pr-2 pb-6">
             <CheckBox v-if="props.creation" class="py-2" color="black" :content="'Agrega fecha de recibido'"
-                :label="'Agrega fecha de recibido'" size="md" type="text" required v-model="checkDateReceived"
-                @update:model-value="client = {}" />
+                :label="'Agrega fecha de recibido'" size="md" type="text" required v-model="checkDateReceived" @update:model-value="updateValue()"/>
             <Input v-if="!props.creation || checkDateReceived" class=" w-full py-4" color="black"
+                @update:model-value="updateValue()"
                 placeholder="Fecha de entrega" label="Fecha entrega cliente (Y-M-D)" size="md" required
-                :type="props.creation || props.editing ? 'datetime-local' : 'text'" v-model="dispatch.received"
-                @update:model-value="updateValue()" :disabled="!props.creation && !props.editing" />
+                :type="props.creation || props.editing ? 'datetime-local' : 'text'" v-model="dispatch.received" :disabled="!props.creation && !props.editing" />
         </div>
 
         <Divider class="my-4" />
@@ -105,13 +105,15 @@ const checkDateOut: Ref<boolean> = ref(false)
 const checkDateReceived: Ref<boolean> = ref(false)
 
 onBeforeMount(async () => {
+    console.log('Se recreo')
     if (props.creation) {
         await listInfo()
     }
     dispatch.value = { ...props.dispatch }
     dispatch.value.out_store = moment(dispatch.value.out_store).format('YYYY-MM-DDTHH:mm:ss')
+    dispatch.value.check_out = checkDateOut.value
     dispatch.value.received = moment(dispatch.value.received).format('YYYY-MM-DDTHH:mm:ss')
-    console.log(dispatch)
+    dispatch.value.check_received = checkDateReceived.value
     emits('update', dispatch.value)
 })
 
@@ -161,21 +163,20 @@ const quotationsListed = computed(() => {
 })
 
 const updateValue = async () => {
+    if (quotation.value.id !== dispatch.value.quotation_id) {
+        await listDetailQuotation()
+    }
     if (props.creation) {
         dispatch.value.quotation_id = quotation.value.id
         dispatch.value.quotation_serial = quotation.value.serial
         dispatch.value.name = (clients.value.find(client => client.id == quotation.value.client_id))?.name
+        dispatch.value.check_received = checkDateReceived.value
+        dispatch.value.check_out = checkDateOut.value
     }
     emits('update', dispatch.value)
-    if (quotation.value.id) {
-        console.log(quotation.value)
-        await listDetailQuotation()
-    }
 }
 
 const listDetailQuotation = async () => {
-    //
-    console.log(quotation)
     let { data } = await quotationDetail({ id: quotation.value.id })
     console.log(data)
     data.map((detail: any) => {

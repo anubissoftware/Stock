@@ -3,7 +3,7 @@
   <ModalSync ref="modal" />
   <ModalProduct ref="modalProduct" />
 
-  <Alert v-show="showMessage" @close="showMessage = false" :title="alertMessageContent.title"
+  <Alert v-show="alertMessageContent.show" @close="alertMessageContent.show = false" :title="alertMessageContent.title"
     :description="alertMessageContent.description" :type="alertMessageContent.type" />
 </template>
 <script setup lang="ts">
@@ -17,6 +17,7 @@ import Alert from './components/Generics/Alert.vue';
 import type { notificationSchema, modulesSchema, token } from '@/schemas'
 import { backendURL } from '@/config'
 import socket from '@/composables/socket'
+import { alertMessageApp } from '@/composables/alertFunction'
 import { useAuthStore } from './stores/auth'
 import { useProductStore } from './stores/products';
 
@@ -24,7 +25,8 @@ const showMessage = ref(false)
 const alertMessageContent: any = ref({
   title: '',
   description: '',
-  type: ''
+  type: '',
+  show: false
 })
 
 const router = useRouter()
@@ -56,11 +58,11 @@ const notificationAlert = (notification: realTimeNotification) => {
   alertMessageContent.value = {
     title: notification.title ?? '',
     description: notification.description ?? '',
-    type: notification.ok ? 'success' : 'error'
+    type: notification.ok ? 'success' : 'error', 
+    show: true
   }
-  showMessage.value = true
   setTimeout(() => {
-    showMessage.value = false
+    alertMessageContent.value.show = false
   }, 1500);
 }
 
@@ -156,6 +158,8 @@ watch(
 onMounted(async () => {
   modalComp.modal = modal.value
   modalProductSync.modal = modalProduct.value
+  alertMessageApp.value = alertMessageContent
+
 })
 
 const alertMessage = (title: string, description: string, type: string) => {

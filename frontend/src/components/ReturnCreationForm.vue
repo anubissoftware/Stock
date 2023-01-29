@@ -146,16 +146,15 @@ const quotationsListed = computed(() => {
 })
 
 const updateValue = async () => {
+    if (quotation.value.id !== returning.value.quotation_id) {
+        await listDetailQuotation()
+    }
     if (props.creation) {
         returning.value.quotation_id = quotation.value.id
         returning.value.quotation_serial = quotation.value.serial
         returning.value.name = (clients.value.find(client => client.id == quotation.value.client_id))?.name
     }
     emits('update', returning.value)
-    if (quotation.value.id) {
-        console.log(quotation.value)
-        await listDetailQuotation()
-    }
 }
 
 const listDetailQuotation = async () => {

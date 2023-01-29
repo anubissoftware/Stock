@@ -95,6 +95,7 @@ import DataTable from '@/components/datatable/DataTable.vue';
 import DispatchCreationForm from '@/components/DispatchCreationForm.vue';
 import ContextMenu from '@/components/context/ContextMenu.vue';
 import socket from '@/composables/socket';
+import { alertMessageApp} from '@/composables/alertFunction'
 import { setHelper } from '@/composables/sidebarStatus';
 import { useRouter } from 'vue-router';
 import Tag from '@/components/Generics/Tag.vue';
@@ -139,12 +140,24 @@ const dispatchCache = {
     detail: ''
 }
 const dispatchSelected: Ref<dispatchScheme | any> = ref(dispatchCache)
+let dispatchFinal = {}
 
 const dispatchs: Ref<Array<dispatchScheme>> = ref([])
 
 const relanded: Ref<boolean> = ref(router.currentRoute.value.query.action ? true : false)
 
 // Creating section functions 
+const alertMessage = (title: string, description: string, type: string) => {
+    alertMessageApp.value = {
+        title,
+        description,
+        type,
+        show: true
+    }
+    setTimeout(() => {
+        alertMessageApp.value.show = false
+    }, 3000);
+}
 const unSetDispatch = () => {
     if (router.currentRoute.value.query.id) {
         let query = Object.assign({}, router.currentRoute.value.query);
@@ -232,8 +245,8 @@ const configTable = ref({
 const headers = ref([
     { title: 'Cot.', accesor: 'quotation_serial', config: { hex: true }, sort: true, sortDirection: 'up', width: 'phone:w-[20%] tablet:w-[10%] phone:flex' },
     { title: 'Cliente', accesor: 'name', sort: true, sortDirection: 'up', width: 'phone:w-[35%] tablet:w-[30%] phone:flex' },
-    { title: 'Salida de la tienda', accesor: 'clientout_store_name', config: { timeformat: true }, sort: true, sortDirection: 'up', width: 'phone:w-[35%] tablet:w-[25%] phone:flex' },
-    { title: 'Recibida', accesor: 'received', config: { timeformat: true }, sort: true, sortDirection: 'up', width: 'tablet:w-[25%] tablet:flex phone:hidden' },
+    { title: 'Salida de la tienda', accesor: 'out_store', config: { dateTimeFormat: true }, sort: true, sortDirection: 'up', width: 'phone:w-[35%] tablet:w-[25%] phone:flex' },
+    { title: 'Recibida', accesor: 'received', config: { dateTimeFormat: true }, sort: true, sortDirection: 'up', width: 'tablet:w-[25%] tablet:flex phone:hidden' },
     { title: '', accesor: '', sort: false, sortDirection: 'up', width: 'phone:w-[10%] tablet:w-[10%] phone:flex' }
 ])
 
@@ -269,28 +282,69 @@ const editDispatch = async () => {
 }
 
 const addNewDispatch = async () => {
-    //
-    dispatchSelected.value.products = []
-    let products = dispatchSelected.value.detail
-    for (const product of products) {
-        if (product.toDispatch != 0) {
-            const productToDispatch = {
-                quotation_detail_id: product.id,
-                amount: product.amount
+    if (!dispatchSelected.value.quotation_id || !dispatchSelected.value.detail) {
+        alertMessage('Faltan datos',
+            'Debes seleccionar una cotización y productos a entregar',
+            'error');
+        return
+    } else {
+        let productResult = dispatchSelected.value.detail.find((product:any) => product.amount > 0)
+        if (!productResult) {
+            alertMessage('Faltan datos',
+            'Debes llenar productos a entregar',
+            'error');
+            return
+        } else {
+            //Find if any product missing to dispatch amount
+            let dispatchCompleted = dispatchSelected.value.detail.find((product:any) => product.amount_avaliable != (product.dispatching + product.amount))
+            if (!dispatchCompleted) {
+                dispatchSelected.value.isCompleted = true
+            } else {
+                dispatchSelected.value.isCompleted = false
             }
-            dispatchSelected.value.products.push(productToDispatch)
+
+            //Validate dates 
+            if(!dispatchSelected.value.check_out) dispatchSelected.value.out_store = null
+            if(!dispatchSelected.value.check_received) dispatchSelected.value.received = null
+            delete dispatchSelected.value.check_out
+            delete dispatchSelected.value.check_received
+
+            dispatchSelected.value.products = []
+            let products = dispatchSelected.value.detail
+            for (const product of products) {
+                if (product.amount != 0) {
+                    const productToDispatch = {
+                        quotation_detail_id: product.id,
+                        amount: product.amount
+                    }
+                    dispatchSelected.value.products.push(productToDispatch)
+                }
+            }
+            dispatchSelected.value.created_by = store.getUser.id
+            console.log(dispatchSelected.value)
+            let creationResult = await createDispatch((store.getUser.token as token).value, dispatchSelected.value)
+            if (creationResult.status == 200) {
+                modalDispatch.value = false
+                alertMessage(`Proceso completado`,
+                'Entrega creada',
+                'success');
+                unSetDispatch()
+            }
         }
     }
-    dispatchSelected.value.created_by = store.getUser.id
-    console.log(dispatchSelected.value)
-    let creationResult = await createDispatch((store.getUser.token as token).value, dispatchSelected.value)
-    if (creationResult.status == 200) {
-        modalDispatch.value = false
-        unSetDispatch()
-    }
+    
 }
 
 const updateChangesDispatch = async () => {
+    if (dispatchSelected.value.out_store == "Invalid date" && dispatchSelected.value.received == "Invalid date") {
+        alertMessage('Debes diligenciar las fechas correctamente',
+            '',
+            'error');
+        return
+    }
+    if(dispatchSelected.value.out_store == "Invalid date") dispatchSelected.value.out_store = null
+    if(dispatchSelected.value.received == "Invalid date") dispatchSelected.value.received = null
+
     const result = await updateDispatch((store.getUser.token as token).value, dispatchSelected.value)
     if (result.status == 200) {
         modalDispatch.value = false

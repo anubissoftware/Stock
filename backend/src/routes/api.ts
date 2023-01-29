@@ -1,7 +1,7 @@
 import { createNewDispatch, createNewReturn, dispatchDetail, dispatchUpdate, editQuotation, getAllQuotation, listDispatch, listReturn, quotationDetail, returnDetail, returnUpdate, sendQuotationEmail, updateQuotationStage } from './../controllers/accountingController';
 import { addClient, deleteClient, deleteProject, editClient, getProjects, readClients, saveProject } from './../controllers/clientController';
 import { loginCustomer, setTokenCustomer } from '../controllers/customerController';
-import { activateCustomer, menusInRol } from './../controllers/loginController';
+import { activateCustomer, googleLogin, menusInRol } from './../controllers/loginController';
 import { saveEnterpriseLogo } from './../controllers/mediaController';
 import { validateEmail, validateCellphone, registerUser } from '../controllers/loginController';
 import { sellItems, buyItems, craftItems, expireItems, listPublishedProducts, listHistoric,listAllProducts, registerProduct, removeProduct, updateProduct } from '../controllers/productController';
@@ -118,6 +118,10 @@ export default (app: Express, io: Server): void => {
             res.status(500)
             res.end()
         }
+    })
+
+    app.post('/user/loginGoogle', async (req: Request, res: Response) => {
+        const data: Array<string> = await googleLogin(req, res)
     })
 
     app.post('/user/logout/', middleware, async (req: Request, res: Response) => {
