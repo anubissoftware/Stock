@@ -229,3 +229,141 @@ src/controllers/productController.ts(139,21): error TS2304: Cannot find name 're
 
 
 12:30:25 PM - Found 0 errors. Watching for file changes.
+c5:36:14 PM - File change detected. Starting incremental compilation...
+
+
+5:36:15 PM - Found 0 errors. Watching for file changes.
+c5:36:36 PM - File change detected. Starting incremental compilation...
+
+
+5:36:36 PM - Found 0 errors. Watching for file changes.
+c5:37:22 PM - File change detected. Starting incremental compilation...
+
+
+5:37:22 PM - Found 0 errors. Watching for file changes.
+c5:37:51 PM - File change detected. Starting incremental compilation...
+
+
+5:37:54 PM - Found 0 errors. Watching for file changes.
+c5:47:23 PM - File change detected. Starting incremental compilation...
+
+
+5:47:24 PM - Found 0 errors. Watching for file changes.
+c5:48:45 PM - File change detected. Starting incremental compilation...
+
+
+5:48:45 PM - Found 0 errors. Watching for file changes.
+c5:50:14 PM - Starting compilation in watch mode...
+
+
+5:50:20 PM - Found 0 errors. Watching for file changes.
+c5:51:15 PM - File change detected. Starting incremental compilation...
+
+
+5:51:16 PM - Found 0 errors. Watching for file changes.
+c5:53:43 PM - Starting compilation in watch mode...
+
+
+5:53:49 PM - Found 0 errors. Watching for file changes.
+c5:54:06 PM - File change detected. Starting incremental compilation...
+
+
+5:54:08 PM - Found 0 errors. Watching for file changes.
+c5:57:14 PM - File change detected. Starting incremental compilation...
+
+
+5:57:15 PM - Found 0 errors. Watching for file changes.
+c6:05:04 PM - File change detected. Starting incremental compilation...
+
+
+6:05:04 PM - Found 0 errors. Watching for file changes.
+c6:11:50 PM - File change detected. Starting incremental compilation...
+
+
+6:11:50 PM - Found 0 errors. Watching for file changes.
+c6:12:46 PM - File change detected. Starting incremental compilation...
+
+
+6:12:46 PM - Found 0 errors. Watching for file changes.
+c6:14:16 PM - File change detected. Starting incremental compilation...
+
+
+6:14:17 PM - Found 0 errors. Watching for file changes.
+c6:14:35 PM - File change detected. Starting incremental compilation...
+
+
+6:14:35 PM - Found 0 errors. Watching for file changes.
+c6:15:28 PM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(530,88): error TS1005: ',' expected.
+src/controllers/accountingController.ts(530,97): error TS1005: ',' expected.
+
+6:15:28 PM - Found 2 errors. Watching for file changes.
+c6:16:10 PM - File change detected. Starting incremental compilation...
+
+
+6:16:10 PM - Found 0 errors. Watching for file changes.
+c6:18:54 PM - File change detected. Starting incremental compilation...
+
+
+6:18:55 PM - Found 0 errors. Watching for file changes.
+c6:19:06 PM - File change detected. Starting incremental compilation...
+
+
+6:19:06 PM - Found 0 errors. Watching for file changes.
+c6:21:19 PM - File change detected. Starting incremental compilation...
+
+
+6:21:20 PM - Found 0 errors. Watching for file changes.
+c6:21:29 PM - File change detected. Starting incremental compilation...
+
+
+6:21:30 PM - Found 0 errors. Watching for file changes.
+c6:22:21 PM - File change detected. Starting incremental compilation...
+
+
+6:22:22 PM - Found 0 errors. Watching for file changes.
+c6:23:57 PM - File change detected. Starting incremental compilation...
+
+
+6:23:58 PM - Found 0 errors. Watching for file changes.
+c6:24:18 PM - File change detected. Starting incremental compilation...
+
+
+6:24:18 PM - Found 0 errors. Watching for file changes.
+c6:25:45 PM - File change detected. Starting incremental compilation...
+
+
+6:25:45 PM - Found 0 errors. Watching for file changes.
+c6:26:16 PM - File change detected. Starting incremental compilation...
+
+
+6:26:16 PM - Found 0 errors. Watching for file changes.
+c6:26:18 PM - File change detected. Starting incremental compilation...
+
+
+6:26:18 PM - Found 0 errors. Watching for file changes.
+c6:27:10 PM - Starting compilation in watch mode...
+
+
+6:27:16 PM - Found 0 errors. Watching for file changes.
+c9:47:00 PM - File change detected. Starting incremental compilation...
+
+
+9:47:03 PM - Found 0 errors. Watching for file changes.
+c9:58:24 PM - File change detected. Starting incremental compilation...
+
+
+9:58:25 PM - Found 0 errors. Watching for file changes.
+c9:58:56 PM - File change detected. Starting incremental compilation...
+
+
+9:58:56 PM - Found 0 errors. Watching for file changes.
+c10:02:20 PM - File change detected. Starting incremental compilation...
+
+
+10:02:21 PM - Found 0 errors. Watching for file changes.
+c11:32:07 PM - File change detected. Starting incremental compilation...
+
+
+11:32:08 PM - Found 0 errors. Watching for file changes.

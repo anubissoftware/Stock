@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { OkPacket } from "mysql";
-import { productsInCartType, quotationSchema, dispatchDetailSchema, dispatchScheme } from "@/shared";
+import { productsInCartType, quotationSchema, dispatchDetailSchema, dispatchScheme, returnScheme, returnDetailSchema } from "@/shared";
 import { DataBase, initDatabase } from "../classes/db";
 import { sendEmail } from "./emailController";
 import { join } from 'path'
@@ -457,6 +457,126 @@ export const dispatchUpdate = async (req: Request, res: Response) => {
         const db: DataBase = await initDatabase(res)
         const rps: OkPacket = await db.updateQuery(query, values)
         console.log(rps)
+        db.closeConnection()
+        if (rps.affectedRows > 0) {
+            res.json({
+                ok: true
+            })
+            return payload
+        } else {
+            res.status(204)
+            res.end()
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+// Returnings 
+export const createNewReturn = async (req:Request, res: Response): Promise<returnScheme | null> => { 
+    const values: returnScheme = req.body
+    const queryReturn: string = "INSERT INTO `returning` (return_date, quotation_id, created_by) VALUES (?, ?, ?)"
+    const db: DataBase = await initDatabase(res)
+    db.connection.beginTransaction()
+    const valuesReturn: Array<string> = [
+        values.return_date, values.quotation_id.toString(), values.created_by.toString()
+    ]
+    const resp: OkPacket = await db.insertQuery(queryReturn, valuesReturn)
+    
+    try{
+        const pdtos: Array<returnDetailSchema> = req.body.products
+        let query: string = "INSERT INTO returningDetail (quotation_detail_id, return_id, amount ) VALUES "
+        let value: Array<string> = []
+        pdtos.forEach((pdto, index) => {
+            query += "(?, ?, ?)"
+            query += (pdtos.length - 1) == index ? ' ' : ', '
+            value = [...value,
+                pdto.quotation_detail_id.toString(),
+                resp.insertId.toString(),
+                pdto.amount.toString(), 
+            ]
+
+            //Update quotationDetail
+            const queryQuotationDetail: string = 'UPDATE quotationDetail SET `returning` = `returning` + ? WHERE id = ?'
+            const values: Array<string> = [
+                pdto.amount.toString(), pdto.quotation_detail_id.toString()
+            ]
+            db.updateQuery(queryQuotationDetail, values)
+        })
+        db.insertQuery(query, value)
+        //Update quotation
+        let queryQuotation: string;
+        if (req.body.isCompleted) {
+            queryQuotation = `UPDATE quotation SET stage = 6 WHERE id = ?`
+        } else {
+            queryQuotation = `UPDATE quotation SET stage = 5 WHERE id = ?`
+        }
+        const valuesQuotation: Array<string> = [
+            values.quotation_id.toString()
+        ]
+        db.updateQuery(queryQuotation, valuesQuotation)
+
+    }catch(err){
+        console.log(err)
+        db.connection.rollback()
+        res.end()
+        return null
+    }
+    db.connection.commit()
+    db.closeConnection()    
+
+    if(resp.insertId){
+        values.id = resp.insertId
+        res.json({
+            ok: true
+        })
+        return values
+    }else{
+        res.status(204)
+        res.end()
+        return null
+    }
+}
+export const listReturn = async (req: Request, res: Response) => {
+    const query = 'SELECT r.*, q.`serial` as quotation_serial, q.client_id, c.name FROM `returning` AS r INNER JOIN quotation AS q ON r.quotation_id = q.id INNER JOIN clients AS c ON q.client_id = c.id WHERE enterprise_id = ? ORDER BY r.created_at DESC'    
+    const values = [
+        req.userData.enterprise_id.toString()
+    ]
+    const db: DataBase = await initDatabase(res, req)
+    const resp: Array<returnScheme> = await db.readQuery<returnScheme>(query, values)
+    db.closeConnection()
+    if(resp.length > 0){
+        res.json(resp)
+    }else{
+        res.end()
+    }
+    return
+}
+export const returnDetail = async (req: Request, res: Response) => {
+    const payload = req.query
+    const query: string = `SELECT rd.*, p.name, qd.amount as amount_avaliable, qd.returning, qd.dispatching FROM returningDetail as rd
+    INNER JOIN quotationDetail AS qd ON rd.quotation_detail_id = qd.id
+    INNER JOIN products AS p ON p.id = qd.item_id
+    WHERE return_id = ?`
+    const values: Array<string> = [
+        payload.id.toString()
+    ]
+    const db: DataBase = await initDatabase(res)
+    const rps: any = await db.readQuery(query, values)
+    db.closeConnection()
+    res.json(rps)
+}
+
+export const returnUpdate = async (req: Request, res: Response) => {
+    try {
+        const payload = req.body
+        const query: string = "UPDATE `returning` SET return_date = ? WHERE id = ?"
+        console.log(payload)
+        const values: Array<string> = [
+            payload.return_date.toString(), payload.id.toString()
+        ]
+        const db: DataBase = await initDatabase(res)
+        const rps: OkPacket = await db.updateQuery(query, values)
         db.closeConnection()
         if (rps.affectedRows > 0) {
             res.json({

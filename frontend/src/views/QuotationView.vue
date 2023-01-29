@@ -54,7 +54,7 @@
                         <div v-if="quoteSelected.stage == 4 || quoteSelected.stage == 5">
                             Crear devolución
                         </div>
-                        <div v-if="quoteSelected.stage >= 5">
+                        <div v-if="quoteSelected.stage >= 5" @click="watchReturns()">
                             Ver devoluciones
                         </div>
                         <div v-if="quoteSelected.stage == 6">
@@ -276,6 +276,12 @@ const rejectingQuotation = () => {
 const watchDispatches = () =>{
     router.push({
         name: 'dispatch',
+        query: {id: quoteSelected.value.id, action: 0},
+    })
+}
+const watchReturns = () =>{
+    router.push({
+        name: 'return',
         query: {id: quoteSelected.value.id, action: 0},
     })
 }

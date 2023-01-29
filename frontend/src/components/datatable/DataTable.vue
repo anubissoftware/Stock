@@ -21,8 +21,9 @@
                         {{
                             head.config?.money ? currencyFormat(item[head.accesor]) :
                                 head.config?.timeformat ? moment(item[head.accesor]).format('YYYY-MM-DD') :
-                                    head.config?.hex ? formatSerial(item[head.accesor]) :
-                                        item[head.accesor]
+                                    head.config?.dateTimeFormat ? moment(item[head.accesor]).format('YYYY-MM-DDTHH:mm:ss').replace('T','  ') :
+                                        head.config?.hex ? formatSerial(item[head.accesor]) :
+                                            item[head.accesor]
                         }}
                     </span>
                     <template v-else>
@@ -63,6 +64,7 @@ export interface dataTableProps {
         config?: {
             money?: boolean
             timeformat?: boolean
+            dateTimeFormat?: boolean
             hex?: boolean
         }
     }[],

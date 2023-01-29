@@ -114,3 +114,38 @@ export const updateDispatch = (token: string, body:any) => {
     })
 }
 
+export const getReturn = (token: string, filter: any, signal: any) => {
+    return ApiCLient.get('/return', {
+        headers: {
+            'authorization': `bearer ${token}`
+        },
+        params: { ...filter },
+        signal
+    })
+}
+
+export const getReturnDetail = (token: string, body: {id: number}) => {
+    return ApiCLient.get('/return/detail', {
+        headers: {
+            'authorization': `bearer ${token}`
+        },
+        params: { id: body.id }
+    })
+}
+
+export const createReturn = (token: string, body:any) => {
+    return ApiCLient.post('/return', { ...body }, {
+        headers: {
+            'authorization': `bearer ${token}`
+        },
+    })
+}
+
+export const updateReturn = (token: string, body:any) => {
+    return ApiCLient.post('/return/update', { ...body }, {
+        headers: {
+            'authorization': `bearer ${token}`
+        },
+    })
+}
+

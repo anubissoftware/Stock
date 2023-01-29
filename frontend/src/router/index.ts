@@ -69,6 +69,11 @@ const router = createRouter({
       path: "/dashboard/dispatch",
       name: "dispatch",
       component: async () => import('@/views/DispatchView.vue')
+    },
+    {
+      path: "/dashboard/return",
+      name: "return",
+      component: async () => import('@/views/ReturningView.vue')
     }
   ]
 })

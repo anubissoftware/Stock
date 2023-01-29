@@ -39,4 +39,5 @@ export interface quotationDetailSchema {
     name?: string
     amount_avaliable?: number
     dispatching?: number
+    returning?: number
 }
