@@ -75,7 +75,7 @@ const doTheThing = () => {
   }
 
   if (!socket.socket) {
-    socket.socket = io(window.location.hostname == 'stock.gdlplabs.com' ? 'http://stockapi.gdlplabs.com/' : backendURL)
+    socket.socket = io(backendURL)
 
     socket.socket.emit('joinEnterprise', {
       id: auth.getUser.id,

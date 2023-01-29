@@ -74,6 +74,11 @@ const router = createRouter({
       path: "/dashboard/return",
       name: "return",
       component: async () => import('@/views/ReturningView.vue')
+    },
+    {
+      path: "/dashboard/partners",
+      name: "partners",
+      component: async () => import('@/views/PartnersView.vue')
     }
   ]
 })

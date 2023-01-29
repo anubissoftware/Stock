@@ -14,10 +14,11 @@ export interface quotationSchema {
     from: string
     to: string
     creation: string
-    client_name?: string
     stage: number
     taxing: number
     discount: number
+    client_name?: string
+    ent_name?: string
 }
 
 export interface quotationDetailSchema{
