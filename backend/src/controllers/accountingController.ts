@@ -195,8 +195,9 @@ export const createNewQuotation = async (req: Request, res: Response): Promise<q
 export const sendQuotationEmail = async (quotation_id: number, req: Request, res: Response, io?: Server) => {
     const db: DataBase = await initDatabase(res)
     const quotationInfo: Array<quotationSchema> = await db.readQuery<quotationSchema>(
-        `SELECT q.serial, q.email, q.value, c.name, c.contact_email FROM quotation as q
+        `SELECT q.serial, q.email, q.value, c.name as client_name, c.contact_email, e.name as ent_name FROM quotation as q
         INNER JOIN clients as c ON c.id = q.client_id
+        INNER JOIN enterprise as e ON e.id = c.enterprise
         WHERE q.id = ?
         `, [
         quotation_id.toString()
@@ -230,6 +231,8 @@ export const sendQuotationEmail = async (quotation_id: number, req: Request, res
             text-decoration: none;
             color: black;
             border: 1px solid #F69A36;
+            background: #F69A36;
+            text: white;
             padding: 13px 7px;
             font-weight: bold;
             transition: 250ms;
@@ -242,15 +245,16 @@ export const sendQuotationEmail = async (quotation_id: number, req: Request, res
         }
     </style>
     <h1>
-            Su cotización espera por ser aprobada:
+            Tiene una cotización en espera de revisión:
         </h1>
         <p
             style="font-size: 20px;"
         >
-            Se ha enviado la cotización con serial:
+            La empresa ${quotationInfo[0].ent_name} le ha enviado la cotización 
             <span style="font-style: italic;">
                 ${quotationInfo[0].serial.toString(36).toUpperCase()}
             </span>
+            para su revisión. El siguiente enlace lo llevará a la visualización
         </p>
         <a href="${env.FRONTEND_HOST}quotations?v=${Buffer.from(quotation_id.toString()).toString('base64')}" class="button">
             Visualizar cotización
@@ -260,7 +264,7 @@ export const sendQuotationEmail = async (quotation_id: number, req: Request, res
     
     </html>
     `
-        const subject = `Cotización # pendiente`
+        const subject = `Cotización ${quotationInfo[0].serial.toString(36).toUpperCase()}`
 
         sendEmail(
             [quotationInfo[0].email],

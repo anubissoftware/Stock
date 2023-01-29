@@ -28,4 +28,9 @@ export default (socket: Socket): void => {
         }
     })
 
+    socket.on('joinQuotation', async (data: {hash: string}) => {
+        socket.join(data.hash)
+        socket.to(data.hash).emit('connected')
+    })
+
 }

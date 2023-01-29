@@ -10,13 +10,17 @@
             <span class="text-justify">
                 Hola, "Nombre del cliente", la empresa "Nombre de la empresa" le ha envíado una cotización.
                 Esta cotización puede ser <strong>aprobada</strong> o <strong>rechazada</strong>
-                con los botones de acción que encontrará abajo. Adicionalmente, puede escribir comentarios o dejar
-                una insignia.
+                con los botones de acción que encontrará abajo. En esta página también podrá hacer 
+                seguimiento a los demás documentos que emita la empresa, como <strong>remisiones</strong>,
+                <strong>devoluciones</strong> y <strong>facturas</strong>.
+                
+                <span v-if="false">Adicionalmente, puede escribir comentarios o dejar
+                    una insignia.</span>
             </span>
         </div>
         <div class="flex flex-wrap w-full px-5">
             <div class="phone:w-full tablet:w-1/2 laptop:w-1/3 flex flex-col ">
-                <div class="py-2 flex flex-wrap" v-if="quotation.stage == 0">
+                <div class="py-2 flex flex-wrap" v-if="quotation.stage == 0 && false">
                     <Tag class="phone:w-full tablet:w-1/2" title="Buen servicio" v-model="insignia.precios" />
                     <Tag class="phone:w-full tablet:w-1/2" title="Buena atención" v-model="insignia.atencion" />
                 </div>
@@ -41,6 +45,9 @@ import Tag from '@/components/Generics/Tag.vue';
 import { useRouter } from 'vue-router';
 import { modalComp, type modalResponse } from '@/classes/Modal';
 import {clientRejectQuotation, clientApproveQuotation, getQuotationForClient} from '@/services/accounting'
+import { io } from 'socket.io-client';
+import socket from '@/composables/socket';
+import { backendURL } from '@/config';
 
 document.title = 'Cotizador - Anubis Software S.A.S.'
 
@@ -94,6 +101,13 @@ onMounted(async () => {
     const ent = await getQuotationForClient({id: quotationId.value})
     enterpriseId.value = ent.data.enterprise.id
     quotation.value = ent.data.quotation
+
+    socket.socket = io(backendURL)
+
+    socket.socket.emit('joinQuotation', {hash: router.currentRoute.value.query.v?.toString() ?? ''})
+    socket.socket.on('connected', () => {
+        console.log('hola')
+    })
 })
 
 </script>
