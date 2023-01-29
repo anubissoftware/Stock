@@ -411,7 +411,7 @@ export default (app: Express, io: Server): void => {
 
     //Dispatch
     app.post('/dispatch/', middleware, async (req: Request, res: Response) => {
-        const data: dispatchScheme = await createNewDispatch(req, res)
+        const data: dispatchScheme = await createNewDispatch(req, res, io)
         //create ws
         if(data?.id){
             io.to('e' + req.userData.enterprise_id).emit('dispatchCreate', data)
@@ -430,7 +430,7 @@ export default (app: Express, io: Server): void => {
 
     //Return
     app.post('/return/', middleware, async (req: Request, res: Response) => {
-        const data: returnScheme = await createNewReturn(req, res)
+        const data: returnScheme = await createNewReturn(req, res, io)
         //create ws
         if(data?.id){
             io.to('e' + req.userData.enterprise_id).emit('returnCreate', data)

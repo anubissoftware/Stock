@@ -51,7 +51,8 @@
                             >
                             Ver remisiones
                         </div>
-                        <div v-if="quoteSelected.stage == 4 || quoteSelected.stage == 5">
+                        <div v-if="quoteSelected.stage == 4 || quoteSelected.stage == 5"
+                        @click="creatingReturn()">
                             Crear devolución
                         </div>
                         <div v-if="quoteSelected.stage >= 5" @click="watchReturns()">
@@ -289,6 +290,13 @@ const watchReturns = () =>{
 const creatingDispatch = () => {
     router.push({
         name: 'dispatch',
+        query: {id: quoteSelected.value.id, action: 1}
+    })
+}
+
+const creatingReturn = () => {
+    router.push({
+        name: 'return',
         query: {id: quoteSelected.value.id, action: 1}
     })
 }

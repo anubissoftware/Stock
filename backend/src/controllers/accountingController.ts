@@ -355,7 +355,7 @@ export const generateQuotationDocument = async (req: Request, res: Response) => 
 
 //Dispatch 
 
-export const createNewDispatch = async (req:Request, res: Response): Promise<dispatchScheme | null> => { 
+export const createNewDispatch = async (req:Request, res: Response, io: Server): Promise<dispatchScheme | null> => { 
     const values: dispatchScheme = req.body 
     const getSerial: string = `fd`
     const getSerialV: Array<string> = [
@@ -392,6 +392,23 @@ export const createNewDispatch = async (req:Request, res: Response): Promise<dis
             db.updateQuery(queryQuotationDetail, values)
         })
         db.insertQuery(query, value)
+        let queryQuotation: string;
+        let stage;
+        if (req.body.isCompleted) {
+            queryQuotation = `UPDATE quotation SET stage = 4 WHERE id = ?`
+            stage = 4
+        } else {
+            queryQuotation = `UPDATE quotation SET stage = 3 WHERE id = ?`
+            stage = 5
+        }
+        const valuesQuotation: Array<string> = [
+            values.quotation_id.toString()
+        ]
+        db.updateQuery(queryQuotation, valuesQuotation)
+        io.to(req.userData.socketId).emit('quotationChange', {
+            stage,
+            id:  values.quotation_id
+        })
 
     }catch(err){
         console.log(err)
@@ -477,7 +494,7 @@ export const dispatchUpdate = async (req: Request, res: Response) => {
 }
 
 // Returnings 
-export const createNewReturn = async (req:Request, res: Response): Promise<returnScheme | null> => { 
+export const createNewReturn = async (req:Request, res: Response, io?: Server): Promise<returnScheme | null> => { 
     const values: returnScheme = req.body
     const queryReturn: string = "INSERT INTO `returning` (return_date, quotation_id, created_by) VALUES (?, ?, ?)"
     const db: DataBase = await initDatabase(res)
@@ -510,15 +527,22 @@ export const createNewReturn = async (req:Request, res: Response): Promise<retur
         db.insertQuery(query, value)
         //Update quotation
         let queryQuotation: string;
+        let stage;
         if (req.body.isCompleted) {
             queryQuotation = `UPDATE quotation SET stage = 6 WHERE id = ?`
+            stage = 6
         } else {
             queryQuotation = `UPDATE quotation SET stage = 5 WHERE id = ?`
+            stage = 5
         }
         const valuesQuotation: Array<string> = [
             values.quotation_id.toString()
         ]
         db.updateQuery(queryQuotation, valuesQuotation)
+        io.to(req.userData.socketId).emit('quotationChange', {
+            stage,
+            id:  values.quotation_id
+        })
 
     }catch(err){
         console.log(err)
