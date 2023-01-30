@@ -75,6 +75,12 @@
                         <div @click="close(); editDispatch()">
                             Edit
                         </div>
+                        <div v-if="dispatchSelected.out_store == null">
+                            Saliendo de tienda
+                        </div>
+                        <div v-if="dispatchSelected.received == null">
+                            Entregado en obra
+                        </div>
                     </template>
                 </ContextMenu>
             </div>

@@ -29,7 +29,7 @@
                 :label="'Agregar fecha de salida'" size="md" type="text" required v-model="checkDateOut"
                 @update:model-value="updateValue()"
                  />
-            <Input v-if="!props.creation || checkDateOut" class=" w-full py-4" color="black"
+            <Input v-if="(!props.creation || checkDateOut) && dispatch.out_store != 'Invalid date'" class=" w-full py-4" color="black"
                 placeholder="Fecha de salida" label="Fecha salida bodega (Y-M-D)" size="md" required
                 :type="props.creation || props.editing ? 'datetime-local' : 'text'" v-model="dispatch.out_store"
                  :disabled="!props.creation && !props.editing" @update:model-value="updateValue()" />
@@ -37,7 +37,7 @@
         <div class="laptop:w-1/2 phone:w-full pr-2 pb-6">
             <CheckBox v-if="props.creation" class="py-2" color="black" :content="'Agrega fecha de recibido'"
                 :label="'Agrega fecha de recibido'" size="md" type="text" required v-model="checkDateReceived" @update:model-value="updateValue()"/>
-            <Input v-if="!props.creation || checkDateReceived" class=" w-full py-4" color="black"
+            <Input v-if="(!props.creation || checkDateReceived) && dispatch.received != 'Invalid date'" class=" w-full py-4" color="black"
                 placeholder="Fecha de entrega" label="Fecha entrega cliente (Y-M-D)" size="md" required
                 :type="props.creation || props.editing ? 'datetime-local' : 'text'" v-model="dispatch.received" 
                 :disabled="!props.creation && !props.editing" @update:model-value="updateValue()"/>
