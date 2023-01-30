@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-row border rounded w-auto">
-        <span v-for="(item, index) in props.options" :key="index" class="py-2 px-3 rounded w-1/2 cursor-pointer" :class="item.key == language ? 'bg-secondary' : ''"
+        <span v-for="(item, index) in props.options" :key="index" class="py-1 px-2 rounded w-1/2 cursor-pointer" :class="item.key == language ? 'bg-secondary' : ''"
             @click="setLanguage(item.key)">
             {{item.key}}
         </span>

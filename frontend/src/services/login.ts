@@ -26,10 +26,24 @@ const ActivateCustomer =  (params: customerValidate) => {
     return ApiCLient.post('login/activateCustomer', params)
 }
 
+const SyncWithGoogle = (token: string, body:any) => {
+    return ApiCLient.post('user/syncWithGoogle', { ...body }, {
+        headers: {
+            'authorization': `bearer ${token}`
+        },
+    })
+}
+
+const LoginWithGoogle =  (params: any) => {
+    return ApiCLient.post('user/loginGoogle', params)
+}
+
 export {
     LoginApi,
     ValidateEmail,
     ValidateCellphone, 
     RegisterNewUser,
-    ActivateCustomer
+    ActivateCustomer, 
+    SyncWithGoogle,
+    LoginWithGoogle
 }

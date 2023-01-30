@@ -55,12 +55,27 @@
                         </div>
                         <!-- Menú 1 -->
                         <div class="tablet:w-2/3 phone:w-full flex flex-col gap-5" v-if="menuActive == 1">
-                            <div class="flex flex-row flex-wrap items-center">
-                                <div class="w-1/3 font-extrabold">
-                                    {{ string.language[language] }}:
+                            <div class="flex flex-col flex-wrap items-start justify-center text-start">
+                                <div class="flex flex-row py-4 w-full justify-center items-center">
+                                    <div class="w-1/3 font-extrabold">
+                                        {{ string.language[language] }}:
+                                    </div>
+                                    <div class="w-2/3">
+                                        <MultiSwitch :options="languageOptions" @change-language="setLanguage($event)" />
+                                    </div>
                                 </div>
-                                <div class="w-2/3">
-                                    <MultiSwitch :options="languageOptions" @change-language="setLanguage($event)" />
+                                <!-- GoogleSync -->
+                                <div class="flex flex-row py-4 w-full justify-center items-center">
+                                    <div class="w-1/3 font-extrabold">
+                                        {{ string.sync[language] }}:
+                                    </div>
+                                    <div class="flex w-2/3">
+                                        <GoogleSync v-if="!user.email || user.email_verified != '1'" @login="syncGoogle" />
+                                        <span v-else class="flex items-center text-green-800">Sincronizacion habilitada
+                                            &nbsp;
+                                            <Icon icon="check" class="text-2xl" />
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -96,8 +111,10 @@ import { computed, ref, type Ref, watch, onMounted, onUnmounted, inject } from '
 import QRCodeStyling from 'qr-code-styling'
 import language from '@/services/language';
 import CategoriesConfig from '@/components/CategoriesConfig.vue';
+import GoogleSync from '@/components/GoogleSync.vue';
 import Droppable from '@/components/Generics/Droppable.vue';
 import { uploadEnterpriseImage } from '@/services/enterprise'
+import { SyncWithGoogle } from '@/services/login'
 import Header2 from '@/components/Header2.vue';
 import socket from '@/composables/socket'
 import { useAuthStore } from '@/stores/auth'
@@ -128,6 +145,7 @@ const updateLogo = () => {
 onMounted(() => {
     socket.socket?.on('logoUpdated', updateLogo)
     logo.value = user.value.enterprise_path + '?v' + counter.value
+    console.log(user.value)
 })
 
 onUnmounted(() => {
@@ -246,6 +264,15 @@ const setMenu = (index: number) => {
 const setLanguage = (language: "Espanish" | "English") => {
     settings.setLanguage(language)
 }
+
+const syncGoogle = async (event: any) => {
+    console.log(event)
+    let resultSync = await SyncWithGoogle((user.value.token as token).value, {
+        token: event.credential,
+        id: user.value.id
+    })
+    console.log(resultSync)
+}
 /**
  * Dejar siempre al final [*LANGUAGE*]
 */
@@ -257,6 +284,10 @@ const string = {
     language: {
         Spanish: 'Idioma',
         English: 'Language'
+    },
+    sync: {
+        Spanish: 'Sincronizar con Google',
+        English: 'Sync with Google'
     },
     qr: {
         Spanish: 'Mi código Qr',

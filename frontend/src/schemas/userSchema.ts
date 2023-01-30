@@ -21,7 +21,9 @@ export interface userSchema {
     quoting?: boolean
     enterprise_name?: string
     enterprise_path?: string
-    shortcut: string    
+    shortcut: string
+    email?: string   
+    email_verified?: string
 }
 export type Auth = {
     user: object,

@@ -413,3 +413,108 @@ src/routes/api.ts(414,44): error TS2554: Expected 3 arguments, but got 2.
 
 
 11:29:43 AM - Found 0 errors. Watching for file changes.
+c3:07:46 PM - File change detected. Starting incremental compilation...
+
+
+3:07:47 PM - Found 0 errors. Watching for file changes.
+c3:08:10 PM - File change detected. Starting incremental compilation...
+
+
+3:08:11 PM - Found 0 errors. Watching for file changes.
+c3:16:37 PM - Starting compilation in watch mode...
+
+
+3:16:44 PM - Found 0 errors. Watching for file changes.
+c3:17:00 PM - File change detected. Starting incremental compilation...
+
+
+3:17:02 PM - Found 0 errors. Watching for file changes.
+c3:21:09 PM - Starting compilation in watch mode...
+
+
+3:21:16 PM - Found 0 errors. Watching for file changes.
+c3:22:42 PM - File change detected. Starting incremental compilation...
+
+
+3:22:46 PM - Found 0 errors. Watching for file changes.
+c5:55:15 PM - File change detected. Starting incremental compilation...
+
+
+5:55:15 PM - Found 0 errors. Watching for file changes.
+c6:08:01 PM - File change detected. Starting incremental compilation...
+
+src/routes/api.ts(4,28): error TS2305: Module '"./../controllers/loginController"' has no exported member 'googleLogin'.
+
+6:08:01 PM - Found 1 error. Watching for file changes.
+c6:08:32 PM - File change detected. Starting incremental compilation...
+
+src/routes/api.ts(15,74): error TS2305: Module '"../controllers/userController"' has no exported member 'googleLogin'.
+
+6:08:33 PM - Found 1 error. Watching for file changes.
+c6:15:14 PM - File change detected. Starting incremental compilation...
+
+src/routes/api.ts(124,43): error TS2554: Expected 3 arguments, but got 2.
+
+6:15:14 PM - Found 1 error. Watching for file changes.
+c6:15:42 PM - File change detected. Starting incremental compilation...
+
+
+6:15:43 PM - Found 0 errors. Watching for file changes.
+c6:16:38 PM - File change detected. Starting incremental compilation...
+
+
+6:16:40 PM - Found 0 errors. Watching for file changes.
+c6:19:06 PM - Starting compilation in watch mode...
+
+
+6:19:07 PM - Found 0 errors. Watching for file changes.
+c6:21:54 PM - File change detected. Starting incremental compilation...
+
+src/controllers/userController.ts(100,11): error TS2740: Type '{}' is missing the following properties from type 'userData': nickname, id, name, isAdmin, and 3 more.
+src/controllers/userController.ts(103,35): error TS2339: Property 'id' does not exist on type 'unknown'.
+
+6:21:54 PM - Found 2 errors. Watching for file changes.
+c6:22:39 PM - File change detected. Starting incremental compilation...
+
+
+6:22:39 PM - Found 0 errors. Watching for file changes.
+c6:26:23 PM - File change detected. Starting incremental compilation...
+
+
+6:26:23 PM - Found 0 errors. Watching for file changes.
+c6:26:35 PM - File change detected. Starting incremental compilation...
+
+
+6:26:35 PM - Found 0 errors. Watching for file changes.
+c6:26:38 PM - File change detected. Starting incremental compilation...
+
+
+6:26:38 PM - Found 0 errors. Watching for file changes.
+c6:30:11 PM - File change detected. Starting incremental compilation...
+
+
+6:30:11 PM - Found 0 errors. Watching for file changes.
+c6:55:11 PM - Starting compilation in watch mode...
+
+
+6:55:13 PM - Found 0 errors. Watching for file changes.
+c6:56:47 PM - Starting compilation in watch mode...
+
+
+6:56:48 PM - Found 0 errors. Watching for file changes.
+c9:37:13 PM - File change detected. Starting incremental compilation...
+
+
+9:37:13 PM - Found 0 errors. Watching for file changes.
+c9:38:14 PM - File change detected. Starting incremental compilation...
+
+
+9:38:14 PM - Found 0 errors. Watching for file changes.
+c9:44:47 PM - File change detected. Starting incremental compilation...
+
+
+9:44:47 PM - Found 0 errors. Watching for file changes.
+c9:45:37 PM - File change detected. Starting incremental compilation...
+
+
+9:45:37 PM - Found 0 errors. Watching for file changes.

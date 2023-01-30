@@ -1,7 +1,7 @@
 import { createNewDispatch, createNewReturn, dispatchDetail, dispatchUpdate, editQuotation, getAllQuotation, listDispatch, listReturn, quotationDetail, returnDetail, returnUpdate, sendQuotationEmail, updateQuotationStage } from './../controllers/accountingController';
 import { addClient, deleteClient, deleteProject, editClient, getProjects, readClients, saveProject } from './../controllers/clientController';
 import { loginCustomer, setTokenCustomer } from '../controllers/customerController';
-import { activateCustomer, googleLogin, menusInRol } from './../controllers/loginController';
+import { activateCustomer, menusInRol } from './../controllers/loginController';
 import { saveEnterpriseLogo } from './../controllers/mediaController';
 import { validateEmail, validateCellphone, registerUser } from '../controllers/loginController';
 import { sellItems, buyItems, craftItems, expireItems, listPublishedProducts, listHistoric,listAllProducts, registerProduct, removeProduct, updateProduct } from '../controllers/productController';
@@ -12,7 +12,7 @@ import { Express, NextFunction, Request, Response } from "express"
 import { Server } from "socket.io"
 
 import { DataBase, initDatabase } from "../classes/db";
-import { login, setToken, unSetToken, validateToken } from "../controllers/userController"
+import { login, setToken, syncUserWithGoogle, unSetToken, validateToken, googleLogin } from "../controllers/userController"
 import moment from 'moment'
 import { OkPacket } from "mysql";
 import { validateEnterprise } from '../controllers/enterpriseController';
@@ -121,7 +121,10 @@ export default (app: Express, io: Server): void => {
     })
 
     app.post('/user/loginGoogle', async (req: Request, res: Response) => {
-        const data: Array<string> = await googleLogin(req, res)
+        const data: Array<string> = await googleLogin(req, res, io)
+    })
+    app.post('/user/syncWithGoogle', async (req: Request, res: Response) => {
+        const data: Array<string> = await syncUserWithGoogle(req, res)
     })
 
     app.post('/user/logout/', middleware, async (req: Request, res: Response) => {

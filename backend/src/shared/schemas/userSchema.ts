@@ -12,6 +12,8 @@ export interface userSchema {
     exp?: number | null,
     renting?: boolean
     quoting?: boolean
+    email?: string   
+    email_verified?: string
 }
 import { modulesSchema } from "./modulesSchema"
 export type Auth = {

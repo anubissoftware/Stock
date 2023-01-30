@@ -163,14 +163,3 @@ export const menusInRol = async (req: Request, rolId: number, db: DataBase): Pro
 
     return Menus
 }
-
-export const googleLogin = async (req: Request, res: Response) :Promise<any> => {
-    const {token} = req.body
-    const client = new OAuth2Client(env.GOOGLE_CLIENT_ID);
-    const ticket = await client.verifyIdToken({
-        idToken: token,
-        audience: env.GOOGLE_CLIENT_ID
-    });
-    const payload = ticket.getPayload();
-    console.log(payload)
-}

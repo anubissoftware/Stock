@@ -38,9 +38,9 @@
             <CheckBox v-if="props.creation" class="py-2" color="black" :content="'Agrega fecha de recibido'"
                 :label="'Agrega fecha de recibido'" size="md" type="text" required v-model="checkDateReceived" @update:model-value="updateValue()"/>
             <Input v-if="!props.creation || checkDateReceived" class=" w-full py-4" color="black"
-                @update:model-value="updateValue()"
                 placeholder="Fecha de entrega" label="Fecha entrega cliente (Y-M-D)" size="md" required
-                :type="props.creation || props.editing ? 'datetime-local' : 'text'" v-model="dispatch.received" :disabled="!props.creation && !props.editing" />
+                :type="props.creation || props.editing ? 'datetime-local' : 'text'" v-model="dispatch.received" 
+                :disabled="!props.creation && !props.editing" @update:model-value="updateValue()"/>
         </div>
 
         <Divider class="my-4" />
@@ -163,10 +163,10 @@ const quotationsListed = computed(() => {
 })
 
 const updateValue = async () => {
-    if (quotation.value.id !== dispatch.value.quotation_id) {
-        await listDetailQuotation()
-    }
     if (props.creation) {
+        if (quotation.value.id !== dispatch.value.quotation_id) {
+            await listDetailQuotation()
+        }
         dispatch.value.quotation_id = quotation.value.id
         dispatch.value.quotation_serial = quotation.value.serial
         dispatch.value.name = (clients.value.find(client => client.id == quotation.value.client_id))?.name

@@ -190,14 +190,16 @@
             :description="alertMessageContent.description"
             :type="alertMessageContent.type"
         />
+        <GoogleSync prompt  @login="loginGoogle" />
     </div>
   </template>
   
 <script setup lang="ts">
 import { onMounted, ref, type Ref, inject } from 'vue';
+import GoogleSync from '@/components/GoogleSync.vue'
 import { useRouter, type Router } from 'vue-router'
 import md5 from 'md5'
-import {LoginApi, ValidateEmail, ValidateCellphone, RegisterNewUser, ActivateCustomer} from '@/services/login'
+import {LoginApi, ValidateEmail, ValidateCellphone, RegisterNewUser, ActivateCustomer, LoginWithGoogle} from '@/services/login'
 import {Alert, Input, Button, CheckBox} from '@/components/Generics/generics'
 import type { userSchema } from '@/schemas';
 import { useAuthStore } from '@/stores/auth';
@@ -244,35 +246,28 @@ import { alertMessageApp } from '@/composables/alertFunction';
             user.value = remindUser
             remindMe.value = true
         }
-        addConfigGoogle()
     })
-    
-    const addConfigGoogle = () => {
-        const googleClientId = '821546163620-umb951me6kvskm7idoje2tvvaasbmlpl.apps.googleusercontent.com'
-        const app: any = window
-        app.google.accounts.id.initialize({
-            client_id: googleClientId,
-            callback: loginGoogle, 
-            cancel_on_tap_outside: true,
-            login_uri:'http://localhost:8080/login'
-            });
-        app.google.accounts.id.renderButton(
-            document.getElementById("googleButton"),
-            { theme: "outline", size: "medium" }  // customization attributes
-          );
-        app.google.accounts.id.prompt(eventGoogle);
-    }
-    const eventGoogle = (event:any) => {
-        console.log(event)
-    }
 
-    const loginGoogle = (token: any) => {
+    const loginGoogle = async (event: any) => {
         window.focus()
-        console.log('Google toke',token)
-    }
-
-    const addGoogleScript = () => {
-
+        console.log('Google token',event)
+        const response = await LoginWithGoogle({
+            token: event.credential
+        })
+        if (response.status == 200) {
+            const user = response.data.user
+            user.token = {
+                value: response.data.token,
+                expirate: response.data.user.exp
+            }
+            auth.setUser(response.data.user)
+            auth.setModules(response.data.menus)
+            router.push({
+                path:'dashboard'
+            })
+        } else {
+            alertMessage('Atencíon','Cuento no creada', 'warning')
+        }
     }
 
     /**
@@ -326,16 +321,16 @@ import { alertMessageApp } from '@/composables/alertFunction';
      * @param description 
      * @param type 
      */
-    const alertMessage = (title:string, description: string, type: string) => {
-        alertMessageContent.value = {
+     const alertMessage = (title: string, description: string, type: string) => {
+        alertMessageApp.value = {
             title,
             description,
-            type
+            type,
+            show: true
         }
-        showMessage.value = true
         setTimeout(() => {
-            showMessage.value = false
-        }, 2500);
+            alertMessageApp.value.show = false
+        }, 3000);
     }
 
     /**

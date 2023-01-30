@@ -99,6 +99,7 @@ import { alertMessageApp} from '@/composables/alertFunction'
 import { setHelper } from '@/composables/sidebarStatus';
 import { useRouter } from 'vue-router';
 import Tag from '@/components/Generics/Tag.vue';
+import moment from 'moment';
 
 const router = useRouter()
 const strings = {
@@ -303,9 +304,13 @@ const addNewDispatch = async () => {
                 dispatchSelected.value.isCompleted = false
             }
 
-            //Validate dates 
-            if(!dispatchSelected.value.check_out) dispatchSelected.value.out_store = null
-            if(!dispatchSelected.value.check_received) dispatchSelected.value.received = null
+            
+            if (!(await validateDate())) {
+                alertMessage('Error en fechas',
+                'La fecha de recibido debe ser despues a la de salida de tienda',
+                'error');
+                return
+            }
             delete dispatchSelected.value.check_out
             delete dispatchSelected.value.check_received
 
@@ -335,6 +340,18 @@ const addNewDispatch = async () => {
     
 }
 
+const validateDate = async (): Promise<boolean> => {
+    //Validate dates 
+    if(!dispatchSelected.value.check_out) dispatchSelected.value.out_store = null
+    if(!dispatchSelected.value.check_received) dispatchSelected.value.received = null
+    if (dispatchSelected.value.received == null || dispatchSelected.value.out_store == null) {
+        return true
+    } else {
+        return moment(dispatchSelected.value.received).isAfter(dispatchSelected.value.out_store)
+    }
+    
+}
+
 const updateChangesDispatch = async () => {
     if (dispatchSelected.value.out_store == "Invalid date" && dispatchSelected.value.received == "Invalid date") {
         alertMessage('Debes diligenciar las fechas correctamente',
@@ -342,8 +359,20 @@ const updateChangesDispatch = async () => {
             'error');
         return
     }
+
     if(dispatchSelected.value.out_store == "Invalid date") dispatchSelected.value.out_store = null
     if(dispatchSelected.value.received == "Invalid date") dispatchSelected.value.received = null
+
+    if (!(dispatchSelected.value.received == null || dispatchSelected.value.out_store == null)) {
+        const isAfter = moment(dispatchSelected.value.received).isAfter(dispatchSelected.value.out_store)
+        if (!isAfter) {
+            alertMessage('Error en fechas',
+            'La fecha de recibido debe ser despues a la de salida de tienda',
+            'error');
+            return
+        }
+    }
+    
 
     const result = await updateDispatch((store.getUser.token as token).value, dispatchSelected.value)
     if (result.status == 200) {
