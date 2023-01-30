@@ -3,16 +3,22 @@
     <Header2>
       <template v-slot:mainContainer>
         <div class="min-h-[80vh] flex flex-col w-full pt-5">
-          <h1 class="font-bold text-2xl">
+          <h1 class="font-bold text-2xl px-10 py-2">
             {{ strings.wellcome[language] }}
           </h1>
-          <div class="flex flex-row flex-wrap justify-center w-full gap-5 phone:px-10">
-            <div class="h-[300px] phone:w-full laptop:w-2/5">
-              <canvas ref="todayChartCanvas"></canvas>
+          <WelcomeDashboard :name="store.getUser.name" />
+          <div class="flex w-full gap-2 px-10 py-2">
+            <div class="flex flex-row flex-wrap justify-center w-1/2 gap-5 phone:px-10 
+            shadow-xl border rounded-xl">
+              <div class="h-[300px] phone:w-full laptop:w-2/5">
+                <canvas ref="todayChartCanvas"></canvas>
+              </div>
+              <!-- <div class="h-[300px] phone:w-full laptop:w-2/5">
+                <canvas class="phone:!w-full laptop:!w-2/5" ref=""></canvas>
+              </div> -->
             </div>
-            <!-- <div class="h-[300px] phone:w-full laptop:w-2/5">
-              <canvas class="phone:!w-full laptop:!w-2/5" ref=""></canvas>
-            </div> -->
+            <ListsDashboard class="h-[300px]" title="Clients" :clients="[]" />
+
           </div>
         </div>
       </template>
@@ -32,7 +38,12 @@ import type { historicTransactions } from '@/schemas';
 import moment from 'moment';
 import { basicFormatter } from '@/composables/dateFunctions'
 import Header2 from '@/components/Header2.vue';
+import WelcomeDashboard from '@/components/Dashboard/WelcomeDashboard.vue';
+import ListsDashboard from '@/components/Dashboard/ListsDashboard.vue';
 import { useProductStore } from '@/stores/products';
+import type { clientEnterpriseSchema, token } from '@/schemas';
+import { getClients } from '@/services/clients'
+import { useAuthStore } from '@/stores/auth'
 
 const strings = {
   wellcome: {
@@ -44,8 +55,9 @@ const strings = {
     English: 'Sales'
   },
 }
-
+const store = useAuthStore()
 const pdto = useProductStore()
+const clients: Ref<Array<clientEnterpriseSchema>> = ref([])
 const historicLenght: ComputedRef<number> = computed(() => {
   return historic.value.length ?? 0
 })
@@ -71,7 +83,7 @@ var todayChart: Chart;
 var todayChartConfig: ChartConfiguration = {
   type: 'bar',
   data: {
-    labels: ['ytday', 'today'],
+    labels: ['Yesterday', 'Today'],
     datasets: [{
       label: strings.sales[language.value],
       data: [
@@ -117,8 +129,8 @@ const handleTodayChart = () => {
   const today = moment().format('YYYY-MM-DD')
   const yesterday = moment().add(-1, 'd').format('YYYY-MM-DD')
 
-  todayChartConfig.data.labels![0] = (historicLenght.value > 1 ? basicFormatter(moment(historic.value[historicLenght.value - 2].date), 0, 'd') == yesterday ? 'ytday' : basicFormatter(moment(historic.value[historicLenght.value - 2].date), 0, 'day') : 'ytday')
-  todayChartConfig.data.labels![1] = (historicLenght.value > 1 ? basicFormatter(moment(historic.value[historicLenght.value - 1].date), 0, 'd') == today ? 'today' : basicFormatter(moment(historic.value[historicLenght.value - 1].date), 0, 'day') : 'today')
+  todayChartConfig.data.labels![0] = (historicLenght.value > 1 ? basicFormatter(moment(historic.value[historicLenght.value - 2].date), 0, 'd') == yesterday ? 'Yesterday' : basicFormatter(moment(historic.value[historicLenght.value - 2].date), 0, 'day') : 'Yesterday')
+  todayChartConfig.data.labels![1] = (historicLenght.value > 1 ? basicFormatter(moment(historic.value[historicLenght.value - 1].date), 0, 'd') == today ? 'Today' : basicFormatter(moment(historic.value[historicLenght.value - 1].date), 0, 'day') : 'Today')
 
   todayChart.update("active")
 }
@@ -145,7 +157,16 @@ onMounted(() => {
     todayChartCanvas.value ?? '',
     todayChartConfig
   )
+  setClients()
   handleTodayChart()
 })
+
+const setClients = async () => {
+
+  let cancelToken = new AbortController();
+  let { data } = await getClients((store.getUser.token as token).value, '', cancelToken.signal)
+  if (!data) return
+    clients.value = data
+}
 
 </script>
