@@ -4,3 +4,4 @@ package-lock.json
 ./nohup.out
 .env
 public/**/**
+src/schemas/
