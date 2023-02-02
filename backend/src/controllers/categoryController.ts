@@ -1,5 +1,5 @@
 import { OkPacket } from 'mysql';
-import { categoryQuery, categoryToDelete, categoryToSave} from '@/shared'
+import { categoryQuery, categoryToDelete, categoryToSave} from '@/schemas'
 import { initDatabase, DataBase } from '../classes/db';
 import { Request, Response } from "express";
 

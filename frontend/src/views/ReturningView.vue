@@ -29,8 +29,8 @@
                     </span>
                     <div class="flex">
                         <Tag class="phone:text-sm tablet:text-base" title="Relanded" v-if="relanded" v-model="relanded" @click="unSetReturn()" />
-                        <Tag class="phone:text-xs tablet:text-base" title="This month" />
-                        <Tag class="phone:text-xs tablet:text-base" title="Last Month" />
+                        <Tag class="phone:text-xs tablet:text-base" title="This month" v-model="dates.thisMonth" @update:model-value="listReturns"/>
+                        <Tag class="phone:text-xs tablet:text-base" title="Last Month" v-model="dates.lastMonth" @update:model-value="listReturns"/>
                     </div>
                     <!--    <Tag title="" /> -->
                 </div>
@@ -101,6 +101,7 @@ import { setHelper } from '@/composables/sidebarStatus';
 import { alertMessageApp} from '@/composables/alertFunction'
 import { useRouter } from 'vue-router';
 import Tag from '@/components/Generics/Tag.vue';
+import moment from 'moment';
 
 const router = useRouter()
 const strings = {
@@ -169,6 +170,11 @@ const unSetReturn = () => {
     returnSelected.value = returnCache
 }
 
+const dates = ref({
+    thisMonth: true,
+    lastMonth: false
+})
+
 const updateFinal = (event: any) => {
     returnSelected.value = event
 }
@@ -208,9 +214,28 @@ const listReturns = async () => {
         console.log(router.currentRoute.value.query)
         filters['q.id'] = router.currentRoute.value.query.id
     }
+    if(dates.value.thisMonth && dates.value.lastMonth){
+        filters = {
+            date: 'created_at',
+            min_date: moment().add(-1, 'month').startOf('month').format('YYYY-MM-DD'),
+            max_date: moment().endOf('month').format('YYYY-MM-DD')
+        }
+    }else if(dates.value.thisMonth){
+        filters = {
+            date: 'created_at',
+            min_date: moment().startOf('month').format('YYYY-MM-DD'),
+            max_date: moment().endOf('month').format('YYYY-MM-DD')
+        }
+    }else if(dates.value.lastMonth){
+        filters = {
+            date: 'created_at',
+            min_date: moment().add(-1, 'month').startOf('month').format('YYYY-MM-DD'),
+            max_date: moment().add(-1, 'month').endOf('month').format('YYYY-MM-DD')
+        }
+    }
 
     let { data } = await getReturn((store.getUser.token as token).value, { 'c.name': filter.value, ...filters }, cancelToken.value.signal)
-    if (!data) return
+    if (!data) returns.value = []
     cancelToken.value = undefined
     returns.value = data
     console.log(returns)

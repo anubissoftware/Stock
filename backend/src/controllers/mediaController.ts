@@ -1,5 +1,5 @@
 import { saveLocalResource } from './../handlers/storageHandler';
-import { mediaUpdateDTO, enterpriseMediaInfo } from '@/shared'
+import { mediaUpdateDTO, enterpriseMediaInfo } from '@/schemas'
 import { Request, Response } from "express";
 import { DataBase, initDatabase } from "../classes/db";
 import fs from 'fs'

@@ -2,7 +2,7 @@ import { Response } from "express";
 import { OkPacket } from "mysql";
 import { Socket } from "socket.io";
 import { DataBase, initDatabase } from "../classes/db";
-import { userSocketConnected } from "@/shared";
+import { userSocketConnected } from "@/schemas";
 
 export default (socket: Socket): void => {
     /**

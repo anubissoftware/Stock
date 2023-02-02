@@ -12,6 +12,12 @@ interface soldProductType {
     }[],
     wholesale: boolean
 }
+export interface rentProductType {
+    products: {
+        item_id: number,
+        amnt: number
+    }[],
+}
 type historicFilters = {
     startDate: string,
     endDate: string
@@ -93,6 +99,8 @@ export const useProductStore = defineStore('products', () => {
         pdto.onLosses = 0
         pdto.onSales = 0
         pdto.sold = 0
+        pdto.rented = 0
+        pdto.onRenting = 0
         pdto.toCraft = 0
         pdto.expired = 0
         products.value.unshift(pdto)
@@ -101,6 +109,16 @@ export const useProductStore = defineStore('products', () => {
         products.value = products.value.map(item => {
             if (item.id == updated.id) {
                 item = updated
+            }
+            return item
+        })
+    }
+    const rentProduct = (body: rentProductType) => {
+        products.value = products.value.map(item => {
+            const changed = body.products.filter(pdto => pdto.item_id == item.id)
+            if(changed.length > 0){
+                item.stock -= changed[0].amnt
+                item.rented += changed[0].amnt
             }
             return item
         })
@@ -235,6 +253,6 @@ export const useProductStore = defineStore('products', () => {
         listProducts, listHistoric, listCategories, unsetProducts, setProducts, setHistoric,
         setCategories, addCategories, editCategory, deleteCategory, removeProduct, addProduct,
         updateProduct, soldProduct, boughtProducts, expiredProduct, craftedProduct, getProducts,
-        getHistoric, loadCategories
+        getHistoric, loadCategories, rentProduct
     }
 })

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { OkPacket } from "mysql";
-import { productsInCartType, quotationSchema, dispatchDetailSchema, dispatchScheme, returnScheme, returnDetailSchema } from "@/shared";
+import { productsInCartType, quotationSchema, dispatchDetailSchema, dispatchScheme, returnScheme, returnDetailSchema, quotationDetailSchema } from "@/schemas";
 import { DataBase, initDatabase } from "../classes/db";
 import { sendEmail } from "./emailController";
 import { join } from 'path'
@@ -91,7 +91,7 @@ export const editQuotation = async (req: Request, res: Response): Promise<quotat
             if (pdto.detail_id) {
                 const pdtoQuery: string = "UPDATE quotationDetail SET amount = ?, `value` = ?, `from` = ?, `to` = ?, days = ? WHERE id = ?"
                 const pdtoValues: Array<string> = [
-                    pdto.amount.toString(), pdto.value.toString(), pdto.start_rent ? moment(pdto.start_rent).format('YYYY-MM-DD') : null,
+                    pdto.amount.toString(), values.isRenting ? pdto.renting.toString() : pdto.value.toString(), pdto.start_rent ? moment(pdto.start_rent).format('YYYY-MM-DD') : null,
                     pdto.end_rent ? moment(pdto.end_rent).format('YYYY-MM-DD') : null, pdto.days?.toString(), pdto.detail_id.toString()
                 ]
                 const rspto: OkPacket = await db.updateQuery(pdtoQuery, pdtoValues)
@@ -101,7 +101,7 @@ export const editQuotation = async (req: Request, res: Response): Promise<quotat
             } else {
                 const pdtoQuery: string = "INSERT INTO quotationDetail (item_id, amount, `value`, quotation_id, `from`, `to`, `days`) VALUES (?, ?, ?, ?, ?, ?, ?)"
                 const pdtoValues: Array<string> = [
-                    pdto.id.toString(), pdto.amount.toString(), pdto.value.toString(),
+                    pdto.id.toString(), pdto.amount.toString(), values.isRenting ? pdto.renting.toString() : pdto.value.toString(),
                     values.id.toString(), pdto.start_rent ?? null, pdto.end_rent ?? null, pdto.days?.toString()
                 ]
                 const rspto: OkPacket = await db.insertQuery(pdtoQuery, pdtoValues)
@@ -370,6 +370,7 @@ export const createNewDispatch = async (req:Request, res: Response, io: Server):
         values.quotation_id.toString(), values.created_by.toString()
     ]
     const resp: OkPacket = await db.insertQuery(queryDispatch, valuesDispatch)
+    const updatePdtos = []
     
     try{
         const pdtos: Array<dispatchDetailSchema> = req.body.products
@@ -384,12 +385,19 @@ export const createNewDispatch = async (req:Request, res: Response, io: Server):
                 pdto.amount.toString(), 
             ]
 
+            if(values.out_store){
+                updatePdtos.push({
+                    qdi: pdto.quotation_detail_id,
+                    amnt: pdto.amount
+                })
+            }
+
             //Update quotationDetail
             const queryQuotationDetail: string = `UPDATE quotationDetail SET dispatching = dispatching + ? WHERE id = ?`
-            const values: Array<string> = [
+            const valuesU: Array<string> = [
                 pdto.amount.toString(), pdto.quotation_detail_id.toString()
             ]
-            db.updateQuery(queryQuotationDetail, values)
+            db.updateQuery(queryQuotationDetail, valuesU)
         })
         db.insertQuery(query, value)
         let queryQuotation: string;
@@ -417,6 +425,9 @@ export const createNewDispatch = async (req:Request, res: Response, io: Server):
         return null
     }
     db.connection.commit()
+    if(updatePdtos.length > 0){
+        updateStockDispatched(res, updatePdtos, values.quotation_id.toString(), io)
+    }
     db.closeConnection()    
 
     if(resp.insertId){
@@ -429,6 +440,45 @@ export const createNewDispatch = async (req:Request, res: Response, io: Server):
         res.status(204)
         res.end()
         return null
+    }
+}
+
+export const updateStockDispatched = async (res: Response, params: {qdi: number, amnt: number, item_id: number }[], quotation_id: string, io: Server) => {
+    const db: DataBase = await initDatabase(res)
+    const qdis: Array<string> = params.map((det) => det.qdi.toString())
+    const queryD: string = `
+        SELECT item_id, quotation_id, amount, value, id FROM quotationDetail WHERE id in (${qdis.join(',')})
+    `
+    const valD: Array<string> = []
+    const queryQ: string = `SELECT isRenting, enterprise_id, discount FROM quotation WHERE id = ?`
+    const valQ: Array<string> = [quotation_id]
+    const details: Array<quotationDetailSchema> = await db.readQuery<quotationDetailSchema>(queryD, valD)
+    const quotation: Array<quotationSchema> = await db.readQuery<quotationSchema>(queryQ, valQ)
+    console.log('quotation_id', quotation_id, quotation)
+    if(quotation.length == 0) return
+
+    params = params.map(pr => {
+        pr.item_id = details.filter(dt => dt.id == pr.qdi)[0].item_id
+        return pr
+    })
+
+    if(quotation[0].isRenting){
+        for (const dtl of params){
+            const queryRenting = `UPDATE products SET stock = stock - ${dtl.amnt}, 
+            rented = rented + ${dtl.amnt}
+            WHERE id = ${dtl.item_id}`
+            const resp: OkPacket = await db.updateQuery(queryRenting, [])
+        }
+        console.log('details:', details)
+        io.to('e' + quotation[0].enterprise_id).emit('productRented', {products : params})
+    }else{
+        for (const dtl of details){
+            const querySell = `UPDATE products SET stock = stock - ${dtl.amount},
+            onSales = onSales + (${dtl.amount * dtl.value}), sold = sold + ${dtl.amount}
+            WHERE id = ${dtl.item_id}`
+            const resp: OkPacket = await db.updateQuery(querySell, [])
+        }
+        // io.to('e'+ quotation[0].enterprise_id).emit('')
     }
 }
 
@@ -468,7 +518,7 @@ export const dispatchDetail = async (req: Request, res: Response) => {
     res.json(rps)
 }
 
-export const dispatchUpdate = async (req: Request, res: Response) => {
+export const dispatchUpdate = async (req: Request, res: Response, io: Server) => {
     try {
         const payload = req.body
         const query: string = "UPDATE dispatching SET out_store = ?, received = ? WHERE id = ?"
@@ -478,6 +528,16 @@ export const dispatchUpdate = async (req: Request, res: Response) => {
         const db: DataBase = await initDatabase(res)
         const rps: OkPacket = await db.updateQuery(query, values)
         console.log(rps)
+        if(payload.discount){
+            const queryData = `
+                SELECT dd.quotation_detail_id as qdi, dd.amount as amnt, qd.quotation_id, qd.item_id FROM dispatchingDetail as dd
+                INNER JOIN quotationDetail as qd ON qd.id = dd.quotation_detail_id
+                WHERE dd.dispatch_id = ? 
+            `
+            const valuesData = [payload.id]
+            const data: Array<any> = await db.readQuery(queryData, valuesData)
+            updateStockDispatched(res, data, data[0].quotation_id, io)
+        }
         db.closeConnection()
         if (rps.affectedRows > 0) {
             res.json({
@@ -619,3 +679,10 @@ export const returnUpdate = async (req: Request, res: Response) => {
         console.log(error)
     }
 }
+
+export const listInvoices = async (req: Request, res: Response) => {
+    const query: string = `SELECT * FROM invoicing WHERE deleted = 0`
+    const db: DataBase = await initDatabase(res, req)
+    // const invoices
+}
+

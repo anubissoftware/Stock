@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { recipeSchema, productToEmit, productSchema, productToSave, productToRemove, productToSell, recipeCrafting, productInMenu, productsToSell, decreaseStock} from '@/shared'
+import { recipeSchema, productToEmit, productSchema, productToSave, productToRemove, productToSell, recipeCrafting, productInMenu, productsToSell, decreaseStock} from '@/schemas'
 import { Request, Response } from "express";
 import { OkPacket } from "mysql";
 import { DataBase, initDatabase } from "../classes/db";
@@ -121,9 +121,8 @@ export const updateProduct = async (req: Request, res: Response): Promise<object
     pdtBody.categories = JSON.stringify({values: [pdtBody.categories.id]})
     const keysBody = Object.keys(pdtBody)
     if (pdtBody && keysBody.length > 0 && pdtBody.id) {
-        let values: Array<string> = [pdtBody.id.toString()]
         const db: DataBase = await initDatabase(res);
-        const response: OkPacket = await db.updateQueryDynamic('products', pdtBody, values);
+        const response: OkPacket = await db.updateQueryDynamic('products', pdtBody);
         if (response.affectedRows > 0) {
             res.status(200)
             res.end()

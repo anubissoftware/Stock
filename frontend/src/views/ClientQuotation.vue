@@ -71,6 +71,7 @@ const getImageUrl = (name: string) => {
 const docViewer: Ref<HTMLIFrameElement | undefined> = ref()
 
 const rejectingQuotation = () => {
+    if(quotation.value.stage > 0) return
     modalComp.modal.show({
         title: 'Rechazar cotización',
         description: '¿Deseas marcar esta cotización como <strong>rechazada</strong>?',
@@ -84,6 +85,7 @@ const rejectingQuotation = () => {
 }
 
 const approvingQuotation = () => {
+    if(quotation.value.stage > 0) return
     modalComp.modal.show({
         title: 'Aprobar cotización',
         description: '¿Deseas marcar esta cotización como <strong>aprobada</strong>?',
@@ -105,8 +107,8 @@ onMounted(async () => {
     socket.socket = io(backendURL)
 
     socket.socket.emit('joinQuotation', {hash: router.currentRoute.value.query.v?.toString() ?? ''})
-    socket.socket.on('connected', () => {
-        console.log('hola')
+    socket.socket.on('quotationStage', ({stage}) => {
+        quotation.value.stage = stage
     })
 })
 

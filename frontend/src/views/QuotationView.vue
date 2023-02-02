@@ -28,6 +28,8 @@
                     <Tag title="Pending" v-model="filters.pending" />
                     <Tag title="Rejected" v-model="filters.rejected" />
                     <Tag title="Approved" v-model="filters.approved" />
+                    <Tag title="This month" v-model="filters.thisMonth" @update:model-value="getQuotations"/>
+                    <Tag title="Last month" v-model="filters.lastMonth" @update:model-value="getQuotations"/>
                 </div>
 
                 <DataTable :config-table="configTable" :header="headers" :data="listedQuotations"
@@ -51,14 +53,14 @@
                             >
                             Ver remisiones
                         </div>
-                        <div v-if="quoteSelected.stage == 4 || quoteSelected.stage == 5"
+                        <div v-if="(quoteSelected.stage == 4 || quoteSelected.stage == 5) && quoteSelected.isRenting == 1"
                         @click="creatingReturn()">
                             Crear devolución
                         </div>
                         <div v-if="quoteSelected.stage >= 5" @click="watchReturns()">
                             Ver devoluciones
                         </div>
-                        <div v-if="quoteSelected.stage == 6">
+                        <div v-if="(quoteSelected.stage == 6) || (quoteSelected.stage >= 2 && quoteSelected.isRenting != 1)">
                             Facturar
                         </div>
                         <div v-if="quoteSelected.stage >= 7">
@@ -113,12 +115,16 @@ interface quotationFilters {
     pending: boolean;
     rejected: boolean;
     approved: boolean;
+    thisMonth: boolean;
+    lastMonth: boolean;
 }
 const filters: Ref<quotationFilters> = ref({
     byMe: false,
     pending: true,
     rejected: true,
-    approved: true
+    approved: true,
+    thisMonth: true,
+    lastMonth: false
 })
 const listedQuotations: ComputedRef<Array<quotationSchema>> = computed(() => {
     return quotations.value.filter((quote) => {
@@ -196,8 +202,28 @@ const getQuotations = async () => {
     }
 
     cancelToken.value = new AbortController()
+    let queries: any = {}
+    if(filters.value.thisMonth && filters.value.lastMonth){
+        queries = {
+            date: 'creation',
+            min_date: moment().add(-1, 'month').startOf('month').format('YYYY-MM-DD'),
+            max_date: moment().endOf('month').format('YYYY-MM-DD')
+        }
+    }else if(filters.value.thisMonth){
+        queries = {
+            date: 'creation',
+            min_date: moment().startOf('month').format('YYYY-MM-DD'),
+            max_date: moment().endOf('month').format('YYYY-MM-DD')
+        }
+    }else if(filters.value.lastMonth){
+        queries = {
+            date: 'creation',
+            min_date: moment().add(-1, 'month').startOf('month').format('YYYY-MM-DD'),
+            max_date: moment().add(-1, 'month').endOf('month').format('YYYY-MM-DD')
+        }
+    }
 
-    let { data } = await listQuotations((auth.getUser.token as token).value, {'c.name': filter.value}, cancelToken.value.signal)
+    let { data } = await listQuotations((auth.getUser.token as token).value, {'c.name': filter.value, ...queries}, cancelToken.value.signal)
     cancelToken.value = undefined
     if (data) {
         quotations.value = data

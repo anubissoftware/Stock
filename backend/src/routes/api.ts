@@ -6,7 +6,7 @@ import { saveEnterpriseLogo } from './../controllers/mediaController';
 import { validateEmail, validateCellphone, registerUser } from '../controllers/loginController';
 import { sellItems, buyItems, craftItems, expireItems, listPublishedProducts, listHistoric,listAllProducts, registerProduct, removeProduct, updateProduct } from '../controllers/productController';
 import { getUnits } from '../controllers/unitController';
-import { categoryQuery, productToEmit, decreaseStock, modulesSchema, clientEnterpriseSchema, projectSchema, quotationSchema,  userData, UserLogin, userLogOut, dispatchScheme, returnScheme } from '@/shared';
+import { categoryQuery, productToEmit, decreaseStock, modulesSchema, clientEnterpriseSchema, projectSchema, quotationSchema,  userData, UserLogin, userLogOut, dispatchScheme, returnScheme } from '@/schemas';
 import { deleteCategory, getCategories, saveCategory, updateCategory } from '../controllers/categoryController';
 import { Express, NextFunction, Request, Response } from "express"
 import { Server } from "socket.io"
@@ -356,6 +356,7 @@ export default (app: Express, io: Server): void => {
 
         if(reject){
             io.to('e'+ req.userData.enterprise_id).emit('quotationChange', {stage, id: payload.id})
+            io.to(Buffer.from(payload.id.toString()).toString('base64')).emit('quotationStage', {stage})
         }
     })
 
@@ -366,6 +367,7 @@ export default (app: Express, io: Server): void => {
 
         if(approved){
             io.to('e'+ req.userData.enterprise_id).emit('quotationChange', {stage, id: payload.id})
+            io.to(Buffer.from(payload.id.toString()).toString('base64')).emit('quotationStage', {stage})
         }
     })
 
@@ -379,6 +381,7 @@ export default (app: Express, io: Server): void => {
                 ok: true
             })
             io.to('e'+ payload.enterpriseId).emit('quotationChange', {stage, id: payload.id})
+            io.to(Buffer.from(payload.id.toString()).toString('base64')).emit('quotationStage', {stage})
         }
     })
 
@@ -392,6 +395,7 @@ export default (app: Express, io: Server): void => {
                 ok: true
             })
             io.to('e'+ payload.enterpriseId).emit('quotationChange', {stage, id: payload.id})
+            io.to(Buffer.from(payload.id.toString()).toString('base64')).emit('quotationStage', {stage})
         }
     })
 
@@ -424,7 +428,7 @@ export default (app: Express, io: Server): void => {
     app.get('/dispatch/', middleware, listDispatch)
     app.get('/dispatch/detail', middleware, dispatchDetail)
     app.post('/dispatch/update', middleware, async (req: Request, res: Response) => {
-        const data: Array<string> = await dispatchUpdate(req, res)
+        const data: Array<string> = await dispatchUpdate(req, res, io)
         //create ws
         if(data){
             io.to('e' + req.userData.enterprise_id).emit('dispatchUpdate', data)
@@ -448,4 +452,6 @@ export default (app: Express, io: Server): void => {
             io.to('e' + req.userData.enterprise_id).emit('returnUpdate', data)
         }
     })
+
+    app.get('/invoicing/', middleware, () =>{})
 }

@@ -1,6 +1,6 @@
 import { DataBase, initDatabase } from './../classes/db';
 import { Request, Response } from "express";
-import { clientEnterpriseSchema, projectSchema } from '@/shared';
+import { clientEnterpriseSchema, projectSchema } from '@/schemas';
 
 import { join } from 'path'
 import * as dotenv from 'dotenv'

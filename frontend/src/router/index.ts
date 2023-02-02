@@ -79,6 +79,11 @@ const router = createRouter({
       path: "/dashboard/partners",
       name: "partners",
       component: async () => import('@/views/PartnersView.vue')
+    },
+    {
+      path: "/dashboard/invoicing",
+      name: "invoicing",
+      component: async () => import('@/views/InvoicingView.vue')
     }
   ]
 })

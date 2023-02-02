@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { DataBase, initDatabase } from "../classes/db";
-import { unitSchema } from '@/shared'
+import { unitSchema } from '@/schemas'
 
 
 export const getUnits = async (req: Request, res: Response): Promise<void> => {

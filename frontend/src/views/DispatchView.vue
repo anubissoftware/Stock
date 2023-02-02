@@ -28,8 +28,8 @@
                         Filtros:
                     </span>
                     <Tag title="Relanded" v-if="relanded" v-model="relanded" @click="unSetDispatch()" />
-                    <Tag title="This month" />
-                    <Tag title="Last Month" />
+                    <Tag title="This month" v-model="dates.thisMonth" @update:model-value="listDispatchs"/>
+                    <Tag title="Last Month" v-model="dates.lastMonth" @update:model-value="listDispatchs"/>
                     <!--    <Tag title="" /> -->
                 </div>
 
@@ -75,10 +75,10 @@
                         <div @click="close(); editDispatch()">
                             Edit
                         </div>
-                        <div v-if="dispatchSelected.out_store == null">
-                            Saliendo de tienda
+                        <div v-if="dispatchSelected.out_store == null" @click="setOutStore">
+                            Saliendo de bodega
                         </div>
-                        <div v-if="dispatchSelected.received == null">
+                        <div v-if="dispatchSelected.received == null" @click="setReceived">
                             Entregado en obra
                         </div>
                     </template>
@@ -138,6 +138,11 @@ const strings = {
         English: "There aren't dispatchs registered"
     }
 }
+
+const dates = ref({
+    thisMonth: true,
+    lastMonth: false
+})
 const dispatchCache = {
     id: '',
     user_id: '',
@@ -219,8 +224,28 @@ const listDispatchs = async () => {
         filters['q.id'] = router.currentRoute.value.query.id
     }
 
+    if(dates.value.thisMonth && dates.value.lastMonth){
+        filters = {
+            date: 'created_at',
+            min_date: moment().add(-1, 'month').startOf('month').format('YYYY-MM-DD'),
+            max_date: moment().endOf('month').format('YYYY-MM-DD')
+        }
+    }else if(dates.value.thisMonth){
+        filters = {
+            date: 'created_at',
+            min_date: moment().startOf('month').format('YYYY-MM-DD'),
+            max_date: moment().endOf('month').format('YYYY-MM-DD')
+        }
+    }else if(dates.value.lastMonth){
+        filters = {
+            date: 'created_at',
+            min_date: moment().add(-1, 'month').startOf('month').format('YYYY-MM-DD'),
+            max_date: moment().add(-1, 'month').endOf('month').format('YYYY-MM-DD')
+        }
+    }
+
     let { data } = await getDispatch((store.getUser.token as token).value, { 'c.name': filter.value, ...filters }, cancelToken.value.signal)
-    if (!data) return
+    if (!data) dispatchs.value = []
     cancelToken.value = undefined
     dispatchs.value = data
     console.log(dispatchs)
@@ -228,6 +253,11 @@ const listDispatchs = async () => {
 
 onMounted(() => {
     socket.socket?.on('dispatchCreate', (body: dispatchScheme) => {
+        if(dispatchs.value.length > 0){
+            //
+        }else{
+            dispatchs.value = []
+        }
         dispatchs.value.unshift(body)
     })
     socket.socket?.on('dispatchUpdate', (body: dispatchScheme) => {
@@ -358,6 +388,10 @@ const validateDate = async (): Promise<boolean> => {
     
 }
 
+const dispatching = () => {
+    dispatchSelected.value.out_store = moment().format('YYYY-MM-DD HH:ii:ss')
+}
+
 const updateChangesDispatch = async () => {
     if (dispatchSelected.value.out_store == "Invalid date" && dispatchSelected.value.received == "Invalid date") {
         alertMessage('Debes diligenciar las fechas correctamente',
@@ -385,6 +419,28 @@ const updateChangesDispatch = async () => {
         modalDispatch.value = false
         unSetDispatch()
     }
+}
+
+const setOutStore = async () => {
+    console.log(dispatchSelected.value)
+    const payload = {
+        id: dispatchSelected.value.id,
+        out_store: moment().format('YYYY-MM-DD HH:mm:ss'),
+        discount: true
+    }
+    const result = await updateDispatch((store.getUser.token as token).value, payload)
+    contextMenuData.value.show = false
+}
+
+const setReceived = async () => {
+    console.log(dispatchSelected.value)
+    const payload = {
+        id: dispatchSelected.value.id,
+        out_store: moment(dispatchSelected.value.out_store).format('YYYY-MM-DD HH:mm:ss'),
+        received: moment().format('YYYY-MM-DD HH:mm:ss')
+    }
+    const result = await updateDispatch((store.getUser.token as token).value, payload)
+    contextMenuData.value.show = false
 }
 
 </script>

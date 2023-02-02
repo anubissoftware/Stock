@@ -1,4 +1,4 @@
-import { modulesSchema, userData, UserLogin} from '@/shared'
+import { modulesSchema, userData, UserLogin} from '@/schemas'
 import { OkPacket } from "mysql"
 import { Response, Request } from "express";
 import { DataBase, initDatabase } from "../classes/db";

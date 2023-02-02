@@ -7,7 +7,7 @@
     :description="alertMessageContent.description" :type="alertMessageContent.type" />
 </template>
 <script setup lang="ts">
-import { computed, onBeforeMount, onMounted, onUnmounted, ref, watch,  } from 'vue';
+import { computed, onBeforeMount, onMounted, onUnmounted, ref, watch, } from 'vue';
 import { ModalSync } from '@/components/Generics/generics'
 import { ModalProduct } from '@/components/Store/componentsStore'
 import { modalComp, modalProductSync } from '@/classes/Modal'
@@ -20,6 +20,7 @@ import socket from '@/composables/socket'
 import { alertMessageApp } from '@/composables/alertFunction'
 import { useAuthStore } from './stores/auth'
 import { useProductStore } from './stores/products';
+import type { rentProductType } from '@/stores/products'
 
 const showMessage = ref(false)
 const alertMessageContent: any = ref({
@@ -50,7 +51,7 @@ const user = computed(() => {
   return auth.getUser
 })
 
-interface realTimeNotification extends notificationSchema{
+interface realTimeNotification extends notificationSchema {
   ok: boolean
 }
 
@@ -58,7 +59,7 @@ const notificationAlert = (notification: realTimeNotification) => {
   alertMessageContent.value = {
     title: notification.title ?? '',
     description: notification.description ?? '',
-    type: notification.ok ? 'success' : 'error', 
+    type: notification.ok ? 'success' : 'error',
     show: true
   }
   setTimeout(() => {
@@ -68,10 +69,10 @@ const notificationAlert = (notification: realTimeNotification) => {
 
 const doTheThing = () => {
   if (pdto.listProducts?.length == 0) {
-    pdto.getProducts({ userToken:(auth.getUser.token as token).value, filter: '' })
+    pdto.getProducts({ userToken: (auth.getUser.token as token).value, filter: '' })
   }
   if (pdto.listHistoric?.length == 0) {
-    pdto.getHistoric({ token:(auth.getUser.token as token).value, filtros: '' })
+    pdto.getHistoric({ token: (auth.getUser.token as token).value, filtros: '' })
   }
 
   if (!socket.socket) {
@@ -108,6 +109,10 @@ const doTheThing = () => {
       console.log('sold')
       pdto.soldProduct(body)
     })
+    socket.socket.on('productRented', (body: rentProductType) => {
+      console.log('renting', body)
+      pdto.rentProduct(body)
+    })
     socket.socket.on('productBought', (body: any) => {
       pdto.boughtProducts(body)
     })
@@ -131,7 +136,7 @@ const doTheThing = () => {
     })
   }
   if (pdto.listCategories.length == 0) {
-    pdto.loadCategories({ token: (auth.getUser.token as token).value, filtros: ''})
+    pdto.loadCategories({ token: (auth.getUser.token as token).value, filtros: '' })
   }
 }
 
@@ -142,7 +147,7 @@ watch(
     let isIn = false
     const routes = ['/dashboard']
     routes.forEach((route) => {
-      if(path.includes(route)){
+      if (path.includes(route)) {
         isIn = true
       }
     })

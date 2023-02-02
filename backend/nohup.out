@@ -413,6 +413,7 @@ src/routes/api.ts(414,44): error TS2554: Expected 3 arguments, but got 2.
 
 
 11:29:43 AM - Found 0 errors. Watching for file changes.
+<<<<<<< Updated upstream
 c3:07:46 PM - File change detected. Starting incremental compilation...
 
 
@@ -518,3 +519,292 @@ src/controllers/userController.ts(103,35): error TS2339: Property 'id' does not 
 
 
 9:45:37 PM - Found 0 errors. Watching for file changes.
+=======
+c1:51:10 PM - Starting compilation in watch mode...
+
+src/controllers/loginController.ts(7,30): error TS2307: Cannot find module 'google-auth-library' or its corresponding type declarations.
+
+1:51:12 PM - Found 1 error. Watching for file changes.
+c1:51:32 PM - Starting compilation in watch mode...
+
+
+1:51:34 PM - Found 0 errors. Watching for file changes.
+c8:07:27 AM - Starting compilation in watch mode...
+
+
+8:07:30 AM - Found 0 errors. Watching for file changes.
+c8:08:14 AM - Starting compilation in watch mode...
+
+
+8:08:17 AM - Found 0 errors. Watching for file changes.
+c8:08:50 AM - Starting compilation in watch mode...
+
+
+8:08:53 AM - Found 0 errors. Watching for file changes.
+>>>>>>> Stashed changes
+c9:55:48 AM - Starting compilation in watch mode...
+
+
+9:55:50 AM - Found 0 errors. Watching for file changes.
+c11:16:51 AM - Starting compilation in watch mode...
+
+
+11:16:54 AM - Found 0 errors. Watching for file changes.
+c11:31:06 AM - File change detected. Starting incremental compilation...
+
+
+11:31:08 AM - Found 0 errors. Watching for file changes.
+c11:31:14 AM - File change detected. Starting incremental compilation...
+
+
+11:31:14 AM - Found 0 errors. Watching for file changes.
+c11:35:19 AM - File change detected. Starting incremental compilation...
+
+
+11:35:19 AM - Found 0 errors. Watching for file changes.
+c1:47:57 PM - Starting compilation in watch mode...
+
+
+1:47:59 PM - Found 0 errors. Watching for file changes.
+c3:26:45 PM - File change detected. Starting incremental compilation...
+
+
+3:26:45 PM - Found 0 errors. Watching for file changes.
+c3:28:32 PM - File change detected. Starting incremental compilation...
+
+
+3:28:32 PM - Found 0 errors. Watching for file changes.
+c3:31:42 PM - File change detected. Starting incremental compilation...
+
+
+3:31:43 PM - Found 0 errors. Watching for file changes.
+c3:31:55 PM - File change detected. Starting incremental compilation...
+
+
+3:31:55 PM - Found 0 errors. Watching for file changes.
+c3:33:05 PM - File change detected. Starting incremental compilation...
+
+
+3:33:05 PM - Found 0 errors. Watching for file changes.
+c3:33:29 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(126,85): error TS2554: Expected 2 arguments, but got 3.
+
+3:33:30 PM - Found 1 error. Watching for file changes.
+c3:33:38 PM - File change detected. Starting incremental compilation...
+
+
+3:33:38 PM - Found 0 errors. Watching for file changes.
+c3:35:01 PM - File change detected. Starting incremental compilation...
+
+
+3:35:01 PM - Found 0 errors. Watching for file changes.
+c3:36:01 PM - File change detected. Starting incremental compilation...
+
+
+3:36:01 PM - Found 0 errors. Watching for file changes.
+c3:36:38 PM - File change detected. Starting incremental compilation...
+
+
+3:36:38 PM - Found 0 errors. Watching for file changes.
+c3:40:08 PM - File change detected. Starting incremental compilation...
+
+
+3:40:08 PM - Found 0 errors. Watching for file changes.
+c3:40:28 PM - File change detected. Starting incremental compilation...
+
+
+3:40:29 PM - Found 0 errors. Watching for file changes.
+c3:43:17 PM - File change detected. Starting incremental compilation...
+
+
+3:43:17 PM - Found 0 errors. Watching for file changes.
+c3:46:37 PM - File change detected. Starting incremental compilation...
+
+
+3:46:37 PM - Found 0 errors. Watching for file changes.
+c3:50:45 PM - File change detected. Starting incremental compilation...
+
+
+3:50:45 PM - Found 0 errors. Watching for file changes.
+c3:52:04 PM - File change detected. Starting incremental compilation...
+
+
+3:52:04 PM - Found 0 errors. Watching for file changes.
+c3:52:05 PM - File change detected. Starting incremental compilation...
+
+
+3:52:05 PM - Found 0 errors. Watching for file changes.
+c3:52:38 PM - File change detected. Starting incremental compilation...
+
+
+3:52:38 PM - Found 0 errors. Watching for file changes.
+c3:56:06 PM - File change detected. Starting incremental compilation...
+
+
+3:56:06 PM - Found 0 errors. Watching for file changes.
+c4:05:08 PM - File change detected. Starting incremental compilation...
+
+
+4:05:08 PM - Found 0 errors. Watching for file changes.
+c4:24:27 PM - File change detected. Starting incremental compilation...
+
+
+4:24:27 PM - Found 0 errors. Watching for file changes.
+c7:21:02 PM - File change detected. Starting incremental compilation...
+
+
+7:21:03 PM - Found 0 errors. Watching for file changes.
+c7:21:31 PM - File change detected. Starting incremental compilation...
+
+
+7:21:31 PM - Found 0 errors. Watching for file changes.
+c7:36:19 PM - File change detected. Starting incremental compilation...
+
+
+7:36:19 PM - Found 0 errors. Watching for file changes.
+c7:45:07 PM - File change detected. Starting incremental compilation...
+
+
+7:45:07 PM - Found 0 errors. Watching for file changes.
+c3:09:19 PM - File change detected. Starting incremental compilation...
+
+
+3:09:19 PM - Found 0 errors. Watching for file changes.
+c9:06:39 AM - Starting compilation in watch mode...
+
+
+9:06:41 AM - Found 0 errors. Watching for file changes.
+c9:06:46 AM - File change detected. Starting incremental compilation...
+
+
+9:06:47 AM - Found 0 errors. Watching for file changes.
+c9:16:16 AM - File change detected. Starting incremental compilation...
+
+
+9:16:16 AM - Found 0 errors. Watching for file changes.
+c9:16:48 AM - File change detected. Starting incremental compilation...
+
+
+9:16:48 AM - Found 0 errors. Watching for file changes.
+c9:23:01 AM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(429,86): error TS2554: Expected 4 arguments, but got 5.
+
+9:23:01 AM - Found 1 error. Watching for file changes.
+c9:37:38 AM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(429,86): error TS2554: Expected 4 arguments, but got 5.
+
+9:37:38 AM - Found 1 error. Watching for file changes.
+c9:38:01 AM - File change detected. Starting incremental compilation...
+
+
+9:38:01 AM - Found 0 errors. Watching for file changes.
+c9:38:05 AM - File change detected. Starting incremental compilation...
+
+
+9:38:05 AM - Found 0 errors. Watching for file changes.
+c9:39:38 AM - File change detected. Starting incremental compilation...
+
+
+9:39:38 AM - Found 0 errors. Watching for file changes.
+c9:40:25 AM - File change detected. Starting incremental compilation...
+
+
+9:40:25 AM - Found 0 errors. Watching for file changes.
+c9:40:32 AM - File change detected. Starting incremental compilation...
+
+
+9:40:32 AM - Found 0 errors. Watching for file changes.
+c9:43:51 AM - File change detected. Starting incremental compilation...
+
+
+9:43:51 AM - Found 0 errors. Watching for file changes.
+c9:50:44 AM - File change detected. Starting incremental compilation...
+
+
+9:50:44 AM - Found 0 errors. Watching for file changes.
+c9:53:56 AM - File change detected. Starting incremental compilation...
+
+
+9:53:56 AM - Found 0 errors. Watching for file changes.
+c9:54:25 AM - File change detected. Starting incremental compilation...
+
+
+9:54:25 AM - Found 0 errors. Watching for file changes.
+c10:26:36 AM - File change detected. Starting incremental compilation...
+
+
+10:26:36 AM - Found 0 errors. Watching for file changes.
+c10:26:55 AM - File change detected. Starting incremental compilation...
+
+
+10:26:55 AM - Found 0 errors. Watching for file changes.
+c10:28:36 AM - File change detected. Starting incremental compilation...
+
+
+10:28:37 AM - Found 0 errors. Watching for file changes.
+c10:30:31 AM - File change detected. Starting incremental compilation...
+
+
+10:30:31 AM - Found 0 errors. Watching for file changes.
+c10:36:36 AM - File change detected. Starting incremental compilation...
+
+
+10:36:37 AM - Found 0 errors. Watching for file changes.
+c10:38:09 AM - File change detected. Starting incremental compilation...
+
+
+10:38:09 AM - Found 0 errors. Watching for file changes.
+c10:38:42 AM - File change detected. Starting incremental compilation...
+
+
+10:38:42 AM - Found 0 errors. Watching for file changes.
+c10:40:11 AM - File change detected. Starting incremental compilation...
+
+
+10:40:11 AM - Found 0 errors. Watching for file changes.
+c10:40:21 AM - File change detected. Starting incremental compilation...
+
+
+10:40:21 AM - Found 0 errors. Watching for file changes.
+c10:47:51 AM - File change detected. Starting incremental compilation...
+
+
+10:47:51 AM - Found 0 errors. Watching for file changes.
+c11:04:23 AM - File change detected. Starting incremental compilation...
+
+
+11:04:23 AM - Found 0 errors. Watching for file changes.
+c11:04:40 AM - File change detected. Starting incremental compilation...
+
+src/routes/api.ts(431,68): error TS2554: Expected 2 arguments, but got 3.
+
+11:04:40 AM - Found 1 error. Watching for file changes.
+c11:10:33 AM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(536,13): error TS2554: Expected 4 arguments, but got 1.
+
+11:10:33 AM - Found 1 error. Watching for file changes.
+c11:12:54 AM - File change detected. Starting incremental compilation...
+
+src/controllers/accountingController.ts(538,13): error TS2554: Expected 4 arguments, but got 1.
+
+11:12:55 AM - Found 1 error. Watching for file changes.
+c11:14:41 AM - File change detected. Starting incremental compilation...
+
+
+11:14:42 AM - Found 0 errors. Watching for file changes.
+c11:17:25 AM - File change detected. Starting incremental compilation...
+
+
+11:17:25 AM - Found 0 errors. Watching for file changes.
+c11:17:34 AM - File change detected. Starting incremental compilation...
+
+
+11:17:34 AM - Found 0 errors. Watching for file changes.
+c11:19:41 AM - File change detected. Starting incremental compilation...
+
+
+11:19:41 AM - Found 0 errors. Watching for file changes.

@@ -79,7 +79,7 @@ export class DataBase {
     }
 
     validateParam(str: string): void {
-        if (str.split(' ').length > 1 || str.split(';').length > 1) {
+        if (str.toString().split(';').length > 1) {
             this.response.json({
                 system: 'Fuck off.'
             })
@@ -202,20 +202,22 @@ export class DataBase {
         })
     }
 
-    async updateQueryDynamic(table: string, body: any , values: Array<string> | null): Promise<OkPacket> {
+    async updateQueryDynamic(table: string, body: any ): Promise<OkPacket> {
         let query:string = `UPDATE ${table} SET `
         let bodyKeys = Object.keys(body)
         for(const [index, key] of bodyKeys.entries()){
             if (body[key] !==  null && body[key] !== undefined && body[key] !== '') {
                 if (key != 'id' ) {
+                    this.validateParam(key)
+                    this.validateParam(body[key])
                     query+= `${key} = '${body[key]}',`;
                 }
             }
         }
         query = query.slice(0, -1); //Remove last commas
-        query+= ' WHERE id = ?'
+        query+= ` WHERE id = ${body.id}`
         return await new Promise((resolve, reject) => {
-            this.connection.query(query, [...values], (err, res) => {
+            this.connection.query(query, [], (err, res) => {
                 if (err) reject(new Error(err.sqlMessage))
                 resolve(res)
             })

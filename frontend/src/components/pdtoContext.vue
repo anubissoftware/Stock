@@ -1,6 +1,7 @@
 
 <template>
-    <div class="right-click-menu flex flex-col rounded-xl select-none" ref="contextMenu" :style="{ top: place.x, left: place.y }">
+    <div class="right-click-menu flex flex-col rounded-xl select-none" ref="contextMenu"
+        :style="{ top: place.x, left: place.y }">
         <div @click="sellItem()" v-if="product?.price != 0 && editPer">
             Sell
         </div>
@@ -19,11 +20,11 @@
         <div @click="remove()" v-if="editPer && writePer">
             Remove product
         </div>
-        <div v-if="(product?.price != 0 || product?.rent) && editPer" @click="addToCart()">
-            Add to cart
-        </div>
         <div v-if="(product?.price != 0 || product?.rent) && editPer" @click="emit('edit', product), emit('close')">
             Edit Item
+        </div>
+        <div v-if="(product?.price != 0 || product?.rent) && editPer" @click="addToCart()">
+            Add to cart
         </div>
     </div>
 </template>

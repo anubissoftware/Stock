@@ -1,4 +1,4 @@
-import { modulesSchema, clientToRegister, clientEmail, clientCellphone, clientValidate } from '@/shared';
+import { modulesSchema, clientToRegister, clientEmail, clientCellphone, clientValidate } from '@/schemas';
 import { OkPacket } from "mysql"
 import { DataBase, initDatabase } from "../classes/db";
 import { Request, Response } from "express";
