@@ -1,2 +1,2 @@
-cp -r ./schemas/ ../frontend/src/
-cp -r ./schemas/ ../backend/src/
+cp -r ./schemas/ ../frontend/src/schemas
+cp -r ./schemas/ ../backend/src/schemas

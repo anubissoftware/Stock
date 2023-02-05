@@ -33,6 +33,13 @@ const SyncWithGoogle = (token: string, body:any) => {
         },
     })
 }
+const ChangePassword = (token: string, body:any) => {
+    return ApiCLient.post('user/changePassword', { ...body }, {
+        headers: {
+            'authorization': `bearer ${token}`
+        },
+    })
+}
 
 const LoginWithGoogle =  (params: any) => {
     return ApiCLient.post('user/loginGoogle', params)
@@ -45,5 +52,6 @@ export {
     RegisterNewUser,
     ActivateCustomer, 
     SyncWithGoogle,
-    LoginWithGoogle
+    LoginWithGoogle, 
+    ChangePassword
 }

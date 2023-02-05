@@ -13,7 +13,7 @@ import { menusInRol } from './loginController';
 
 export const login = async (userLogin: UserLogin, db: DataBase): Promise<Array<userData>> => {
     const query: string = `SELECT u.id, u.name, u.nickname, u.email, u.email_verified ,u.isAdmin, u.enterprise as enterprise_id, e.name as enterprise_name,
-    m.path as enterprise_path, e.shortcut, u.rol, e.renting, e.quoting
+    m.path as enterprise_path, e.shortcut, u.rol, e.renting, e.quoting, e.colors
     FROM users AS u 
     INNER JOIN enterprise as e ON e.id = u.enterprise
     LEFT JOIN media as m ON m.id = e.logo
@@ -67,7 +67,8 @@ export const syncUserWithGoogle = async (req: Request, res: Response) :Promise<a
         db.closeConnection()
         if (rps.affectedRows > 0) {
             res.json({
-                ok: true
+                ok: true,
+                email: payload.email
             })
             return payload
         } else {
@@ -76,6 +77,11 @@ export const syncUserWithGoogle = async (req: Request, res: Response) :Promise<a
         }
     } catch (error) {
         console.log(error)
+        res.status(500)
+        res.json({
+            message: 'Correo ya registrado'
+        })
+        res.end()
     }
 }
 
@@ -125,3 +131,30 @@ export const googleLogin = async (req: Request, res: Response, io: Server) :Prom
         res.end()
     }
 }
+
+export const changePassword = async (req: Request, res: Response): Promise<any> => {
+    try {
+        const payload = req.body
+        const values: Array<string> = [payload.newPass.toString(), payload.lastPass.toString(), payload.nickname.toString()]
+        const query: string = `UPDATE users SET password = ? WHERE password = ? AND nickname = ?`;
+        const db: DataBase = await initDatabase(res)
+        const rps: OkPacket = await db.updateQuery(query, values)
+        db.closeConnection()
+        if (rps.affectedRows > 0) {
+            res.json({
+                ok: true,
+            })
+            return payload
+        } else {
+            res.status(204)
+            res.end()
+        }
+    } catch (error) {
+        res.status(400)
+        res.json({
+            message: 'Contraseña no pudo ser cambiada'
+        })
+        res.end()
+    }
+}
+

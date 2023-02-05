@@ -2,6 +2,7 @@
   <router-view />
   <ModalSync ref="modal" />
   <ModalProduct ref="modalProduct" />
+  <Loader :show="LoaderContent.show" />
 
   <Alert v-show="alertMessageContent.show" @close="alertMessageContent.show = false" :title="alertMessageContent.title"
     :description="alertMessageContent.description" :type="alertMessageContent.type" />
@@ -14,10 +15,12 @@ import { modalComp, modalProductSync } from '@/classes/Modal'
 import { useRoute, useRouter } from 'vue-router';
 import { io } from 'socket.io-client'
 import Alert from './components/Generics/Alert.vue';
+import Loader from './components/Generics/Loader.vue';
 import type { notificationSchema, modulesSchema, token } from '@/schemas'
 import { backendURL } from '@/config'
 import socket from '@/composables/socket'
 import { alertMessageApp } from '@/composables/alertFunction'
+import { loaderApp } from '@/composables/loaderFunction'
 import { useAuthStore } from './stores/auth'
 import { useProductStore } from './stores/products';
 import type { rentProductType } from '@/stores/products'
@@ -27,6 +30,9 @@ const alertMessageContent: any = ref({
   title: '',
   description: '',
   type: '',
+  show: false
+})
+const LoaderContent = ref({
   show: false
 })
 
@@ -42,9 +48,11 @@ onBeforeMount(async () => {
   //Validate session
   let user = JSON.parse(localStorage.getItem('user') || '{}')
   let modules: Array<modulesSchema> = JSON.parse(localStorage.getItem('modules') || '{}')
+  let colors: Array<modulesSchema> = JSON.parse(localStorage.getItem('colors') || '{}')
+    console.log(colors)
   Object.keys(user).length !== 0 ? auth.setUser(user) : null
-  console.log(modules)
   modules.length > 0 ? auth.setModules(modules) : null
+  colors.length > 0 ? auth.setColors(colors) : null
 })
 
 const user = computed(() => {
@@ -164,6 +172,7 @@ onMounted(async () => {
   modalComp.modal = modal.value
   modalProductSync.modal = modalProduct.value
   alertMessageApp.value = alertMessageContent
+  loaderApp.value = LoaderContent.value
 
 })
 

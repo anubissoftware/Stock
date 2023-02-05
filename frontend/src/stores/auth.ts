@@ -10,6 +10,7 @@ export const useAuthStore = defineStore('auth', () => {
     const isAuthenticated: Ref<boolean> = ref(false)
     const user: Ref<userSchema | JSON | {}> = ref({})
     const modules: Ref<Array<modulesSchema>> = ref([])
+    const colors: Ref<any> = ref([])
     const clients: Ref<Array<clientEnterpriseSchema>> = ref([])
     const notifications: Ref<Array<notificationSchema>> = ref([])
 
@@ -43,10 +44,12 @@ export const useAuthStore = defineStore('auth', () => {
         user.value = {}
         isAuthenticated.value = false
         modules.value = []
+        colors.value = []
         socket.socket?.disconnect()
         socket.socket = null
         localStorage.removeItem('user')
         localStorage.removeItem('modules')
+        localStorage.removeItem('colors')
         setHelper(false)
         sidebarStatus.createQuotation = false
         useShoppingCart().clearBasket()
@@ -55,6 +58,15 @@ export const useAuthStore = defineStore('auth', () => {
     const setModules = (moduls: Array<modulesSchema>) => {
         modules.value = moduls
         localStorage.setItem('modules', JSON.stringify(modules.value))
+    }
+
+    const setColors = (colorArray: string) => {
+        colors.value = colorArray
+        localStorage.setItem('colors', JSON.stringify(colors.value))
+        const root = document.querySelector(':root') as HTMLStyleElement
+        if (colors.value[0]) root.style.setProperty('--primary', colors.value[0].value)
+        if (colors.value[1]) root.style.setProperty('--secondary', colors.value[1].value)
+        if (colors.value[2]) root.style.setProperty('--third', colors.value[2].value)
     }
 
     const setClients = (client: Array<clientEnterpriseSchema>) => {
@@ -86,6 +98,6 @@ export const useAuthStore = defineStore('auth', () => {
 
     return {
         getAuthentication, getUser, getMenus, getClients, getNotifications,
-        setUser, logOut, setModules, setClients, addClient, removeClient, pushNotification, modules
+        setUser, logOut, setModules, setColors, setClients, addClient, removeClient, pushNotification, modules
     }
 })

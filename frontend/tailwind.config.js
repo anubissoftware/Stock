@@ -24,7 +24,17 @@ module.exports = {
         'secondary':'#F69A36',
         'third':'#3D256A',
         'extra':'#1F0B44',
-      }
+      },
+      keyframes: {
+        anubisAnimate: {
+          '0%': { transform: 'scale(1.0)' },
+          '50%': { transform: 'scale(1.3)' },
+          '100%': { transform: 'scale(1.0)' },
+        }
+      },
+      animation: {
+        'anubis': 'anubisAnimate 1.5s linear infinite',
+      },
     },
   },
   plugins: [],

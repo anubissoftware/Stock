@@ -7,18 +7,24 @@
             {{ strings.wellcome[language] }}
           </h1>
           <WelcomeDashboard :name="store.getUser.name" />
-          <div class="flex w-full gap-2 px-10 py-2">
-            <div class="flex flex-row flex-wrap justify-center w-1/2 gap-5 phone:px-10 
-            shadow-xl border rounded-xl">
-              <div class="h-[300px] phone:w-full laptop:w-2/5">
-                <canvas ref="todayChartCanvas"></canvas>
+          <div class="flex flex-col flex-wrap w-full px-10 py-2">
+            <div class="flex gap-4 py-2 phone:flex-wrap laptop:flex-nowrap w-full">
+              <div class="flex flex-row w-full min-w-[350px] justify-center gap-5 phone:px-4 
+              shadow-lg border rounded-xl">
+                <div class="h-[300px] phone:w-full laptop:w-2/5">
+                  <canvas ref="todayChartCanvas"></canvas>
+                </div>
+                <!-- <div class="h-[300px] phone:w-full laptop:w-2/5">
+                  <canvas class="phone:!w-full laptop:!w-2/5" ref=""></canvas>
+                </div> -->
               </div>
-              <!-- <div class="h-[300px] phone:w-full laptop:w-2/5">
-                <canvas class="phone:!w-full laptop:!w-2/5" ref=""></canvas>
-              </div> -->
+              <ListsDashboard class="h-[300px] shadow-lg" title="Clients" :data="[]" />
             </div>
-            <ListsDashboard class="h-[300px]" title="Clients" :clients="[]" />
-
+            <ListsDashboard class="h-[300px] shadow-lg" title="Cotizaciones" :data="[]" />
+            <div class="flex gap-4 py-2 phone:flex-wrap laptop:flex-nowrap flex-wrap w-full">
+              <ListsDashboard class="h-[300px] shadow-lg" title="User" :data="[]" />
+              <ListsDashboard class="h-[300px] shadow-lg" title="Clients" :data="[]" />
+            </div>
           </div>
         </div>
       </template>
@@ -89,7 +95,11 @@ var todayChartConfig: ChartConfiguration = {
       data: [
         0,
         0,
-      ]
+      ],
+      borderRadius: 5,
+      borderColor:'#c2c2c2',
+      backgroundColor: 'blue',
+      borderWidth: 2
     }]
   },
   options: {

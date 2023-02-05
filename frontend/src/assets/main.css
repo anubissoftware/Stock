@@ -1,3 +1,81 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --primary: #A64AEE;
+    --secondary: #F69A36;
+    --third: #3D256A;
+}
+/* Text */
+.text-primary {
+    color:var(--primary)
+}
+.text-secondary {
+    color:var(--secondary)
+}
+.text-third {
+    color:var(--third)
+}
+
+/* Backgroun color */
+.bg-primary {
+    background-color: var(--primary);
+}
+.bg-secondary {
+    background-color: var(--secondary);
+}
+.bg-third {
+    background-color: var(--third);
+}
+
+/* Border */
+.border-primary {
+    border-color: var(--primary);
+}
+.border-b-primary {
+    border-bottom-color: var(--primary);
+}
+.border-secondary {
+    border-color: var(--secondary);
+}
+.border-b-secondary {
+    border-bottom-color: var(--secondary);
+}
+.border-third {
+    border-color: var(--third);
+}
+.border-b-third {
+    border-bottom-color: var(--third);
+}
+
+/* Accent */
+.accent-primary {
+    accent-color: var(--primary);
+}
+.accent-secondary {
+    accent-color: var(--secondary);
+}
+.accent-third {
+    accent-color: var(--third);
+}
+
+/* Hover */
+.hover\:bg-primary:hover{
+    background-color: var(--primary) !important;
+}
+.hover\:bg-secondary:hover{
+    background-color: var(--secondary) !important;
+}
+.hover\:bg-third:hover{
+    background-color: var(--third) !important;
+}
+.hover\:text-primary:hover{
+    color: var(--primary) !important
+}
+.hover\:text-secondary:hover{
+    color: var(--secondary) !important
+}
+.hover\:text-third:hover{
+    color: var(--third) !important
+}

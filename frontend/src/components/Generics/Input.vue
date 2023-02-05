@@ -5,7 +5,7 @@
             <Icon v-if="props.prependIcon" class="select-none absolute top-[10px] left-[10px]" :icon="props.prependIcon"></Icon>
             <!-- Icon only to password view -->
             <Icon v-if="props.type == 'password'" 
-            class="cursor-pointer absolute top-[10px] right-[10px]" 
+            class="cursor-pointer absolute top-[10px] right-[10px] hover:text-primary" 
             @pointerenter="viewPassword = true"
             @pointerleave="viewPassword = false"
             icon="visibility" />

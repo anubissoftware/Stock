@@ -1,9 +1,9 @@
 <template>
-    <div class="flex flex-col w-full self-center rounded-2xl p-4 pb-10 border shadow-md items-center justify-between">
+    <div class="flex flex-col w-full min-w-[350px] self-center rounded-2xl p-4 pb-10 border shadow-md items-center justify-between">
         <h1 class="tablet:text-xl phone:text-base">
             {{props.title}}
         </h1>
-        <div v-if="clients.length == 0" class="flex text-lg text-gray-400">
+        <div v-if="data.length == 0" class="flex text-lg text-gray-400">
             No data
         </div>
     </div>
@@ -14,7 +14,7 @@ import { onMounted, defineEmits, defineProps, ref, type Ref} from 'vue';
 
 import moment from 'moment';
 export interface contentLists {
-    clients: Array<any>
+    data: Array<any>
     title: string
 }
 const props = defineProps<contentLists>()
@@ -22,7 +22,7 @@ const emits = defineEmits(['refresh'])
 const welcomeMessage = ref('')
 
 onMounted(async () => {
-    console.log(props.clients)
+    console.log(props.data)
 })
 
 

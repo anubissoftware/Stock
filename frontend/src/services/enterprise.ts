@@ -8,3 +8,11 @@ export const uploadEnterpriseImage =  (token: string, b64: string) => {
        }
     })
 }
+
+export const ChangeEnterpriseColors = (token: string, body:any) => {
+    return ApiCLient.post('enterpriseColor', { ...body }, {
+        headers: {
+            'authorization': `bearer ${token}`
+        },
+    })
+}

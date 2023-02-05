@@ -1,5 +1,5 @@
 <template>
-     <button class="flex items-center shadow-lg border-2 rounded-lg hover:text-white gap-2 duration-200 pr-2"
+     <button class="flex items-center shadow-lg border-2 rounded-lg hover:text-white gap-2 duration-200"
     :class="[
         props.size == 'lg' ? 'px-3 py-2' :
         props.size == 'md' ? 'px-2 py-1' :
@@ -11,7 +11,7 @@
     ]"
     >
         <Icon v-if="props.icon" :icon="props.icon" />
-        <span class="tablet:text-base phone:text-sm">{{ props.content}}</span>
+        <span v-if="props.content" class="tablet:text-base phone:text-sm">{{ props.content}}</span>
     </button>
 </template>
 <script setup lang="ts">

@@ -12,10 +12,10 @@ import { Express, NextFunction, Request, Response } from "express"
 import { Server } from "socket.io"
 
 import { DataBase, initDatabase } from "../classes/db";
-import { login, setToken, syncUserWithGoogle, unSetToken, validateToken, googleLogin } from "../controllers/userController"
+import { login, setToken, syncUserWithGoogle, unSetToken, validateToken, googleLogin, changePassword } from "../controllers/userController"
 import moment from 'moment'
 import { OkPacket } from "mysql";
-import { validateEnterprise } from '../controllers/enterpriseController';
+import { changeBrandColors, validateEnterprise } from '../controllers/enterpriseController';
 import { createNewQuotation, deleteQuotation, listQuotations, generateQuotationDocument } from '../controllers/accountingController';
 
 declare global {
@@ -127,6 +127,10 @@ export default (app: Express, io: Server): void => {
         const data: Array<string> = await syncUserWithGoogle(req, res)
     })
 
+    app.post('/user/changePassword', async (req: Request, res: Response) => {
+        const data: Array<string> = await changePassword(req, res)
+    })
+
     app.post('/user/logout/', middleware, async (req: Request, res: Response) => {
         const user: userLogOut = req.body
         const db: DataBase = await initDatabase(res)
@@ -148,6 +152,10 @@ export default (app: Express, io: Server): void => {
             return
         }
         await listPublishedProducts(req, res, response[0].id)
+    })
+    app.post('/enterpriseColor', async (req: Request, res: Response) => {
+        console.log('Holis')
+        const data: Array<string> = await changeBrandColors(req, res)
     })
 
     /**

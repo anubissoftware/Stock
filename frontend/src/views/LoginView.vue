@@ -262,6 +262,7 @@ import { alertMessageApp } from '@/composables/alertFunction';
             }
             auth.setUser(response.data.user)
             auth.setModules(response.data.menus)
+            auth.setColors(JSON.parse(response.data.user.colors))
             router.push({
                 path:'dashboard'
             })
@@ -356,6 +357,7 @@ import { alertMessageApp } from '@/composables/alertFunction';
                 }
                 auth.setUser(response.data.user)
                 auth.setModules(response.data.menus)
+                auth.setColors(JSON.parse(response.data.user.colors))
                 router.push({
                     path:'dashboard'
                 })

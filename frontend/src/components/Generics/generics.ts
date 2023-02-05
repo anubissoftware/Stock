@@ -14,6 +14,8 @@ import Select from '@/components/Generics/Select.vue';
 import SelectionList from '@/components/Generics/SelectionList.vue';
 import Switch from '@/components/Generics/Switch.vue';
 import Textarea from '@/components/Generics/Textarea.vue';
+import Loader from '@/components/Generics/Loader.vue';
+import ColorPicker from '@/components/Generics/ColorPicker.vue';
 
 export {
     Autocomplete,
@@ -31,5 +33,7 @@ export {
     Select,
     SelectionList,
     Switch,
-    Textarea
+    Textarea, 
+    Loader, 
+    ColorPicker
 }
