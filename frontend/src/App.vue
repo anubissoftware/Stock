@@ -48,11 +48,10 @@ onBeforeMount(async () => {
   //Validate session
   let user = JSON.parse(localStorage.getItem('user') || '{}')
   let modules: Array<modulesSchema> = JSON.parse(localStorage.getItem('modules') || '{}')
-  let colors: Array<modulesSchema> = JSON.parse(localStorage.getItem('colors') || '{}')
-    console.log(colors)
+  let colors: Array<any> = JSON.parse(localStorage.getItem('colors') || '[]')
   Object.keys(user).length !== 0 ? auth.setUser(user) : null
   modules.length > 0 ? auth.setModules(modules) : null
-  colors.length > 0 ? auth.setColors(colors) : null
+  auth.setColors(colors)
 })
 
 const user = computed(() => {

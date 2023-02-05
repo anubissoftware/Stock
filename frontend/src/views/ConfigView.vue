@@ -88,7 +88,7 @@
                                         <template v-for="(color, index) in userColors" :key="index">
                                             <div class="rounded-xl border flex flex-row px-1 bg-primary text-white">
                                                 <ColorPicker v-model="color.value" />
-                                                <Icon v-if="index != 0" icon="delete" class="text-white self-center cursor-pointer" @click="userColors.splice(index, 1)"/>
+                                                <Icon icon="delete" class="text-white self-center cursor-pointer" @click="userColors.splice(index, 1)"/>
                                             </div>
                                         </template>
                                         
@@ -200,11 +200,6 @@ const changePassForm = ref({
     newPass: '', 
     confirmNewPass: ''
 })
-const userColors = ref([
-    {
-        value:'#000000'
-    }
-])
 const counter = ref(Math.floor(Math.random() * 1000))
 const updateLogo = () => {
     const temp = '' + logo.value
@@ -288,6 +283,21 @@ const languageOptions: Ref<Array<switchValues>> = ref([
 const user = computed(() => {
     return auth.getUser
 })
+
+const userColors: Ref<any> = ref([])
+
+const mapUserColor = async () => {
+    if (user.value.colors) {
+        const colorEnterprise = JSON.parse(user.value.colors)
+        if (colorEnterprise.length != 0 ) {
+            colorEnterprise.forEach((color: any) => {
+                userColors.value.push({value: color.value})
+            });
+        }
+    } else {
+        userColors.value.push({value:'#000000'})
+    }
+}
 /**
  * [*LANGUAGE*]
 */
@@ -357,6 +367,7 @@ const menuActive = ref(menusFilter.value[0])
 onMounted(() => {
     socket.socket?.on('logoUpdated', updateLogo)
     logo.value = user.value.enterprise_path + '?v' + counter.value
+    mapUserColor()
 })
 
 onUnmounted(() => {
@@ -466,6 +477,8 @@ const saveColors = async () => {
     })
     if (resultColors.status == 200) {
         auth.setColors(userColors.value)
+        user.value.colors = JSON.stringify(userColors.value)
+        auth.setUser(user.value)
     }
 }
 

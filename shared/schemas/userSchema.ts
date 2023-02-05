@@ -14,6 +14,7 @@ export interface userSchema {
     quoting?: boolean
     email?: string   
     email_verified?: string
+    colors?: string
 }
 import { modulesSchema } from "./modulesSchema"
 export type Auth = {

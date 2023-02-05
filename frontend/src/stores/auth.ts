@@ -49,7 +49,13 @@ export const useAuthStore = defineStore('auth', () => {
         socket.socket = null
         localStorage.removeItem('user')
         localStorage.removeItem('modules')
+        //Colors
         localStorage.removeItem('colors')
+        const root = document.querySelector(':root') as HTMLStyleElement
+        root.style.setProperty('--primary', '#A64AEE') 
+        root.style.setProperty('--secondary', '#F69A36') 
+        root.style.setProperty('--third', '#3D256A') 
+
         setHelper(false)
         sidebarStatus.createQuotation = false
         useShoppingCart().clearBasket()
@@ -60,13 +66,22 @@ export const useAuthStore = defineStore('auth', () => {
         localStorage.setItem('modules', JSON.stringify(modules.value))
     }
 
-    const setColors = (colorArray: string) => {
+    const setColors = (colorArray: any) => {
         colors.value = colorArray
         localStorage.setItem('colors', JSON.stringify(colors.value))
         const root = document.querySelector(':root') as HTMLStyleElement
-        if (colors.value[0]) root.style.setProperty('--primary', colors.value[0].value)
-        if (colors.value[1]) root.style.setProperty('--secondary', colors.value[1].value)
-        if (colors.value[2]) root.style.setProperty('--third', colors.value[2].value)
+        
+
+        colors.value[0] ? 
+            root.style.setProperty('--primary', colors.value[0].value) :
+            root.style.setProperty('--primary', '#A64AEE') 
+        colors.value[1] ? 
+            root.style.setProperty('--secondary', colors.value[1].value) :
+            root.style.setProperty('--secondary', '#F69A36') 
+            
+        colors.value[2] ? 
+            root.style.setProperty('--third', colors.value[2].value) :
+            root.style.setProperty('--third', '#3D256A') 
     }
 
     const setClients = (client: Array<clientEnterpriseSchema>) => {

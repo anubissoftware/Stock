@@ -17,6 +17,7 @@ const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
 
 const onRequestError = (error: AxiosError): Promise<AxiosError> => {
     console.error(`[request error] [${JSON.stringify(error)}]`);
+    loaderApp.value.show = false
     if(error.response?.status == 401){
         useAuthStore().logOut()
         router.push('/login')
