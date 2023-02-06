@@ -57,7 +57,7 @@
                         @click="creatingReturn()">
                             Crear devolución
                         </div>
-                        <div v-if="quoteSelected.stage >= 5" @click="watchReturns()">
+                        <div v-if="quoteSelected.stage >= 5 && quoteSelected.isRenting == 1" @click="watchReturns()">
                             Ver devoluciones
                         </div>
                         <div v-if="(quoteSelected.stage == 6) || (quoteSelected.stage >= 2 && quoteSelected.isRenting != 1)">

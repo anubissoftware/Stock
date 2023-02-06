@@ -1,7 +1,21 @@
+import type { token } from '@/schemas';
 import { ApiCLient } from '@/services/index';
+import { useAuthStore } from '@/stores/auth';
 
 export const formatSerial = (id: number) => {
-    return id?.toString(36).toUpperCase()
+    return id?.toString(16).toUpperCase()
+}
+
+export const listInvoices = (params: any, signal: any) => {
+    const user = useAuthStore()
+    const token = (user.getUser.token as token).value
+    return ApiCLient.get('/invoicing', {
+        headers: {
+            'authorization': `bearer ${token}`
+        },
+        params: {...params},
+        signal
+    })
 }
 
 export const saveQuotation = (token: string, body: any) => {

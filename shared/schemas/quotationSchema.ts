@@ -9,9 +9,9 @@ export interface quotationSchema {
     max_validity: string
     user: number
     email: string
-    isRenting: boolean
+    isRenting: boolean | number
     enterprise_id: number
-    one_day: boolean
+    one_day: boolean | number
     from: string
     to: string
     creation: string

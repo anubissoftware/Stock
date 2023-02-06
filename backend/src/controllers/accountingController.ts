@@ -8,6 +8,7 @@ import * as dotenv from 'dotenv'
 import { env } from 'process'
 import { Server } from "socket.io";
 import moment from "moment";
+import { invoicingSchema } from "@/schemas/InvoicingSchema";
 dotenv.config({ path: join(__dirname, '../../', '.env') })
 
 
@@ -83,7 +84,7 @@ export const editQuotation = async (req: Request, res: Response): Promise<quotat
         db.connection.beginTransaction()
         rsp = await db.updateQuery(query, qvalues)
         if (rsp.affectedRows == 0) {
-            console.log(rsp)
+            console.error(rsp)
             throw new Error('No updated quotation: ' + values.id)
         }
         const pdtos: Array<productsInCartType> = req.body.products
@@ -111,7 +112,7 @@ export const editQuotation = async (req: Request, res: Response): Promise<quotat
             }
         }
     } catch (err) {
-        console.log(err)
+        console.error(err)
         res.end()
         db.connection.rollback()
         return
@@ -169,7 +170,7 @@ export const createNewQuotation = async (req: Request, res: Response): Promise<q
         })
         db.insertQuery(query, value)
     } catch (err) {
-        console.log(err)
+        console.error(err)
         db.connection.rollback()
         res.end()
         return null
@@ -271,8 +272,6 @@ export const sendQuotationEmail = async (quotation_id: number, req: Request, res
             subject,
             message
         ).then((r) => {
-            console.log('user', req.userData.socketId)
-            console.log('sent')
             io.to(req.userData.socketId).emit('notification', {
                 description: `La cotización <strong>${quotationInfo[0].serial.toString(36).toUpperCase()}</strong> ha sido enviada con éxito.`,
                 ok: true
@@ -332,18 +331,18 @@ export const listQuotations = async (req: Request, res: Response) => {
 export const generateQuotationDocument = async (req: Request, res: Response) => {
     const payload: string = req.query.id.toString()
     
-    const query: string = `SELECT e.* FROM quotation AS q INNER JOIN enterprise AS e ON e.id = q.enterprise_id WHERE q.id = ? `
+    const query: string = `SELECT e.*, q.serial, q.enterprise_id FROM quotation AS q INNER JOIN enterprise AS e ON e.id = q.enterprise_id WHERE q.id = ? `
     const values: Array<string> = [
         payload
     ]
     const db: DataBase = await initDatabase(res)
 
-    const qQuery: string = `SELECT * FROM quotation WHERE id = ?`
+    const qQuery: string = `SELECT * FROM quotation AS q WHERE q.enterprise_id = ? AND q.serial = ?`
+    
+    const ent: Array<any> = await db.readQuery(query, values)
     const qValues: Array<string> = [
-        payload
+        ent[0].serial.toString(), ent[0].enterprise_id.toString()
     ] 
-
-    const ent = await db.readQuery(query, values)
     const qot = await db.readQuery(qQuery, qValues)
     db.closeConnection()
     res.json({
@@ -419,7 +418,7 @@ export const createNewDispatch = async (req:Request, res: Response, io: Server):
         })
 
     }catch(err){
-        console.log(err)
+        console.error(err)
         db.connection.rollback()
         res.end()
         return null
@@ -443,7 +442,7 @@ export const createNewDispatch = async (req:Request, res: Response, io: Server):
     }
 }
 
-export const updateStockDispatched = async (res: Response, params: {qdi: number, amnt: number, item_id: number }[], quotation_id: string, io: Server) => {
+export const updateStockDispatched = async (res: Response, params: {qdi: number, amnt: number, item_id: number, value: number, id: number, amount: number }[], quotation_id: string, io: Server) => {
     const db: DataBase = await initDatabase(res)
     const qdis: Array<string> = params.map((det) => det.qdi.toString())
     const queryD: string = `
@@ -454,11 +453,12 @@ export const updateStockDispatched = async (res: Response, params: {qdi: number,
     const valQ: Array<string> = [quotation_id]
     const details: Array<quotationDetailSchema> = await db.readQuery<quotationDetailSchema>(queryD, valD)
     const quotation: Array<quotationSchema> = await db.readQuery<quotationSchema>(queryQ, valQ)
-    console.log('quotation_id', quotation_id, quotation)
     if(quotation.length == 0) return
 
     params = params.map(pr => {
-        pr.item_id = details.filter(dt => dt.id == pr.qdi)[0].item_id
+        const item = details.filter(dt => dt.id == pr.qdi)[0]
+        pr.item_id = item.item_id
+        pr.value = item.value
         return pr
     })
 
@@ -469,16 +469,17 @@ export const updateStockDispatched = async (res: Response, params: {qdi: number,
             WHERE id = ${dtl.item_id}`
             const resp: OkPacket = await db.updateQuery(queryRenting, [])
         }
-        console.log('details:', details)
         io.to('e' + quotation[0].enterprise_id).emit('productRented', {products : params})
     }else{
-        for (const dtl of details){
-            const querySell = `UPDATE products SET stock = stock - ${dtl.amount},
-            onSales = onSales + (${dtl.amount * dtl.value}), sold = sold + ${dtl.amount}
+        for (const dtl of params){
+            const querySell = `UPDATE products SET stock = stock - ${dtl.amnt},
+            onSales = onSales + (${dtl.amnt * dtl.value}), sold = sold + ${dtl.amnt}
             WHERE id = ${dtl.item_id}`
             const resp: OkPacket = await db.updateQuery(querySell, [])
+            dtl.id = dtl.item_id
+            dtl.amount = dtl.amnt
         }
-        // io.to('e'+ quotation[0].enterprise_id).emit('')
+        io.to('e'+ quotation[0].enterprise_id).emit('productSold', {products: params, wholesale: false})
     }
 }
 
@@ -527,7 +528,6 @@ export const dispatchUpdate = async (req: Request, res: Response, io: Server) =>
         ]
         const db: DataBase = await initDatabase(res)
         const rps: OkPacket = await db.updateQuery(query, values)
-        console.log(rps)
         if(payload.discount){
             const queryData = `
                 SELECT dd.quotation_detail_id as qdi, dd.amount as amnt, qd.quotation_id, qd.item_id FROM dispatchingDetail as dd
@@ -549,7 +549,7 @@ export const dispatchUpdate = async (req: Request, res: Response, io: Server) =>
             res.end()
         }
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
 }
 
@@ -605,7 +605,7 @@ export const createNewReturn = async (req:Request, res: Response, io?: Server): 
         })
 
     }catch(err){
-        console.log(err)
+        console.error(err)
         db.connection.rollback()
         res.end()
         return null
@@ -659,7 +659,6 @@ export const returnUpdate = async (req: Request, res: Response) => {
     try {
         const payload = req.body
         const query: string = "UPDATE `returning` SET return_date = ? WHERE id = ?"
-        console.log(payload)
         const values: Array<string> = [
             payload.return_date.toString(), payload.id.toString()
         ]
@@ -676,13 +675,16 @@ export const returnUpdate = async (req: Request, res: Response) => {
             res.end()
         }
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
 }
 
 export const listInvoices = async (req: Request, res: Response) => {
-    const query: string = `SELECT * FROM invoicing WHERE deleted = 0`
+    const query: string = `SELECT i.*, c.name as client_name FROM invoicing as i 
+        INNER JOIN clients as c ON c.id = i.client_id
+    WHERE deleted = 0`
     const db: DataBase = await initDatabase(res, req)
-    // const invoices
+    const invoices: Array<invoicingSchema> = await db.readQuery<invoicingSchema>(query, [])
+    res.json(invoices)
 }
 

@@ -41,6 +41,7 @@ export interface productSchema{
     unit: number,
     stock: number,
     sold: number,
+    rented: number,
     toCraft: number,
     currency: string,
     price: number,
@@ -80,3 +81,9 @@ export interface productsToSell{
     description: string
 }
 
+export type historicTransactions = {
+    sells: number,
+    boughts: number,
+    losses: number,
+    date: string
+}

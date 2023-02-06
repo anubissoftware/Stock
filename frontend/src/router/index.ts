@@ -81,7 +81,7 @@ const router = createRouter({
       component: async () => import('@/views/PartnersView.vue')
     },
     {
-      path: "/dashboard/invoicing",
+      path: "/dashboard/invoices",
       name: "invoicing",
       component: async () => import('@/views/InvoicingView.vue')
     }

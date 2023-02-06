@@ -16,7 +16,7 @@
             <div v-for="(item, index) in props.data" :key="index" @mouseleave="item.showAction = false" class="flex flex-wrap flex-row w-full px-2 py-4 cursor-pointer select-none my-1 border border-black
             rounded-2xl shadow" :class="!item.showAction ? 'hover:bg-gray-50' : ''"
                 @contextmenu.prevent="openOptionContext($event, item)" @click="handleTouch(item)">
-                <div v-for="(head, index) in props.header" :key="index" class=" items-center" :class="head.width">
+                <div v-for="(head, index) in props.header" :key="index" class=" items-center px-1 text-left" :class="head.width">
                     <span v-if="head.accesor">
                         {{
                             head.config?.money ? currencyFormat(item[head.accesor]) :

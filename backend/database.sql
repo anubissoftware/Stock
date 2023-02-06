@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `appPermission` (
   CONSTRAINT `FK_appPermission_users` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- Dumping data for table stock.appPermission: ~1 rows (approximately)
+-- Dumping data for table stock.appPermission: ~0 rows (approximately)
 REPLACE INTO `appPermission` (`id`, `userId`, `appId`, `validated`, `token`) VALUES
 	(1, 1, 1, 1, 'eyJpZCI6MSwibmFtZSI6IkZhYmnDoW4gIiwibmlja25hbWUiOiJmaWJpYWFuIiwiaXNBZG1pbiI6IjAiLCJlbnRlcnByaXNlIjoxLCJleHAiOjE2NzE3MjQzOTF9');
 
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `apps` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- Dumping data for table stock.apps: ~1 rows (approximately)
+-- Dumping data for table stock.apps: ~0 rows (approximately)
 REPLACE INTO `apps` (`id`, `name`) VALUES
 	(1, 'restaurant');
 
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `boughts` (
   CONSTRAINT `boughts_ibfk_2` FOREIGN KEY (`registered_by`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=147 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table stock.boughts: ~55 rows (approximately)
+-- Dumping data for table stock.boughts: ~49 rows (approximately)
 REPLACE INTO `boughts` (`id`, `description`, `value`, `date`, `registered_by`, `enterprise`) VALUES
 	(92, '', 12500, '2022-11-23 10:43:42', 2, 1),
 	(93, '', 400000, '2022-11-23 10:45:00', 2, 1),
@@ -137,7 +137,7 @@ CREATE TABLE IF NOT EXISTS `boughtsDetail` (
   CONSTRAINT `boughtsDetail_ibfk_2` FOREIGN KEY (`item`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=167 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table stock.boughtsDetail: ~55 rows (approximately)
+-- Dumping data for table stock.boughtsDetail: ~40 rows (approximately)
 REPLACE INTO `boughtsDetail` (`id`, `item`, `extras`, `amount`, `value`, `date`, `bought_id`) VALUES
 	(112, 1, '', 25, 12500, '2022-11-23 10:43:42', 92),
 	(113, 5, '', 50, 400000, '2022-11-23 10:45:00', 93),
@@ -204,9 +204,9 @@ CREATE TABLE IF NOT EXISTS `category` (
   PRIMARY KEY (`id`),
   KEY `FK_category_enterprise` (`enterprise`),
   CONSTRAINT `FK_category_enterprise` FOREIGN KEY (`enterprise`) REFERENCES `enterprise` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
--- Dumping data for table stock.category: ~11 rows (approximately)
+-- Dumping data for table stock.category: ~12 rows (approximately)
 REPLACE INTO `category` (`id`, `name`, `color`, `enterprise`) VALUES
 	(1, 'Enlatados', '#FFFF00', 1),
 	(2, 'Empaquetados', '#850000', 1),
@@ -218,7 +218,8 @@ REPLACE INTO `category` (`id`, `name`, `color`, `enterprise`) VALUES
 	(20, 'Computadores', '#b73df0', 1),
 	(26, 'Reactive test', '#387f2f', 1),
 	(27, 'Láminas', '#8b894b', 2),
-	(28, 'asdasd', '#000000', 2);
+	(28, 'asdasd', '#000000', 2),
+	(29, 'Mantenimiento', '#e2ff00', NULL);
 
 -- Dumping structure for table stock.clients
 CREATE TABLE IF NOT EXISTS `clients` (
@@ -243,7 +244,7 @@ CREATE TABLE IF NOT EXISTS `clients` (
 
 -- Dumping data for table stock.clients: ~5 rows (approximately)
 REPLACE INTO `clients` (`id`, `name`, `type`, `nit`, `rut`, `cv`, `email`, `registro`, `contact_name`, `contact_phone`, `contact_email`, `enterprise`) VALUES
-	(1, 'Fabiaan', '2', '1005338906', 71, '0', 'fibianmejia@hotmail.com', '2023-01-13 09:13:42', 'Fabián Mejía', '3125677288', 'fibianmejia@hotmail.com', 2),
+	(1, 'Fabiaan Enterprise S.A.S.', '2', '1005338906', 71, '0', 'fibianmejia@hotmail.com', '2023-01-13 09:13:42', 'Fabián Mejía', '3125677288', 'fibianmejia@hotmail.com', 2),
 	(2, 'Cesar', '1', '1071584903', 72, '0', 'cesarphernandez09@gmail.com', '2023-01-13 12:47:21', 'Cesar Peña', '31374839', 'cesarphernandez09@gmail.com', 2),
 	(72, 'Encocol', '2', '123456789', 74, '0', 'encocol@gmail.com', '2023-01-14 13:51:44', 'Diego Castillo', '317052809', 'diegogo@gmail.com', 2),
 	(73, 'Encocol2', '2', '123456789', 75, '0', 'encocol@gmail.com', '2023-01-16 08:33:12', 'Diego Castillo', '317052809', 'diegogo@gmail.com', 2),
@@ -285,13 +286,7 @@ CREATE TABLE IF NOT EXISTS `dispatching` (
   CONSTRAINT `dispatching_ibfk_2` FOREIGN KEY (`quotation_id`) REFERENCES `quotation` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
 
--- Dumping data for table stock.dispatching: ~5 rows (approximately)
-REPLACE INTO `dispatching` (`id`, `out_store`, `received`, `quotation_id`, `created_at`, `created_by`) VALUES
-	(40, '2023-02-01 10:42:07', '2023-02-01 11:27:53', 77, '2023-02-01 10:42:24', 3),
-	(41, '2023-02-01 10:44:35', NULL, 77, '2023-02-01 10:44:42', 3),
-	(42, '2023-02-01 10:46:51', NULL, 77, '2023-02-01 10:46:57', 3),
-	(43, '2023-02-01 10:48:15', NULL, 77, '2023-02-01 10:48:23', 3),
-	(44, '2023-02-01 11:20:37', '2023-02-01 11:23:56', 77, '2023-02-01 10:48:38', 3);
+-- Dumping data for table stock.dispatching: ~0 rows (approximately)
 
 -- Dumping structure for table stock.dispatchingDetail
 CREATE TABLE IF NOT EXISTS `dispatchingDetail` (
@@ -306,18 +301,13 @@ CREATE TABLE IF NOT EXISTS `dispatchingDetail` (
   CONSTRAINT `dispatchingDetail_ibfk_2` FOREIGN KEY (`dispatch_id`) REFERENCES `dispatching` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
 
--- Dumping data for table stock.dispatchingDetail: ~5 rows (approximately)
-REPLACE INTO `dispatchingDetail` (`id`, `quotation_detail_id`, `amount`, `dispatch_id`) VALUES
-	(45, 77, 1, 40),
-	(46, 77, 1, 41),
-	(47, 77, 1, 42),
-	(48, 77, 1, 43),
-	(49, 77, 1, 44);
+-- Dumping data for table stock.dispatchingDetail: ~0 rows (approximately)
 
 -- Dumping structure for table stock.enterprise
 CREATE TABLE IF NOT EXISTS `enterprise` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '',
+  `nit` varchar(50) NOT NULL DEFAULT '',
   `logo` int(11) DEFAULT NULL,
   `shortcut` varchar(50) NOT NULL DEFAULT '',
   `renting` int(1) NOT NULL DEFAULT 0,
@@ -331,9 +321,9 @@ CREATE TABLE IF NOT EXISTS `enterprise` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table stock.enterprise: ~2 rows (approximately)
-REPLACE INTO `enterprise` (`id`, `name`, `logo`, `shortcut`, `renting`, `quoting`, `prefix_quote`, `prefix_invoice`) VALUES
-	(1, 'Fibiaan', 1, 'fibiaan', 0, 0, NULL, NULL),
-	(2, 'Cimbras', 2, 'cimbras', 1, 1, NULL, NULL);
+REPLACE INTO `enterprise` (`id`, `name`, `nit`, `logo`, `shortcut`, `renting`, `quoting`, `prefix_quote`, `prefix_invoice`) VALUES
+	(1, 'Fibiaan', '', 1, 'fibiaan', 0, 0, NULL, NULL),
+	(2, 'Cimbras de Colombia S.A.S.', '900.371.951-5', 2, 'cimbras', 1, 1, NULL, NULL);
 
 -- Dumping structure for table stock.enterpriseModules
 CREATE TABLE IF NOT EXISTS `enterpriseModules` (
@@ -350,6 +340,69 @@ CREATE TABLE IF NOT EXISTS `history` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table stock.history: ~0 rows (approximately)
+
+-- Dumping structure for table stock.invoicing
+CREATE TABLE IF NOT EXISTS `invoicing` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `client_id` int(11) NOT NULL,
+  `quotation_id` int(11) NOT NULL,
+  `serial` varchar(50) NOT NULL,
+  `subtotal` float NOT NULL DEFAULT 0,
+  `discount` float NOT NULL DEFAULT 0,
+  `taxing` float NOT NULL DEFAULT 0,
+  `total` float NOT NULL DEFAULT 0,
+  `stage` int(11) DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `deleted` int(11) NOT NULL DEFAULT 0,
+  `creation` datetime DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `FK_invoicing_clients` (`client_id`),
+  KEY `FK_invoicing_quotation` (`quotation_id`),
+  KEY `FK_invoicing_invoicingStages` (`stage`),
+  KEY `FK_invoicing_users` (`created_by`),
+  CONSTRAINT `FK_invoicing_clients` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_invoicing_invoicingStages` FOREIGN KEY (`stage`) REFERENCES `invoicingStages` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_invoicing_quotation` FOREIGN KEY (`quotation_id`) REFERENCES `quotation` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_invoicing_users` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- Dumping data for table stock.invoicing: ~1 rows (approximately)
+REPLACE INTO `invoicing` (`id`, `client_id`, `quotation_id`, `serial`, `subtotal`, `discount`, `taxing`, `total`, `stage`, `date`, `created_by`, `deleted`, `creation`) VALUES
+	(1, 74, 79, '1', 10000, 0, 0, 10000, 1, '2023-02-02 10:34:07', 2, 0, '2023-02-02 10:34:14');
+
+-- Dumping structure for table stock.invoicingDetail
+CREATE TABLE IF NOT EXISTS `invoicingDetail` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `invoicing_id` int(11) NOT NULL,
+  `quotation_detail_id` int(11) DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `value` float NOT NULL,
+  `amount` float NOT NULL,
+  `dscp` varchar(50) DEFAULT NULL,
+  `date_from` datetime DEFAULT NULL,
+  `date_to` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_invoicingDetail_invoicing` (`invoicing_id`),
+  KEY `FK_invoicingDetail_quotationDetail` (`quotation_detail_id`),
+  CONSTRAINT `FK_invoicingDetail_invoicing` FOREIGN KEY (`invoicing_id`) REFERENCES `invoicing` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_invoicingDetail_quotationDetail` FOREIGN KEY (`quotation_detail_id`) REFERENCES `quotationDetail` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table stock.invoicingDetail: ~0 rows (approximately)
+
+-- Dumping structure for table stock.invoicingStages
+CREATE TABLE IF NOT EXISTS `invoicingStages` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- Dumping data for table stock.invoicingStages: ~2 rows (approximately)
+REPLACE INTO `invoicingStages` (`id`, `name`) VALUES
+	(1, 'draft'),
+	(2, 'settlement'),
+	(3, 'invoicing');
 
 -- Dumping structure for table stock.losses
 CREATE TABLE IF NOT EXISTS `losses` (
@@ -401,7 +454,7 @@ CREATE TABLE IF NOT EXISTS `media` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8;
 
--- Dumping data for table stock.media: ~7 rows (approximately)
+-- Dumping data for table stock.media: ~6 rows (approximately)
 REPLACE INTO `media` (`id`, `path`, `filename`, `host`) VALUES
 	(1, 'http://localhost:8012/public/logos/fibiaan.png', 'fibiaan.png', 'http://localhost:8012/public/'),
 	(2, '', 'encocol.png', 'http://localhost:8012/public/'),
@@ -425,7 +478,7 @@ CREATE TABLE IF NOT EXISTS `modules` (
   UNIQUE KEY `url` (`url`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 
--- Dumping data for table stock.modules: ~17 rows (approximately)
+-- Dumping data for table stock.modules: ~14 rows (approximately)
 REPLACE INTO `modules` (`id`, `name`, `url`, `depends`, `icon`, `order`, `active`) VALUES
 	(1, 'nomina', '', NULL, NULL, NULL, 0),
 	(2, 'MyStock', '/dashboard/mystock', NULL, 'inventory', 2, 1),
@@ -528,7 +581,7 @@ CREATE TABLE IF NOT EXISTS `projects` (
   CONSTRAINT `FK__clients` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
--- Dumping data for table stock.projects: ~6 rows (approximately)
+-- Dumping data for table stock.projects: ~5 rows (approximately)
 REPLACE INTO `projects` (`id`, `name`, `address`, `contact_name`, `contact_phone`, `contact_email`, `client_id`, `register`, `budget`, `renting`) VALUES
 	(1, 'Diego Building', 'Kra 22 # 13', 'Diego Castillo', '315743289', 'diegogo@gmail.com', 72, '2023-01-15 16:49:28', 65000000, 1),
 	(3, 'Camila Apartments', 'Cll 11 # 11 - 60 Villabel', 'Diego Castillo', '315743289', 'diegogo@gmail.com', 72, '2023-01-16 16:49:28', 30000000, 1),
@@ -573,14 +626,11 @@ CREATE TABLE IF NOT EXISTS `quotation` (
   CONSTRAINT `FK_quotation_quotationStages` FOREIGN KEY (`stage`) REFERENCES `quotationStages` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_quotation_users` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_quotation_users_2` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8;
 
--- Dumping data for table stock.quotation: ~4 rows (approximately)
+-- Dumping data for table stock.quotation: ~1 rows (approximately)
 REPLACE INTO `quotation` (`id`, `serial`, `description`, `value`, `discount`, `taxing`, `client_id`, `email`, `project_id`, `enterprise_id`, `min_validity`, `user`, `max_validity`, `isRenting`, `one_day`, `from`, `to`, `creation`, `updated_by`, `deleted`, `stage`) VALUES
-	(75, 1, NULL, 6250, 0, 0, 1, 'fibianmejia@hotmail.com', NULL, 2, '2023-01-30', 3, '2023-01-31', 1, 1, NULL, NULL, '2023-01-30 21:02:16', NULL, 0, 2),
-	(76, 2, NULL, 450000, 0, 0, 1, 'fibianmejia@hotmail.com', NULL, 2, '2023-01-30', 3, '2023-01-31', 0, 0, NULL, NULL, '2023-01-30 21:12:38', 3, 0, 2),
-	(77, 3, NULL, 6250, 0, 19, 1, 'fibianmejia@hotmail.com', NULL, 2, '2023-02-01', 3, '2023-02-02', 1, 1, NULL, NULL, '2023-02-01 14:26:08', NULL, 0, 5),
-	(78, 4, NULL, 525000, 5, 15, 2, 'fibianmejia@hotmail.com', NULL, 2, '2023-02-01', 3, '2023-02-02', 0, 0, '2023-02-01', '2023-02-02', '2023-02-01 16:29:04', NULL, 0, 2);
+	(79, 1, NULL, 543000, 0, 19, 1, 'fibianmejia@hotmail.com', NULL, 2, '2023-02-02', 3, '2023-02-03', 0, 0, NULL, NULL, '2023-02-02 14:41:42', NULL, 0, 0);
 
 -- Dumping structure for table stock.quotationDetail
 CREATE TABLE IF NOT EXISTS `quotationDetail` (
@@ -600,14 +650,12 @@ CREATE TABLE IF NOT EXISTS `quotationDetail` (
   KEY `FK_quotationDetail_quotation` (`quotation_id`),
   CONSTRAINT `FK_quotationDetail_products` FOREIGN KEY (`item_id`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_quotationDetail_quotation` FOREIGN KEY (`quotation_id`) REFERENCES `quotation` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8;
 
--- Dumping data for table stock.quotationDetail: ~4 rows (approximately)
+-- Dumping data for table stock.quotationDetail: ~2 rows (approximately)
 REPLACE INTO `quotationDetail` (`id`, `item_id`, `extras`, `amount`, `value`, `quotation_id`, `from`, `to`, `days`, `dispatching`, `returning`) VALUES
-	(75, 29, NULL, 5, 1250, 75, '2023-01-31', '2023-02-01', 1, 0, 0),
-	(76, 29, NULL, 10, 45000, 76, NULL, NULL, 1, 0, 0),
-	(77, 29, NULL, 5, 1250, 77, '2023-02-02', '2023-02-03', 1, 5, 2),
-	(78, 33, NULL, 5, 105000, 78, NULL, NULL, NULL, 0, 0);
+	(79, 35, NULL, 3, 45000, 79, NULL, NULL, 1, 0, 0),
+	(80, 33, NULL, 4, 102000, 79, NULL, NULL, 1, 0, 0);
 
 -- Dumping structure for table stock.quotationInfo
 CREATE TABLE IF NOT EXISTS `quotationInfo` (
@@ -621,45 +669,15 @@ CREATE TABLE IF NOT EXISTS `quotationInfo` (
   KEY `FK_quotationInfo_quotation` (`quotation_id`),
   CONSTRAINT `FK_quotationInfo_quotation` FOREIGN KEY (`quotation_id`) REFERENCES `quotation` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_quotationInfo_users` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=314 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=319 DEFAULT CHARSET=utf8;
 
--- Dumping data for table stock.quotationInfo: ~35 rows (approximately)
+-- Dumping data for table stock.quotationInfo: ~4 rows (approximately)
 REPLACE INTO `quotationInfo` (`id`, `quotation_id`, `action`, `user`, `done`) VALUES
-	(279, 75, '0', 3, '2023-01-30 16:02:16'),
-	(280, 75, '0', 3, '2023-01-30 16:02:40'),
-	(281, 75, '0', 3, '2023-01-30 16:03:16'),
-	(282, 75, '0', 3, '2023-01-30 16:05:40'),
-	(283, 75, '0', 3, '2023-01-30 16:06:06'),
-	(284, 75, '2', NULL, '2023-01-30 16:06:34'),
-	(285, 76, '0', 3, '2023-01-30 16:12:38'),
-	(286, 76, '2', 3, '2023-01-30 16:12:54'),
-	(287, 77, '0', 3, '2023-02-01 09:26:08'),
-	(288, 77, '2', NULL, '2023-02-01 09:26:54'),
-	(289, 77, '3', NULL, '2023-02-01 09:36:40'),
-	(290, 77, '2', NULL, '2023-02-01 09:38:42'),
-	(291, 77, '3', NULL, '2023-02-01 09:39:19'),
-	(292, 77, '2', NULL, '2023-02-01 09:39:54'),
-	(293, 77, '3', NULL, '2023-02-01 09:40:16'),
-	(294, 77, '2', NULL, '2023-02-01 09:44:08'),
-	(295, 77, '3', NULL, '2023-02-01 09:50:12'),
-	(296, 77, '3', NULL, '2023-02-01 09:51:41'),
-	(297, 77, '3', NULL, '2023-02-01 09:55:53'),
-	(298, 77, '3', NULL, '2023-02-01 10:27:41'),
-	(299, 77, '4', NULL, '2023-02-01 10:29:45'),
-	(300, 77, '2', NULL, '2023-02-01 10:31:01'),
-	(301, 77, '3', NULL, '2023-02-01 10:33:45'),
-	(302, 77, '3', NULL, '2023-02-01 10:34:22'),
-	(303, 77, '3', NULL, '2023-02-01 10:35:18'),
-	(304, 77, '3', NULL, '2023-02-01 10:37:04'),
-	(305, 77, '3', NULL, '2023-02-01 10:42:24'),
-	(306, 77, '3', NULL, '2023-02-01 10:44:42'),
-	(307, 77, '3', NULL, '2023-02-01 10:46:57'),
-	(308, 77, '3', NULL, '2023-02-01 10:48:24'),
-	(309, 77, '4', NULL, '2023-02-01 10:48:38'),
-	(310, 78, '0', 3, '2023-02-01 11:29:04'),
-	(311, 78, '0', 3, '2023-02-01 11:33:07'),
-	(312, 78, '2', NULL, '2023-02-01 11:34:58'),
-	(313, 77, '5', NULL, '2023-02-01 12:00:35');
+	(314, 79, '0', 3, '2023-02-02 09:41:42'),
+	(315, 79, '2', NULL, '2023-02-02 09:42:20'),
+	(316, 79, '2', NULL, '2023-02-02 15:22:25'),
+	(317, 79, '2', NULL, '2023-02-02 15:22:30'),
+	(318, 79, '0', NULL, '2023-02-02 16:04:15');
 
 -- Dumping structure for table stock.quotationMessages
 CREATE TABLE IF NOT EXISTS `quotationMessages` (
@@ -676,7 +694,7 @@ CREATE TABLE IF NOT EXISTS `quotationStages` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table stock.quotationStages: ~8 rows (approximately)
+-- Dumping data for table stock.quotationStages: ~7 rows (approximately)
 REPLACE INTO `quotationStages` (`id`, `name`) VALUES
 	(0, 'Created'),
 	(1, 'Rejected'),
@@ -720,9 +738,7 @@ CREATE TABLE IF NOT EXISTS `returning` (
   CONSTRAINT `returning_ibfk_2` FOREIGN KEY (`quotation_id`) REFERENCES `quotation` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 
--- Dumping data for table stock.returning: ~1 rows (approximately)
-REPLACE INTO `returning` (`id`, `return_date`, `quotation_id`, `created_by`, `created_at`) VALUES
-	(17, '2023-02-01 12:00:22', 77, 3, '2023-02-01 12:00:35');
+-- Dumping data for table stock.returning: ~0 rows (approximately)
 
 -- Dumping structure for table stock.returningDetail
 CREATE TABLE IF NOT EXISTS `returningDetail` (
@@ -737,9 +753,7 @@ CREATE TABLE IF NOT EXISTS `returningDetail` (
   CONSTRAINT `returningDetail_ibfk_2` FOREIGN KEY (`quotation_detail_id`) REFERENCES `quotationDetail` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
--- Dumping data for table stock.returningDetail: ~1 rows (approximately)
-REPLACE INTO `returningDetail` (`id`, `quotation_detail_id`, `amount`, `return_id`) VALUES
-	(20, 77, 2, 17);
+-- Dumping data for table stock.returningDetail: ~0 rows (approximately)
 
 -- Dumping structure for table stock.rol
 CREATE TABLE IF NOT EXISTS `rol` (
@@ -772,7 +786,7 @@ CREATE TABLE IF NOT EXISTS `rolPermitions` (
   CONSTRAINT `FK_rolPermitions_rol` FOREIGN KEY (`rol`) REFERENCES `rol` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
--- Dumping data for table stock.rolPermitions: ~18 rows (approximately)
+-- Dumping data for table stock.rolPermitions: ~13 rows (approximately)
 REPLACE INTO `rolPermitions` (`id`, `rol`, `read`, `write`, `edit`, `module`) VALUES
 	(1, 1, 1, 1, 0, 1),
 	(2, 1, 1, 0, 1, 2),
@@ -879,8 +893,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 REPLACE INTO `users` (`id`, `name`, `rol`, `nickname`, `password`, `registered`, `enterprise`, `token`, `isAdmin`, `socketId`, `language`, `email`, `email_verified`) VALUES
 	(1, 'Fabián ', 1, 'fibiaan', '81dc9bdb52d04dc20036dbd8313ed055', '2022-10-14 16:23:48', 1, 'eyJpZCI6MSwibmFtZSI6IkZhYmnDoW4gIiwibmlja25hbWUiOiJmaWJpYWFuIiwiZW1haWwiOm51bGwsImVtYWlsX3ZlcmlmaWVkIjpudWxsLCJpc0FkbWluIjoiMCIsImVudGVycHJpc2VfaWQiOjEsImVudGVycHJpc2VfbmFtZSI6IkZpYmlhYW4iLCJlbnRlcnByaXNlX3BhdGgiOiJodHRwOi8vbG9jYWxob3N0OjgwMTIvcHVibGljL2xvZ29zL2ZpYmlhYW4ucG5nIiwic2hvcnRjdXQiOiJmaWJpYWFuIiwicm9sIjoxLCJyZW50aW5nIjowLCJxdW90aW5nIjowLCJleHAiOjE2NzUwMzY5MTh9', '0', 'x_0gvGkQbMV-heVbAAAb', NULL, NULL, NULL),
 	(2, 'César', 1, 'cesarp', '81dc9bdb52d04dc20036dbd8313ed055', '2022-10-22 23:21:05', 1, 'eyJpZCI6MiwibmFtZSI6IkPDqXNhciIsIm5pY2tuYW1lIjoiY2VzYXJwIiwiZW1haWwiOiJjZXNhcnBoZXJuYW5kZXowOUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6IjEiLCJpc0FkbWluIjoiMCIsImVudGVycHJpc2VfaWQiOjEsImVudGVycHJpc2VfbmFtZSI6IkZpYmlhYW4iLCJlbnRlcnByaXNlX3BhdGgiOiJodHRwOi8vbG9jYWxob3N0OjgwMTIvcHVibGljL2xvZ29zL2ZpYmlhYW4ucG5nIiwic2hvcnRjdXQiOiJmaWJpYWFuIiwicm9sIjoxLCJyZW50aW5nIjowLCJxdW90aW5nIjowLCJleHAiOjE2NzUwNTAzNTJ9', '0', '_ovVTeWyP4pAULZNAABG', NULL, 'cesarphernandez09@gmail.com', '1'),
-	(3, 'Jerdirlson', 2, 'yeye', '81dc9bdb52d04dc20036dbd8313ed055', '2022-11-23 10:58:59', 2, 'eyJpZCI6MywibmFtZSI6IkplcmRpcmxzb24iLCJuaWNrbmFtZSI6InlleWUiLCJlbWFpbCI6bnVsbCwiZW1haWxfdmVyaWZpZWQiOm51bGwsImlzQWRtaW4iOiIwIiwiZW50ZXJwcmlzZV9pZCI6MiwiZW50ZXJwcmlzZV9uYW1lIjoiQ2ltYnJhcyIsImVudGVycHJpc2VfcGF0aCI6IiIsInNob3J0Y3V0IjoiY2ltYnJhcyIsInJvbCI6MiwicmVudGluZyI6MSwicXVvdGluZyI6MSwiZXhwIjoxNjc1MjcyNDY2fQ==', '0', '7Z-QtCiF0NXaKIVuAAAX', NULL, NULL, NULL),
-	(4, 'Diego', 2, 'diegogo', '81dc9bdb52d04dc20036dbd8313ed055', '2023-01-11 18:51:11', 2, 'eyJpZCI6NCwibmFtZSI6IkRpZWdvIiwibmlja25hbWUiOiJkaWVnb2dvIiwiZW1haWwiOm51bGwsImVtYWlsX3ZlcmlmaWVkIjpudWxsLCJpc0FkbWluIjoiMCIsImVudGVycHJpc2VfaWQiOjIsImVudGVycHJpc2VfbmFtZSI6IkNpbWJyYXMiLCJlbnRlcnByaXNlX3BhdGgiOiIiLCJzaG9ydGN1dCI6ImNpbWJyYXMiLCJyb2wiOjIsInJlbnRpbmciOjEsInF1b3RpbmciOjEsImV4cCI6MTY3NTI3NDE0NX0=', '0', 'oVy33rdGeyjd6jCfAAAV', NULL, NULL, NULL);
+	(3, 'Jerdirlson', 2, 'yeye', '81dc9bdb52d04dc20036dbd8313ed055', '2022-11-23 10:58:59', 2, 'eyJpZCI6MywibmFtZSI6IkplcmRpcmxzb24iLCJuaWNrbmFtZSI6InlleWUiLCJlbWFpbCI6bnVsbCwiZW1haWxfdmVyaWZpZWQiOm51bGwsImlzQWRtaW4iOiIwIiwiZW50ZXJwcmlzZV9pZCI6MiwiZW50ZXJwcmlzZV9uYW1lIjoiQ2ltYnJhcyIsImVudGVycHJpc2VfcGF0aCI6IiIsInNob3J0Y3V0IjoiY2ltYnJhcyIsInJvbCI6MiwicmVudGluZyI6MSwicXVvdGluZyI6MSwiZXhwIjoxNjc1MzUyOTI0fQ==', '0', 'QhYO1_JATKFADJ7mAAAP', NULL, NULL, NULL),
+	(4, 'Diego', 2, 'diegogo', '81dc9bdb52d04dc20036dbd8313ed055', '2023-01-11 18:51:11', 2, 'eyJpZCI6NCwibmFtZSI6IkRpZWdvIiwibmlja25hbWUiOiJkaWVnb2dvIiwiZW1haWwiOm51bGwsImVtYWlsX3ZlcmlmaWVkIjpudWxsLCJpc0FkbWluIjoiMCIsImVudGVycHJpc2VfaWQiOjIsImVudGVycHJpc2VfbmFtZSI6IkNpbWJyYXMgZGUgQ29sb21iaWEgUy5BLlMuIiwiZW50ZXJwcmlzZV9wYXRoIjoiIiwic2hvcnRjdXQiOiJjaW1icmFzIiwicm9sIjoyLCJyZW50aW5nIjoxLCJxdW90aW5nIjoxLCJleHAiOjE2NzUzNzUyNDd9', '0', 'bUaoQ1X_A5EGv4T4AAAB', NULL, NULL, NULL);
 
 -- Dumping structure for table stock.validationCodes
 CREATE TABLE IF NOT EXISTS `validationCodes` (

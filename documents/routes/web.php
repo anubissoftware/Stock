@@ -13,7 +13,7 @@
 |
 */
 
-$router->get('/quotationPDF', 'DocumentController@generateQuotationPDF');
+$router->get('/quotation/pdf/{quotation_id}', 'DocumentController@generateQuotationPDF');
 $router->get('/preview', function () {
     return view('wrapper');
 });

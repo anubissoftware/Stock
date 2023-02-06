@@ -1,4 +1,4 @@
-import { createNewDispatch, createNewReturn, dispatchDetail, dispatchUpdate, editQuotation, getAllQuotation, listDispatch, listReturn, quotationDetail, returnDetail, returnUpdate, sendQuotationEmail, updateQuotationStage } from './../controllers/accountingController';
+import { createNewDispatch, createNewReturn, dispatchDetail, dispatchUpdate, editQuotation, getAllQuotation, listDispatch, listInvoices, listReturn, quotationDetail, returnDetail, returnUpdate, sendQuotationEmail, updateQuotationStage } from './../controllers/accountingController';
 import { addClient, deleteClient, deleteProject, editClient, getProjects, readClients, saveProject } from './../controllers/clientController';
 import { loginCustomer, setTokenCustomer } from '../controllers/customerController';
 import { activateCustomer, menusInRol } from './../controllers/loginController';
@@ -461,5 +461,5 @@ export default (app: Express, io: Server): void => {
         }
     })
 
-    app.get('/invoicing/', middleware, () =>{})
+    app.get('/invoicing/', middleware, listInvoices)
 }

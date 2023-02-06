@@ -219,10 +219,6 @@ const listDispatchs = async () => {
 
     cancelToken.value = new AbortController();
     let filters: any = {}
-    if (router.currentRoute.value.query.id && router.currentRoute.value.query.action == '0' && relanded.value) {
-        console.log(router.currentRoute.value.query)
-        filters['q.id'] = router.currentRoute.value.query.id
-    }
 
     if(dates.value.thisMonth && dates.value.lastMonth){
         filters = {
@@ -242,6 +238,11 @@ const listDispatchs = async () => {
             min_date: moment().add(-1, 'month').startOf('month').format('YYYY-MM-DD'),
             max_date: moment().add(-1, 'month').endOf('month').format('YYYY-MM-DD')
         }
+    }
+
+    if (router.currentRoute.value.query.id && router.currentRoute.value.query.action == '0' && relanded.value) {
+        console.log('query',router.currentRoute.value.query)
+        filters['q.id'] = router.currentRoute.value.query.id
     }
 
     let { data } = await getDispatch((store.getUser.token as token).value, { 'c.name': filter.value, ...filters }, cancelToken.value.signal)

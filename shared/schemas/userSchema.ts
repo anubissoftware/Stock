@@ -1,3 +1,8 @@
+export interface token {
+    expirate: number;
+    value: string;
+}
+
 export interface userSchema {
     id: number,
     name: string,
@@ -6,7 +11,7 @@ export interface userSchema {
     password: string,
     registered: any,
     enterprise_id: number,
-    token: string,
+    token: string | token,
     isAdmin: string,
     socketId: string,
     exp?: number | null,
@@ -15,6 +20,8 @@ export interface userSchema {
     email?: string   
     email_verified?: string
     colors?: string
+    enterprise_path?: string
+    shortcut?: string
 }
 import { modulesSchema } from "./modulesSchema"
 export type Auth = {

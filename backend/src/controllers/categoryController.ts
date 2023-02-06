@@ -6,7 +6,7 @@ import { Request, Response } from "express";
 
 export const getCategories = async (req: Request, res: Response): Promise<void> => {
     const db: DataBase = await initDatabase(res)
-    const query: string = `SELECT id, name, color FROM category WHERE enterprise = ?`
+    const query: string = `SELECT id, name, color, enterprise FROM category WHERE enterprise = ? OR enterprise is null`
     const values: Array<string> = [req.userData.enterprise_id.toString()]
     const response: Array<categoryQuery> = await db.readQuery<categoryQuery>(query, values) 
     db.closeConnection()

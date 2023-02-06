@@ -1,7 +1,7 @@
 <template>
     <div ref="tag">
         <div class="flex rounded-md py-2 italic font-bold whitespace-nowrap overflow-x-hidden cursor-pointer select-none"
-            :style="{ 'background-color': props.category.color, 'color': color }" @dblclick="isOpt = !isOpt">
+            :style="{ 'background-color': props.category.color, 'color': color }" @dblclick="changeOpt">
             <div v-if="!isOpt" class="flex w-full justify-center items-center">{{ props.category.name }}</div>
             <div v-else class="flex w-full justify-center items-center gap-7 overflow-hidden">
                 <Icon class="hover:scale-125 duration-150" icon="delete_forever" @click="deleteCat()" />
@@ -26,7 +26,8 @@ export interface categoryTagProps {
     category: {
         color: string
         name: string
-        id: number
+        id: number,
+        enterprise: number | null
     }
 }
 const isDarkColor = (color: string) => {
@@ -40,6 +41,12 @@ const isOpt = ref(false)
 const color = computed(() => {
     return isDarkColor(props.category.color) ? 'white' : 'black'
 })
+
+const changeOpt = () => {
+    if(props.category.enterprise == null) return
+    isOpt.value = !isOpt.value
+}
+
 onClickOutside(tag, () => {
     if (isOpt.value) {
         isOpt.value = false
