@@ -1,13 +1,16 @@
 <template>
-    <div class="flex w-full px-10 py-4">
-        <div class="flex flex-col w-full self-center rounded-2xl p-4 pb-10 border shadow-md items-start">
-            <h1 class="tablet:text-xl phone:text-base">
-                {{ welcomeMessage + ',' }}
-                <span class="font-bold text-primary">{{ name }}</span>
-            </h1>
-            <h3 class="tablet:text-sm phone:text-xs py-1">
-                {{ phrases[0][language] }}
-            </h3>
+    <div class="flex w-full">
+        <div class="flex flex-row w-full self-center rounded-2xl p-4 border shadow-md items-center justify-between">
+            <div class="flex flex-col">
+                <h1 class="tablet:text-xl phone:text-base">
+                    {{ welcomeMessage + ',' }}
+                    <span class="font-bold text-primary">{{ name }}</span>
+                </h1>
+                <h3 class="tablet:text-sm phone:text-xs py-1 text-start">
+                    {{ phrases[0][language] }}
+                </h3>
+            </div>
+            <img class="w-[80px]" src="@/assets/local/ourStock.svg" alt=""/>
         </div>
     </div>
 </template>

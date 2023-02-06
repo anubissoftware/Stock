@@ -3,27 +3,36 @@
     <Header2>
       <template v-slot:mainContainer>
         <div class="min-h-[80vh] flex flex-col w-full pt-5">
-          <h1 class="font-bold text-2xl px-10 py-2">
-            {{ strings.wellcome[language] }}
-          </h1>
-          <WelcomeDashboard :name="store.getUser.name" />
           <div class="flex flex-col flex-wrap w-full px-10 py-2">
-            <div class="flex gap-4 py-2 phone:flex-wrap laptop:flex-nowrap w-full">
-              <div class="flex flex-row w-full min-w-[350px] justify-center gap-5 phone:px-4 
-              shadow-lg border rounded-xl">
-                <div class="h-[300px] phone:w-full laptop:w-2/5">
-                  <canvas ref="todayChartCanvas"></canvas>
+            <div class="flex gap-4 py-2 phone:flex-wrap tablet:flex-nowrap w-full">
+              <div class="flex flex-col phone:w-full tablet:w-2/3 justify-between">
+                <WelcomeDashboard :name="store.getUser.name" />
+                <div class="flex flex-row w-full min-w-[350px] justify-center gap-5 phone:px-4 
+                shadow-lg border rounded-xl">
+                  <div class="h-[200px] phone:w-full laptop:w-2/5">
+                    <canvas ref="todayChartCanvas"></canvas>
+                  </div>
+                  <!-- <div class="h-[300px] phone:w-full laptop:w-2/5">
+                    <canvas class="phone:!w-full laptop:!w-2/5" ref=""></canvas>
+                  </div> -->
                 </div>
-                <!-- <div class="h-[300px] phone:w-full laptop:w-2/5">
-                  <canvas class="phone:!w-full laptop:!w-2/5" ref=""></canvas>
-                </div> -->
               </div>
-              <ListsDashboard class="h-[300px] shadow-lg" title="Clients" :data="[]" />
+              <div class="flex tablet:w-1/3 phone:w-full">
+                <ListsDashboard class="shadow-lg h-full" title="Clients" :data="clients" value="name" />
+              </div>
             </div>
-            <ListsDashboard class="h-[300px] shadow-lg" title="Cotizaciones" :data="[]" />
+            <div class="flex flex-row w-full items-center justify-center pt-3 tablet:text-3xl phone:text-2xl">
+              Quick access
+            </div>
+            <div class="flex py-2 phone:flex-wrap  w-full">
+              <CardInfo title="Quotations" icon="request_quote" link="/dashboard/quote" :total="10" />
+              <CardInfo title="Dispatchs" icon="ios_share" link="/dashboard/dispatch" :total="10"/>
+              <CardInfo title="Returns" icon="place_item" link="/dashboard/return" :total="10"/>
+              <CardInfo title="Products" icon="inventory" link="/dashboard/mystock" :total="10"/>
+            </div>
             <div class="flex gap-4 py-2 phone:flex-wrap laptop:flex-nowrap flex-wrap w-full">
+              <ListsDashboard class="h-[300px] shadow-lg" title="Cotizaciones" :data="[]" />
               <ListsDashboard class="h-[300px] shadow-lg" title="User" :data="[]" />
-              <ListsDashboard class="h-[300px] shadow-lg" title="Clients" :data="[]" />
             </div>
           </div>
         </div>
@@ -46,6 +55,7 @@ import { basicFormatter } from '@/composables/dateFunctions'
 import Header2 from '@/components/Header2.vue';
 import WelcomeDashboard from '@/components/Dashboard/WelcomeDashboard.vue';
 import ListsDashboard from '@/components/Dashboard/ListsDashboard.vue';
+import CardInfo from '@/components/Dashboard/CardInfo.vue';
 import { useProductStore } from '@/stores/products';
 import type { clientEnterpriseSchema, token } from '@/schemas';
 import { getClients } from '@/services/clients'
@@ -96,19 +106,20 @@ var todayChartConfig: ChartConfiguration = {
         0,
         0,
       ],
-      borderRadius: 5,
-      borderColor:'#c2c2c2',
-      backgroundColor: 'blue',
+      borderRadius: 10,
+      borderColor:'#A64AEE',
+      backgroundColor: '#A64AEE4D',
       borderWidth: 2
     }]
   },
   options: {
+    responsive: true,
     scales: {
       x: {
         ticks: {
           autoSkip: false,
-          maxRotation: 90,
-          minRotation: 90
+          maxRotation: 0,
+          minRotation: 0
         }
       },
       y: {
@@ -123,7 +134,6 @@ var todayChartConfig: ChartConfiguration = {
       }
     },
     maintainAspectRatio: false,
-    responsive: true,
   },
 }
 
@@ -175,8 +185,9 @@ const setClients = async () => {
 
   let cancelToken = new AbortController();
   let { data } = await getClients((store.getUser.token as token).value, '', cancelToken.signal)
-  if (!data) return
+  if (data) {
     clients.value = data
+  }
 }
 
 </script>
