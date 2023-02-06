@@ -79,9 +79,9 @@
                                     </div>
                                 </div>
                                 <div v-if="user.isAdmin == '1'" class="flex laptop:flex-row phone:flex-col py-4 w-full justify-center items-start gap-4">
-                                    <div class="flex justify-between items-center laptop:w-1/3 phone:w-full font-extrabold">
+                                    <div class="flex flex-wrap justify-between items-center laptop:w-1/3 phone:w-full font-extrabold">
                                         {{ string.color[language] }}:
-                                        <Button v-if="userColors.length < 3 " class="phone:w-fit laptop:w-1/3" exactColor color="primary" size="sm" content="Add color" icon="add" @click="addColor" />
+                                        <Button v-if="userColors.length < 3 " class="w-fit" exactColor color="primary" size="sm" content="Add color" icon="add" @click="addColor" />
                                         
                                     </div>
                                     <div class="flex laptop:flex-col phone:flex-row flex-wrap laptop:w-1/3 phone:w-full gap-2">
