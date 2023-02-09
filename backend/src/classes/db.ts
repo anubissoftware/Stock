@@ -196,7 +196,10 @@ export class DataBase {
     async updateQuery(query: string, values: Array<string> | null): Promise<OkPacket> {
         return await new Promise((resolve, reject) => {
             this.connection.query(query, [...values], (err, res) => {
-                if (err) reject(new Error(err.sqlMessage))
+                if (err){
+                    console.error(err)
+                    reject(new Error(err.sqlMessage))
+                }
                 resolve(res)
             })
         })

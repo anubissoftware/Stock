@@ -86,7 +86,7 @@
                             :items="categories"
                             :value="'name'"
                             required
-                            
+                            chips
                         />
                     </div>
                     <!-- Unidades -->
@@ -112,7 +112,7 @@
                     <div class="hidden flex-row 
                     tablet:justify-between tablet:items-center 
                     phone:justify-between phone:items-start 
-                    pb-6">
+                    pb-6" v-if="false">
                         <div class="flex">
                             <span class="mr-2 text-base"> {{ string.recipe[language] }} </span>
                             <Switch 
@@ -153,6 +153,7 @@
                             v-model="newItem.currency"
                             size="md"
                             type="text"
+                            disabled
                         />
                     </div>
                     <!-- Precio al detal y por mayor -->
@@ -175,6 +176,21 @@
                             :placeholder= string.wholesaleHolder[language]
                             :label= string.wholesale[language]
                             v-model="newItem.wholesale"
+                            size="md"
+                            type="number"
+                        />
+                    </div>
+
+                    <div class="flex tablet:flex-row phone:flex-col 
+                    tablet:justify-between tablet:items-center 
+                    phone:justify-between phone:items-start 
+                    pb-6">
+                        <Input 
+                            class="phone:mb-4 phone:w-full tablet:mb-0 tablet:mr-8 tablet:w-1/2"
+                            color="black"
+                            :placeholder= string.retailHolder[language]
+                            :label= string.renting[language]
+                            v-model="newItem.rent"
                             size="md"
                             type="number"
                         />
@@ -315,6 +331,10 @@ export interface DispatchCreationProps {
 const props = defineProps<DispatchCreationProps>()
 
 const string = {
+    renting: {
+        Spanish: 'Renta por día',
+        English: 'Rent per day'
+    },
     addNew: {
         Spanish: 'Agregar nuevo item',
         English: 'Add new item'
@@ -490,12 +510,14 @@ interface itemRecipe {
 onMounted(async () => {
     //Get units
     const token = auth.getUser.token as token
-    let getUn = await getUnits(token.value)
-    units.value = getUn.data 
+    // let getUn = await getUnits(token.value)
+    // units.value = getUn.data 
     if (props.product != null){
-        let categoriesResult = categories.value.find((cat) => cat.id == JSON.parse(props.product.categories).values[0]);
-        props.product.categories = categoriesResult
-        newItem.value = props.product as Item
+        let categoriesResult = categories.value.filter((cat) => JSON.parse(props.product.categories).values.includes(cat.id));
+        
+        const pdtoTemp: Item = {...props.product}
+        pdtoTemp.categories = categoriesResult
+        newItem.value = pdtoTemp
         console.log(newItem.value)
     }  
 })
@@ -537,7 +559,6 @@ const confirmAddItem = async () => {
             if (response.success) {
                 await reformatItem()
                 newItem.value.recipeDetail = await mapRecipe()
-                newItem.value
                 const token = auth.getUser.token as token
                 let response = await createProduct(token.value, newItem.value as unknown as productSchema)
                 if (response.status == 200) {
@@ -565,14 +586,19 @@ const confirmEditItem = async () => {
     .then( async (response : boolean) => {
         if (response) {
             const token = auth.getUser.token as token
-            const response = await updateItemService(token.value, newItem.value as unknown as productSchema)
-            if (response.status == 200) {
-                closeComponent()
-            } else {
-                alertMessage('Algo salio mal',
-                'Vuelve a interlo mas tarde',
-                'error')
-            }
+            const temp = newItem.value.categories.map( (cat: any) => {
+                return cat.id
+            })
+            newItem.value.categories = JSON.stringify({values: temp})
+            updateItemService(token.value, newItem.value as unknown as productSchema).then(response => {
+                if (response.status == 200) {
+                } else {
+                    alertMessage('Algo salio mal',
+                    'Vuelve a interlo mas tarde',
+                    'error')
+                }
+            })
+            closeComponent()
         }
     })
 }
@@ -585,7 +611,7 @@ const reformatItem = async () => {
     // newItem.value.unit = newItem.value.unit.id
     newItem.value.unit = 1
     //Categories 
-    newItem.value.categories = newItem.value.categories.map( cat => {
+    newItem.value.categories = newItem.value.categories.map( (cat: any) => {
         return cat.id
     })
 }

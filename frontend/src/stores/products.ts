@@ -123,6 +123,16 @@ export const useProductStore = defineStore('products', () => {
             return item
         })
     }
+    const returnProduct = (body: rentProductType) => {
+        products.value = products.value.map(item => {
+            const changed = body.products.filter(pdto => pdto.item_id == item.id)
+            if(changed.length > 0){
+                item.stock += changed[0].amnt
+                item.rented -= changed[0].amnt
+            }
+            return item
+        })
+    }
     const soldProduct = (body: soldProductType) => {
         let total = 0
         products.value = products.value.map(item => {
@@ -253,6 +263,6 @@ export const useProductStore = defineStore('products', () => {
         listProducts, listHistoric, listCategories, unsetProducts, setProducts, setHistoric,
         setCategories, addCategories, editCategory, deleteCategory, removeProduct, addProduct,
         updateProduct, soldProduct, boughtProducts, expiredProduct, craftedProduct, getProducts,
-        getHistoric, loadCategories, rentProduct
+        getHistoric, loadCategories, rentProduct, returnProduct
     }
 })

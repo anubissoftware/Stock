@@ -1,4 +1,4 @@
-import { modulesSchema, userData, UserLogin} from '@/schemas'
+import { modulesSchema, userData, UserLogin } from '@/schemas'
 import { OkPacket } from "mysql"
 import { Response, Request } from "express";
 import { DataBase, initDatabase } from "../classes/db";
@@ -6,17 +6,22 @@ import { OAuth2Client } from 'google-auth-library'
 import { Server } from "socket.io"
 import * as dotenv from 'dotenv'
 import { join } from 'path'
-import {env} from 'process'
+import { env } from 'process'
 dotenv.config({ path: join(__dirname, '../../', '.env') })
 import moment from "moment";
 import { menusInRol } from './loginController';
 
-export const login = async (userLogin: UserLogin, db: DataBase): Promise<Array<userData>> => {
-    const query: string = `SELECT u.id, u.name, u.nickname, u.email, u.email_verified ,u.isAdmin, u.enterprise as enterprise_id, e.name as enterprise_name,
-    m.path as enterprise_path, e.shortcut, u.rol, e.renting, e.quoting, e.colors
+const loginQuerySelect: string = `
+    SELECT u.id, u.name, u.nickname, u.email, u.email_verified ,u.isAdmin, u.enterprise as enterprise_id, e.name as enterprise_name,
+    m.path as enterprise_path, e.shortcut, u.rol, e.renting, e.quoting, e.selling, e.colors,
+    e.cart
     FROM users AS u 
     INNER JOIN enterprise as e ON e.id = u.enterprise
     LEFT JOIN media as m ON m.id = e.logo
+`
+
+export const login = async (userLogin: UserLogin, db: DataBase): Promise<Array<userData>> => {
+    const query: string = `${loginQuerySelect}
     WHERE u.nickname = ? AND u.password = ?`
     const values: Array<string> = [userLogin.nickname, userLogin.password];
     return db.readQuery(query, values)
@@ -28,7 +33,7 @@ export const setToken = async (userId: string, token: string, db: DataBase): Pro
     return db.updateQuery(query, values)
 }
 
-export const unSetToken = async(userId: string, db: DataBase): Promise<OkPacket> => {
+export const unSetToken = async (userId: string, db: DataBase): Promise<OkPacket> => {
     const query: string = `UPDATE users SET token = null WHERE id = ?`;
     const values: Array<string> = [userId]
     return db.updateQuery(query, values)
@@ -44,15 +49,15 @@ export const validateToken = async (token: string, db: DataBase): Promise<boolea
         const response: Array<userData> = await db.readQuery<userData>(query, values);
         if (response.length > 0 && response[0].id == userInfo.id) {
             return response[0].socketId;
-        }else{
+        } else {
             return false
         }
     }
 }
 
-export const syncUserWithGoogle = async (req: Request, res: Response) :Promise<any> => {
+export const syncUserWithGoogle = async (req: Request, res: Response): Promise<any> => {
     try {
-        const {token, id} = req.body
+        const { token, id } = req.body
         const client = new OAuth2Client(env.GOOGLE_CLIENT_ID);
         const ticket = await client.verifyIdToken({
             idToken: token,
@@ -85,8 +90,8 @@ export const syncUserWithGoogle = async (req: Request, res: Response) :Promise<a
     }
 }
 
-export const googleLogin = async (req: Request, res: Response, io: Server) :Promise<any> => {
-    const {token} = req.body
+export const googleLogin = async (req: Request, res: Response, io: Server): Promise<any> => {
+    const { token } = req.body
     const client = new OAuth2Client(env.GOOGLE_CLIENT_ID);
     const ticket = await client.verifyIdToken({
         idToken: token,
@@ -94,15 +99,11 @@ export const googleLogin = async (req: Request, res: Response, io: Server) :Prom
     });
     const payload = ticket.getPayload();
     const db: DataBase = await initDatabase(res)
-    const query: string = `SELECT u.id, u.name, u.nickname, u.email, u.email_verified ,u.isAdmin, u.enterprise as enterprise_id, e.name as enterprise_name,
-    m.path as enterprise_path, e.shortcut, u.rol, e.renting, e.quoting
-    FROM users AS u 
-    INNER JOIN enterprise as e ON e.id = u.enterprise
-    LEFT JOIN media as m ON m.id = e.logo
+    const query: string = `${loginQuerySelect}
     WHERE u.email = ?`
     const values: Array<string> = [payload.email.toString()];
     const rps = await db.readQuery(query, values)
-    if(rps.length != 0) {
+    if (rps.length != 0) {
         const userResponse: userData = rps[0] as userData;
         userResponse.exp = moment().unix() + 60 * 60;
         const tokenUser: string = Buffer.from(JSON.stringify(userResponse), 'utf-8').toString('base64')
@@ -120,7 +121,7 @@ export const googleLogin = async (req: Request, res: Response, io: Server) :Prom
             io.to('e' + userResponse.enterprise_id).emit('userConnected', { id: userResponse.id, nickname: userResponse.nickname })
         } else {
             res.status(500)
-            
+
             res.end()
         }
     } else {

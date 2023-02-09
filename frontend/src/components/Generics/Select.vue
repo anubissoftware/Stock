@@ -64,7 +64,7 @@
                 />
              </div>
             </div>
-            <label class="absolute text-base font-bold left-0 top-[50%] -translate-y-1/2 bg-white 
+            <label class="absolute text-base font-bold left-0 top-[50%] -translate-y-1/2 bg-transparent 
             py-0 px-1 my-0 mx-2
             text-gray-600 ease-out transition-all duration-200
              origin-top-left pointer-events-none"
@@ -99,16 +99,17 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, toRefs, ref, onBeforeMount, computed} from 'vue';
+import { defineProps, defineEmits, toRefs, ref, type Ref, computed} from 'vue';
 import Icon from '@/components/Generics/Icon.vue'
 import { onClickOutside } from '@vueuse/core'
 import lightDark from '@check-light-or-dark/color'
 import language from '@/services/language';
+import type { categorySchema } from '@/schemas';
 
 export interface contentSelect {
   color?: string
   label: string
-  modelValue: any
+  modelValue: any[] | any
   size?: string
   type?: string 
   items: any
@@ -136,25 +137,29 @@ onClickOutside(component, (event) => {
     openList.value = false
 })
 
+const itemListChips: Ref<any[]> = ref([])
 
 const itemsList = computed(
   {
     get() : any [] {
       if(props.chips) {
-        let itemList:any = props.items
-        itemList = itemList.map((item: any) => {
-          return {
-            ...item,
-            selected: false
-          }
-        })
-        return itemList
+        let itemList: any[] = props.items
+          console.log('hereing')
+          itemListChips.value = itemList.map((item: any) => {
+            return {
+              ...item,
+              selected: props.modelValue.find((model: any) => model.id == item.id) ? true : false
+            }
+          })
+        return itemListChips.value
       } else {
+        itemListChips.value = props.items
         return props.items
       }
     }, 
     set(newValue :any []): void {
-        // console.log(newValue)
+        console.log(newValue)
+        itemListChips.value = newValue
     }
   }
 )
@@ -174,7 +179,6 @@ const finalValue = computed(
     }, 
     set(newValue : any): void {
       emits('update:modelValue', newValue)
-
     }
   }
 )
@@ -183,14 +187,21 @@ const finalValue = computed(
 const selectItem = (item: object | any) => {
   if (props.chips) {
     //Reset lista de selección a seleccion vacia 
-    itemsList.value = itemsList.value.map((item: any) => {
+    itemListChips.value = itemsList.value.map((itemV: any) => {
+      let selected = props.modelValue.find((model: any) => model.id == itemV.id) ? true : false 
+      if(item.id == itemV.id && selected) {
+        console.log('item', item)
+        item.selected = false
+        deleteItem(item)
+      }
+
       return {
-        ...item,
-        selected: false
+        ...itemV,
+        selected
       }
     })
-    item.selected = !item.selected
-    //Validacion de asignacion o psuh dependiendo del elemento que llegue como array[]
+
+    //Validacion de asignacion o push dependiendo del elemento que llegue como array[]
     if(Object.keys(finalValue.value[0]).length === 0) {
       finalValue.value[0] = item
     } else {
@@ -216,8 +227,9 @@ const selectItem = (item: object | any) => {
 }
 
 const deleteItem = async (item: any) => {
+  console.log('jere', item)
   let result = finalValue.value.filter((value: any) => {
-    if(JSON.stringify(value) != JSON.stringify(item)) { return value }
+    if(value.id != item.id) { return value }
   })
   item.selected = false
   result.length == 0 ? 
@@ -230,12 +242,12 @@ const deleteItem = async (item: any) => {
 label {
   color: var(--bgColor);
   top: 0;
-  transform: translateY(-50%) scale(0.9) !important;
+  transform: translateY(-80%) scale(0.9) !important;
 }
 
 input:not(:placeholder-shown)+label {
   top: 0;
-  transform: translateY(-50%) scale(0.9) !important;
+  transform: translateY(-80%) scale(0.9) !important;
 }
 
 input:not(:focus)::placeholder {

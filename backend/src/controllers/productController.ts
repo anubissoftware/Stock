@@ -21,14 +21,14 @@ export const registerProduct = async (req: Request, res: Response): Promise<prod
     try {
         await db.connection.beginTransaction()
         const query: string = `INSERT INTO products (name, description, 
-            unit, stock, cost, price, isRecipe, categories, enterprise, onBuying, wholesale) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+            unit, stock, cost, price, isRecipe, categories, enterprise, onBuying, wholesale, rent) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         const values: Array<string> = [
             pdto.name, pdto.description, pdto.unit.toString(), pdto.stock.toString(),
             pdto.cost.toString(), pdto.price.toString(), pdto.isRecipe,
             saveCategories(pdto.categories), req.userData.enterprise_id.toString(),
             pdto.isRecipe ? '0' : (pdto.cost * pdto.stock).toString(),
-            pdto.wholesale.toString()
+            pdto.wholesale.toString(), pdto.rent.toString()
         ]
         const response: OkPacket = await db.insertQuery(query, values)
         if (response.affectedRows > 0 && response.insertId != 0) {
@@ -101,7 +101,8 @@ export const registerProduct = async (req: Request, res: Response): Promise<prod
             price: pdto.price,
             isRecipe: pdto.isRecipe,
             categories: pdto.categories,
-            wholesale: pdto.wholesale
+            wholesale: pdto.wholesale,
+            rent: pdto.rent
         }
         res.status(200)
         res.end()
@@ -118,7 +119,6 @@ export const updateProduct = async (req: Request, res: Response): Promise<object
     //Remove properties
     delete pdtBody.showAction
     delete pdtBody.creation
-    pdtBody.categories = JSON.stringify({values: [pdtBody.categories.id]})
     const keysBody = Object.keys(pdtBody)
     if (pdtBody && keysBody.length > 0 && pdtBody.id) {
         const db: DataBase = await initDatabase(res);
@@ -403,6 +403,120 @@ export const expireItems = async (req: Request, res: Response): Promise<boolean>
         res.end()
         return false
     }
+}
+
+export const dispatchItem = async (req: Request, res: Response) => {
+    const payload: productToSell[] = req.body.products
+    const queryPdto: string = `UPDATE products SET rented = rented + ?, stock = stock - ? WHERE id = ?`
+    const queryDispatch: string = `
+        INSERT INTO dispatching (out_store, received, created_by)
+        VALUES (?, ?, ?)
+    `
+    let queryDispatchDetail: string = `
+        INSERT INTO dispatchingDetail (amount, dispatch_id, item_id)
+        VALUES (
+    `
+    const db: DataBase = await initDatabase(res)
+    let response: OkPacket;
+    try{
+        db.connection.beginTransaction()
+        let dispt: OkPacket = await db.insertQuery(queryDispatch, [
+            moment().format('YYYY-MM-DDTHH:mm:ss'),
+            moment().format('YYYY-MM-DDTHH:mm:ss'),
+            req.userData.id.toString()
+        ])
+        if(dispt.insertId != 0){
+            for(const el of payload){
+                const dd: OkPacket = await db.updateQuery(queryPdto, [
+                    el.amount.toString(),
+                    el.amount.toString(),
+                    el.id.toString()
+                ])
+                if(dd.affectedRows == 0){
+                    throw new Error('Product not updated: ' + queryPdto)
+                }
+                const vals: Array<string> = [
+                    el.amount.toString(),
+                    dispt.insertId.toString(),
+                    el.id.toString()
+                ]
+                queryDispatchDetail += vals.join(',') + '),' 
+            }
+            queryDispatchDetail = queryDispatchDetail.slice(0, -1)
+
+            const ddd: OkPacket = await db.insertQuery(queryDispatchDetail, [])
+            if(ddd.affectedRows == 0){
+                throw new Error('Detail dispatch not inserted' +  queryDispatchDetail.toString())
+            }
+
+        }else{
+            throw new Error('Dispatch not inserted: ' + queryDispatch)
+        }
+        
+    }catch(err) {
+        console.error('err dispatching item -> ', err)
+        db.connection.rollback()
+        res.end()
+        return false
+    }
+    db.connection.commit()
+    res.end()
+    return true
+}
+
+export const returnItem = async (req: Request, res: Response) => {
+    const payload: productToSell[] = req.body.products
+    const queryPdto: string = `UPDATE products SET rented = rented - ?, stock = stock + ? WHERE id = ?`
+    const queryDispatch: string = 'INSERT INTO `returning` (return_date, created_by) VALUES (?, ?)'
+    let queryDispatchDetail: string = `
+        INSERT INTO returningDetail (amount, return_id, item_id)
+        VALUES (
+    `
+    const db: DataBase = await initDatabase(res)
+    let response: OkPacket;
+    try{
+        db.connection.beginTransaction()
+        let dispt: OkPacket = await db.insertQuery(queryDispatch, [
+            moment().format('YYYY-MM-DD HH:mm:ss'),
+            req.userData.id.toString()
+        ])
+        if(dispt.insertId != 0){
+            for(const el of payload){
+                const dd: OkPacket = await db.updateQuery(queryPdto, [
+                    el.amount.toString(),
+                    el.amount.toString(),
+                    el.id.toString()
+                ])
+                if(dd.affectedRows == 0){
+                    throw new Error('Product not updated: ' + queryPdto)
+                }
+                const vals: Array<string> = [
+                    el.amount.toString(),
+                    dispt.insertId.toString(),
+                    el.id.toString()
+                ]
+                queryDispatchDetail += vals.join(',') + '),' 
+            }
+            queryDispatchDetail = queryDispatchDetail.slice(0, -1)
+
+            const ddd: OkPacket = await db.insertQuery(queryDispatchDetail, [])
+            if(ddd.affectedRows == 0){
+                throw new Error('Detail returning not inserted' +  queryDispatchDetail.toString())
+            }
+
+        }else{
+            throw new Error('Returning not inserted: ' + queryDispatch)
+        }
+        
+    }catch(err) {
+        console.error('err returning item -> ', err)
+        db.connection.rollback()
+        res.end()
+        return false
+    }
+    db.connection.commit()
+    res.end()
+    return true
 }
 
 type historicSells = {

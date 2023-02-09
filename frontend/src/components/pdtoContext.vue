@@ -2,29 +2,35 @@
 <template>
     <div class="right-click-menu flex flex-col rounded-xl select-none" ref="contextMenu"
         :style="{ top: place.x, left: place.y }">
-        <div @click="sellItem()" v-if="product?.price != 0 && editPer">
-            Sell
-        </div>
-        <div @click="wholeSale()" v-if="product?.wholesale != 0 && editPer">
-            Wholesale
-        </div>
         <div @click="buyItem()" v-if="editPer">
-            Buy
+            Comprar
+        </div>
+        <div @click="sellItem()" v-if="product?.price != 0 && editPer && auth.getUser.selling">
+            Vender
+        </div>
+        <div @click="wholeSale()" v-if="product?.wholesale != 0 && editPer && auth.getUser.selling">
+            Al por Mayor
+        </div>
+        <div @click="dispatchItem()" v-if="(product?.rent != 0 && product?.rent != null) && editPer && auth.getUser.renting">
+            Remisión
+        </div>
+        <div @click="returnItem()" v-if="(product?.rent != 0 && product?.rent != null) && editPer && auth.getUser.renting">
+            Devolución
         </div>
         <div v-if="product?.isRecipe == '1' && editPer" @click="crafting()">
-            Craft
+            Preparar
         </div>
         <div @click="deprecating()" v-if="editPer">
-            Deprecate
+            Vencidos
         </div>
         <div @click="remove()" v-if="editPer && writePer">
-            Remove product
+            Eliminar producto
         </div>
         <div v-if="(product?.price != 0 || product?.rent) && editPer" @click="emit('edit', product), emit('close')">
-            Edit Item
+            Editar producto
         </div>
-        <div v-if="(product?.price != 0 || product?.rent) && editPer" @click="addToCart()">
-            Add to cart
+        <div v-if="(product?.price != 0 || product?.rent) && editPer && auth.getUser.cart" @click="addToCart()">
+            Añadir al carrito
         </div>
     </div>
 </template>
@@ -32,7 +38,7 @@
 <script lang="ts" setup>
 import { ref, type Ref, computed, defineEmits, defineProps } from 'vue';
 import { modalComp, type promiseResponse } from '@/classes/Modal';
-import { deprecateProduct, sellProduct, buyProduct, wholesaleProduct, deleteItemService, craftProduct } from '@/services/product';
+import { deprecateProduct, sellProduct, buyProduct, wholesaleProduct, deleteItemService, craftProduct, dispatchProduct, returnProduct } from '@/services/product';
 import { useShoppingCart } from '@/composables/ShoppingCart';
 import { writePer, editPer } from '@/composables/permissions';
 import { useAuthStore } from '@/stores/auth'
@@ -47,6 +53,7 @@ export interface contextProps {
 
 const emit = defineEmits(['close', 'edit'])
 const props = defineProps<contextProps>()
+const auth = useAuthStore()
 
 const shopping = useShoppingCart()
 const token = computed((): string => {
@@ -99,6 +106,39 @@ const sellItem = () => {
         }
     })
 };
+
+const dispatchItem = () => {
+    modalComp.modal.show({
+        title: 'Remitiendo Producto',
+        description: '',
+        input: true,
+        inputValue: '',
+        inputInfo: {
+            label: 'Cantidad'
+        }
+    }).then(async (res: promiseResponse) => {
+        if (res.success) {
+            let { status } = await dispatchProduct(token.value, [{ id: props.product.id, amount: parseInt(res.value), description: '' }])
+        }
+    })
+};
+
+const returnItem = () => {
+    modalComp.modal.show({
+        title: 'Remitiendo Producto',
+        description: '',
+        input: true,
+        inputValue: '',
+        inputInfo: {
+            label: 'Cantidad'
+        }
+    }).then(async (res: promiseResponse) => {
+        if (res.success) {
+            let { status } = await returnProduct(token.value, [{ id: props.product.id, amount: parseInt(res.value), description: '' }])
+        }
+    })
+}
+
 const buyItem = () => {
     modalComp.modal.show({
         title: 'Buying',
@@ -207,6 +247,7 @@ const addToCart = () => {
 .right-click-menu>div {
     margin: 3px 0px;
     transition: 0.3s;
+    padding: 5px 2px;
 }
 
 .right-click-menu>div:hover {

@@ -4,7 +4,7 @@ import { defineStore } from 'pinia'
 export const useSettingsStore = defineStore('settings', () => {
 
     const config = ref({
-        language: 'English'
+        language: 'Spanish'
     })
 
     const getLanguage = computed((): "Spanish" | "English" => {

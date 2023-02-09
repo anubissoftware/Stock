@@ -2,6 +2,7 @@ import router from '@/router'
 import { computed, reactive, watch, type ComputedRef, type UnwrapNestedRefs } from 'vue'
 import type { productSchema, productsInCartType, quotationSchema } from '@/schemas'
 import { useProductStore } from '@/stores/products';
+import { useAuthStore } from '@/stores/auth';
 
 const key = 'ShoppingCartOurStock'
 
@@ -37,6 +38,7 @@ watch(
 
 export const useShoppingCart = () => {
     const local = window.localStorage.getItem(key)
+    const auth = useAuthStore()
     const pdtos = useProductStore()
     if(local && !loaded.loaded){
         loaded.loaded = true
@@ -49,8 +51,8 @@ export const useShoppingCart = () => {
             return productsInCart
         },
         showCart: () => {
-            return productsInCart.length > 0
-            || route.value == '/dashboard/mystock'
+            return (productsInCart.length > 0
+            || route.value == '/dashboard/mystock') && auth.getUser.cart
         },
         addProduct: (el: productsInCartType) => {
             const exists = productsInCart.filter(pdto => pdto.id == el.id)

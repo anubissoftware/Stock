@@ -4,7 +4,7 @@ import { loginCustomer, setTokenCustomer } from '../controllers/customerControll
 import { activateCustomer, menusInRol } from './../controllers/loginController';
 import { saveEnterpriseLogo } from './../controllers/mediaController';
 import { validateEmail, validateCellphone, registerUser } from '../controllers/loginController';
-import { sellItems, buyItems, craftItems, expireItems, listPublishedProducts, listHistoric,listAllProducts, registerProduct, removeProduct, updateProduct } from '../controllers/productController';
+import { sellItems, buyItems, craftItems, expireItems, listPublishedProducts, listHistoric,listAllProducts, registerProduct, removeProduct, updateProduct, dispatchItem, returnItem } from '../controllers/productController';
 import { getUnits } from '../controllers/unitController';
 import { categoryQuery, productToEmit, decreaseStock, modulesSchema, clientEnterpriseSchema, projectSchema, quotationSchema,  userData, UserLogin, userLogOut, dispatchScheme, returnScheme } from '@/schemas';
 import { deleteCategory, getCategories, saveCategory, updateCategory } from '../controllers/categoryController';
@@ -153,9 +153,12 @@ export default (app: Express, io: Server): void => {
         }
         await listPublishedProducts(req, res, response[0].id)
     })
-    app.post('/enterpriseColor', async (req: Request, res: Response) => {
-        console.log('Holis')
+    app.post('/enterpriseColor', middleware, async (req: Request, res: Response) => {
         const data: Array<string> = await changeBrandColors(req, res)
+
+        if(data){
+            io.to('e' +  req.userData.enterprise_id).emit('colorsUpdated', data)
+        }
     })
 
     /**
@@ -250,6 +253,22 @@ export default (app: Express, io: Server): void => {
 
         if (updated) {
             io.to('e' + req.userData.enterprise_id).emit('productExpired', req.body)
+        }
+    })
+
+    app.post('/product/dispatch', middleware, async (req: Request, res: Response) => {
+        const updated: boolean = await dispatchItem(req, res)
+
+        if(updated){
+            io.to('e' + req.userData.enterprise_id).emit('productDispatched', req.body.products)
+        }
+    })
+
+    app.post('/product/return', middleware, async (req: Request, res: Response) => {
+        const updated: boolean = await returnItem(req, res)
+
+        if(updated){
+            io.to('e' + req.userData.enterprise_id).emit('productReturned', req.body.products)
         }
     })
 

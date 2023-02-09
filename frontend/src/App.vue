@@ -16,7 +16,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { io } from 'socket.io-client'
 import Alert from './components/Generics/Alert.vue';
 import Loader from './components/Generics/Loader.vue';
-import type { notificationSchema, modulesSchema, token } from '@/schemas'
+import type { notificationSchema, modulesSchema, token, productToSell } from '@/schemas'
 import { backendURL } from '@/config'
 import socket from '@/composables/socket'
 import { alertMessageApp } from '@/composables/alertFunction'
@@ -89,6 +89,11 @@ const doTheThing = () => {
       id: auth.getUser.id,
       enterprise_id: auth.getUser.enterprise_id
     })
+
+    socket.socket.on('colorsUpdated', (body: string) => {
+      auth.setColors(JSON.parse(body))
+    })
+
     socket.socket.on('notification', (body: any) => {
       auth.pushNotification(body)
       console.log('push')
@@ -107,9 +112,15 @@ const doTheThing = () => {
       pdto.removeProduct(id)
     })
     socket.socket.on('productCreated', (pdtoEv: any) => {
+      const cat = JSON.stringify({values: pdtoEv.categories})
+      pdtoEv.categories = cat
+      pdtoEv.currency = 'COP'
+      pdtoEv.isRecipe = pdtoEv.isRecipe ? 1 : 0
+      console.log('pdtoCreated', pdtoEv)
       pdto.addProduct(pdtoEv)
     })
     socket.socket.on('productUpdated', (updated: any) => {
+      console.log('updated', updated)
       pdto.updateProduct(updated)
     })
     socket.socket.on('productSold', (body: { products: [{ id: number, amount: number }], wholesale: boolean }) => {
@@ -126,11 +137,34 @@ const doTheThing = () => {
     socket.socket.on('productExpired', (body: any) => {
       pdto.expiredProduct(body)
     })
+    socket.socket.on('productDispatched', (body: productToSell[]) => {
+      const conversion = {
+        products: body.map(pdto => {
+          return {
+            item_id: pdto.id,
+            amnt: pdto.amount
+          }
+        })
+      }
+      pdto.rentProduct(conversion)
+    })
+    socket.socket.on('productReturned', (body: productToSell[]) => {
+      const conversion = {
+        products: body.map(pdto => {
+          return {
+            item_id: pdto.id,
+            amnt: pdto.amount
+          }
+        })
+      }
+      console.log('returned', conversion)
+      pdto.returnProduct(conversion)
+    })
     socket.socket.on('productCrafted', (body: any) => {
       pdto.craftedProduct(body)
     })
     socket.socket.on('notification', (body: realTimeNotification) => {
-      body
+      
     })
     socket.socket.on('categoryCreated', (body: any) => {
       pdto.addCategories(body)

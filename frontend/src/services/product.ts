@@ -115,6 +115,23 @@ const sellProduct = (token: string, body: Array<{id: number, amount: number, des
     })
 }
 
+const dispatchProduct = (token: string, body: Array<{id: number, amount: number, description: string}>) => {
+    return ApiCLient.post('product/dispatch', {products: body, clientName: ''}, {
+        headers: {
+            'authorization': `bearer ${token}`
+        }
+    })
+}
+
+const returnProduct = (token: string, body: Array<{id: number, amount: number, description: string}>) => {
+    return ApiCLient.post('product/return', {products: body, clientName: ''}, {
+        headers: {
+            'authorization': `bearer ${token}`
+        }
+    })
+}
+
+
 const wholesaleProduct = (token: string, id: number, amount: number) => {
     return ApiCLient.post('product/sell', {products: [{id, amount, description: ''}], clientName: ''}, {
         headers: {
@@ -165,5 +182,7 @@ export {
     sellProduct,
     buyProduct,
     wholesaleProduct,
-    craftProduct
+    craftProduct,
+    dispatchProduct,
+    returnProduct
 }

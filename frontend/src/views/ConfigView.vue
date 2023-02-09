@@ -2,7 +2,7 @@
     <div>
         <Header2>
             <template v-slot:mainContainer>
-                <div class=" p-10 flex flex-col items-start min-h-[70vh]">
+                <div class=" p-10 flex flex-col items-start min-h-[80vh]">
                     <div
                         class="pb-4 flex tablet:flex-row justify-between items-center w-full phone:flex-col phone:items-start">
                         <h1 class="flex flex-row justify-center laptop:text-4xl py-2 phone:text-2xl">
@@ -312,13 +312,16 @@ const menus = computed(() => {
         }
     ]
     if (user.value.enterprise_id > 0) {
-        options.unshift({
-            name: {
-                Spanish: 'Tienda',
-                English: 'Store'
-            },
-            key: 0
-        })
+        if(user.value.isAdmin == '1'){
+            options.unshift({
+                name: {
+                    Spanish: 'Tienda',
+                    English: 'Store'
+                },
+                key: 0
+            })
+        }
+
         options.push({
             name: {
                 Spanish: 'Categorías',
@@ -478,7 +481,7 @@ const saveColors = async () => {
     if (resultColors.status == 200) {
         auth.setColors(userColors.value)
         user.value.colors = JSON.stringify(userColors.value)
-        auth.setUser(user.value)
+        auth.setUser(user.value as unknown as JSON)
     }
 }
 

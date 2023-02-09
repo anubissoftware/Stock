@@ -260,6 +260,7 @@ import { alertMessageApp } from '@/composables/alertFunction';
                 value: response.data.token,
                 expirate: response.data.user.exp
             }
+            console.log('google', response)
             auth.setUser(response.data.user)
             auth.setModules(response.data.menus)
             auth.setColors(JSON.parse(response.data.user.colors))

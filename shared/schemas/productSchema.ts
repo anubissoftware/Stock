@@ -54,7 +54,7 @@ export interface productSchema{
     onRenting: number,
     onLosses: number,
     isRecipe: string,
-    categories: Array<category>,
+    categories: Array<category> | any,
     creation: string,
     enterprise: number,
     picture?: string,
@@ -69,8 +69,8 @@ export interface productSchema{
 }
 
 export type productInMenu = Pick<productSchema, "id" | "currency" | "description" | "enterprise" | "name" | "price">
-export type productToSave = Pick<productSchema, "name" | "description" | "unit" | "stock" |  "cost" | "price" | "wholesale" | "isRecipe" | "categories" | "recipeDetail" | "updateIngre">
-export type productToEmit = Pick<productSchema, "id" | "name" | "description" | "unit" | "stock" | "cost" | "price" | "isRecipe" | "categories" | "wholesale">
+export type productToSave = Pick<productSchema, "name" | "description" | "unit" | "stock" |  "cost" | "price" | "wholesale" | "isRecipe" | "categories" | "recipeDetail" | "updateIngre" | "rent">
+export type productToEmit = Pick<productSchema, "id" | "name" | "description" | "unit" | "stock" | "cost" | "price" | "isRecipe" | "categories" | "wholesale" | "rent">
 export type productToRemove = Pick<productSchema, "id">
 
 export type productToSell = Pick<productSchema, "id" | "amount" | "description">

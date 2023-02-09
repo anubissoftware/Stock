@@ -74,29 +74,26 @@
                         v-if="item.showAction">
                         <div class="phone:w-1/2 tablet:hidden">
                             <strong>
-                                Price:
+                                Precio:
                             </strong>
                             <span class="italic">{{ currencyFormat(item.price ?? 0) }}</span>
                         </div>
                         <div class="phone:w-1/2 tablet:hidden">
                             <strong>
-                                Cost:
+                                Costo:
                             </strong>
                             <span class="italic">{{ currencyFormat(item.cost ?? 0) }}</span>
+                        </div>
+                        <div class="phone:w-1/2 tablet:hidden" v-if="item.rent">
+                            <strong>
+                                Alquiler:
+                            </strong>
+                            <span class="italic">{{ currencyFormat(item.rent ?? 0) }}</span>
                         </div>
                         <div class="phone:w-full tablet:w-full">
                             <strong>
                                 {{ strings.descriptions[language] }}
                             </strong><span class="italic">{{ item.description }}</span>
-                        </div>
-                        <div class="phone:w-full tablet:w-full flex ">
-                            <strong>
-                                {{ strings.categories[language] }}
-                            </strong>
-                            <div class="italic flex flex-row" v-for="category in item.infoCategories"
-                                :key="category.id">
-                                {{ category.name }}
-                            </div>
                         </div>
                         <div class="phone:w-full tablet:w-1/3">
                             <strong>
@@ -259,11 +256,11 @@ const strings = {
         English: 'On sales: '
     },
     profit: {
-        Spanish: 'Ganancias: ',
+        Spanish: 'Balance: ',
         English: 'Profit: '
     },
     OnBuying: {
-        Spanish: 'Al comprar: ',
+        Spanish: 'Compras: ',
         English: 'OnBuying: '
     },
     OnLosses: {
@@ -453,7 +450,6 @@ const addNewQuotation = async () => {
 }
 
 const editItem = (product: any) => {
-    console.log(product)
     productToEdit.value = product
     dialogItem.value = true
     procesDialog.value = 'edit'

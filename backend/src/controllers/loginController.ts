@@ -146,7 +146,7 @@ export const activateCustomer = async (req: Request, res: Response): Promise<any
 }
 
 export const menusInRol = async (req: Request, rolId: number, db: DataBase): Promise<Array<modulesSchema>> => {
-    const queryMenus: string = "SELECT rp.`read`, rp.`write`, rp.`edit`, m.`name`, m.depends, m.icon, m.url, m.id, m.`order` FROM rol AS r INNER JOIN rolPermitions AS rp ON rp.rol = r.id   INNER JOIN modules AS m ON m.id = rp.module WHERE r.id = ? AND m.`active` = 1 AND rp.`read` = 1 AND m.`order` is not null ORDER BY m.`order` ASC"
+    const queryMenus: string = "SELECT rp.`read`, rp.`write`, rp.`edit`, m.`name`, m.depends, m.icon, m.url, m.id, m.`order` FROM rol AS r INNER JOIN rolPermitions AS rp ON rp.rol = r.id   INNER JOIN modules AS m ON m.id = rp.module INNER JOIN enterpriseModules AS em ON em.module_id = rp.module WHERE r.id = ? AND m.`active` = 1 AND rp.`read` = 1 AND m.`order` is not null ORDER BY m.`order` ASC"
     const valuesMenus: Array<string> = [rolId.toString()]
     const respMenus: Array<modulesSchema> = await db.readQuery<modulesSchema>(queryMenus, valuesMenus)
     const Menus: Array<modulesSchema> = []

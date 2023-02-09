@@ -14,11 +14,12 @@ export class Item {
     onBuying: number
     onLosses: number
     isRecipe: boolean
-    categories: any[]
+    categories: any[] | any
     enterprise?: number
     updateIngre: boolean
     recipeDetail: any[]
     expired: number
+    rent: number
 
 	constructor( ) {
 		this.id = 0;
@@ -41,6 +42,7 @@ export class Item {
         this.recipeDetail = [{}]
         this.expired = 0
         this.onLosses = 0
+        this.rent = 0
 	}
 }
 

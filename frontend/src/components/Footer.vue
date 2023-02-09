@@ -10,7 +10,7 @@ const getImageUrl = (name: string) => {
     <footer class="bg-third w-full z-0 py-3">
         <div class="flex flex-row flex-wrap justify-center items-center">
             <div class="flex items-center justify-center tablet:w-1/3 tablet:px-10 phone:w-full phone:px-2 py-5">
-                <a hrf="#" class="">
+                <a hrf="#" class="" v-if="false">
                     <img class="h-8 sm:mx-auto cursor-pointer" :src="getImageUrl('Recurso 6@2x.png')" alt="Logo" />
 
                 </a>
