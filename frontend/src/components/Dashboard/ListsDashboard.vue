@@ -8,7 +8,7 @@
         </div>
         <div v-else class="flex flex-col gap-2 w-full pt-4 justify-start items-start max-h-[80%] overflow-auto">
             <template  v-for="(item, index) in props.data" :key="index">
-                <div class="px-2 py-1 w-full bg-primary text-white text-start border rounded-xl">{{ item[props.value] }}</div>
+                <div class="px-2 py-1 w-full bg-primary text-white text-start border rounded-xl">{{ item[props.value ?? 0] }}</div>
             </template>
         </div>
         <h3 class="py-2">{{ 'Total ' + props.data.length }}</h3>

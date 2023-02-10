@@ -344,7 +344,7 @@ onBeforeMount(() => {
         const quote: quotationSchema = loaded.quotation as quotationSchema
         whoQuotate.value.min_date = moment(quote.min_date).format('YYYY-MM-DD')
         whoQuotate.value.max_date = moment(quote.max_date).format('YYYY-MM-DD')
-        whoQuotate.value.renting = quote.renting ?? false
+        whoQuotate.value.renting = quote.renting ? true : false
         if (quote.rent_min_date) {
             whoQuotate.value.rent_min_date = moment(quote.rent_min_date).format('YYYY-MM-DD')
         }

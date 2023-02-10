@@ -20,6 +20,11 @@ export interface quotationSchema {
     discount: number
     client_name?: string
     ent_name?: string
+    rent_max_date?: string
+    rent_min_date?: string
+    renting?: string
+    max_date?: string
+    min_date?: string
 }
 
 export interface quotationDetailSchema{
@@ -32,6 +37,9 @@ export interface quotationDetailSchema{
     from: string
     to: string
     days: number
+    dispatching: number
+    amount_avaliable: number
+    returning: number
 
     name?: string
 }

@@ -5,6 +5,7 @@ export interface returnScheme {
     created_at: string
     created_by: number
     quotation_serial?: number
+    client_id: number
     
 }
 export interface returnDetailSchema{

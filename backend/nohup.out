@@ -468,3 +468,19 @@ src/controllers/productController.ts(449,18): error TS1123: Variable declaration
 
 
 5:13:07 PM - Found 0 errors. Watching for file changes.
+c9:06:42 PM - File change detected. Starting incremental compilation...
+
+
+9:06:43 PM - Found 0 errors. Watching for file changes.
+c9:06:45 PM - File change detected. Starting incremental compilation...
+
+
+9:06:45 PM - Found 0 errors. Watching for file changes.
+c9:08:51 PM - File change detected. Starting incremental compilation...
+
+
+9:08:52 PM - Found 0 errors. Watching for file changes.
+c9:10:52 PM - File change detected. Starting incremental compilation...
+
+
+9:10:53 PM - Found 0 errors. Watching for file changes.
