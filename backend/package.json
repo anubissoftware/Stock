@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nohup npx tsc --watch & nodemon --watch ./dist/ ./dist/app.js",
-    "prod": "npx tsc & pm2 pm2 start ./dist/app.js --watch"
+    "prod": "pm2 start ./dist/app.js"
   },
   "keywords": [],
   "author": "",

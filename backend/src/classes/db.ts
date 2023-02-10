@@ -50,9 +50,15 @@ export class DataBase {
                         port: this.port
                     });
                     this.connection.connect((err) => {
-                        err ? reject(false) : resolve(true);
+                        if(err){
+                            console.error(err)
+                            reject(false)
+                        }else{
+                            resolve(true)
+                        }
                     });
                 } catch (err: any) {
+                    console.error(err)
                     reject(false);
                 }
             });
