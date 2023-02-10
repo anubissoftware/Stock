@@ -10,6 +10,8 @@ import { Server, Socket } from 'socket.io';
 import api from './routes/api';
 import socketService from './routes/socketService';
 import {join} from 'path' 
+import { DataBase, initDatabase } from './classes/db';
+import { OkPacket } from 'mysql';
 const port = 8012;
 
 const jsonParser = bodyParser.json({limit: '50mb'});
@@ -40,6 +42,23 @@ app.get('/ping', (req: Request, res: Response) => {
     console.log('Validating server status');
     res.send('pong');
 });
+
+app.post('/contact', async (req: Request, res: Response) => {
+    console.log(req.body)
+    const db: DataBase = await initDatabase(res)
+    const query: string = 'INSERT INTO toContact (name, telf) VALUES (?, ?)'
+    const values: Array<string> = [req.body.name, req.body.telf]
+    const resp: OkPacket = await db.insertQuery(query, values)
+    db.closeConnection()
+    if(resp.insertId){
+        res.json({
+            ok: 'ok'
+        })
+    }else{
+        res.status(500)
+        res.end()
+    }
+})
 
 httpServer.listen(port, () => {
     return console.log(`Express is listening at http://localhost:${port}`);
