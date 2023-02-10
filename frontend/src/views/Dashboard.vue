@@ -6,8 +6,8 @@
           <div class="flex flex-col flex-wrap w-full px-10 py-2">
             <div class="flex gap-4 py-2 phone:flex-wrap tablet:flex-nowrap w-full">
               <div class="flex flex-col phone:w-full tablet:w-2/3 justify-between">
-                <WelcomeDashboard :name="store.getUser.name" />
-                <div class="flex flex-row w-full min-w-[350px] justify-center gap-5 phone:px-4 
+                <WelcomeDashboard :name="store.getUser.name" class="mb-4 w-full"/>
+                <div v-if="false" class="flex flex-row w-full min-w-[350px] justify-center gap-5 phone:px-4 
                 shadow-lg border rounded-xl">
                   <div class="h-[200px] phone:w-full laptop:w-2/5">
                     <canvas ref="todayChartCanvas"></canvas>
@@ -17,20 +17,21 @@
                   </div> -->
                 </div>
               </div>
-              <div class="flex tablet:w-1/3 phone:w-full">
+              <div v-if="false" class="flex tablet:w-1/3 phone:w-full">
                 <ListsDashboard class="shadow-lg h-full" title="Clients" :data="clients" value="name" />
               </div>
             </div>
-            <div class="flex flex-row w-full items-center justify-center pt-3 tablet:text-3xl phone:text-2xl">
+            <div v-if="false"
+              class="flex flex-row w-full items-center justify-center pt-3 tablet:text-3xl phone:text-2xl">
               Quick access
             </div>
-            <div class="flex py-2 phone:flex-wrap  w-full">
+            <div v-if="false" class="flex py-2 phone:flex-wrap  w-full">
               <CardInfo title="Quotations" icon="request_quote" link="/dashboard/quote" :total="10" />
-              <CardInfo title="Dispatchs" icon="ios_share" link="/dashboard/dispatch" :total="10"/>
-              <CardInfo title="Returns" icon="place_item" link="/dashboard/return" :total="10"/>
-              <CardInfo title="Products" icon="inventory" link="/dashboard/mystock" :total="10"/>
+              <CardInfo title="Dispatchs" icon="ios_share" link="/dashboard/dispatch" :total="10" />
+              <CardInfo title="Returns" icon="place_item" link="/dashboard/return" :total="10" />
+              <CardInfo title="Products" icon="inventory" link="/dashboard/mystock" :total="10" />
             </div>
-            <div class="flex gap-4 py-2 phone:flex-wrap laptop:flex-nowrap flex-wrap w-full">
+            <div v-if="false" class="flex gap-4 py-2 phone:flex-wrap laptop:flex-nowrap flex-wrap w-full">
               <ListsDashboard class="h-[300px] shadow-lg" title="Cotizaciones" :data="[]" />
               <ListsDashboard class="h-[300px] shadow-lg" title="User" :data="[]" />
             </div>
@@ -48,7 +49,7 @@
 <script setup lang="ts">
 import language from '@/services/language';
 import { ref, type Ref, onMounted, computed, type ComputedRef, watch } from 'vue';
-import { Chart, type ChartConfiguration } from 'chart.js/auto';
+import type { Chart, ChartConfiguration } from 'chart.js/auto';
 import type { historicTransactions } from '@/schemas';
 import moment from 'moment';
 import { basicFormatter } from '@/composables/dateFunctions'
@@ -86,7 +87,7 @@ watch(
   () => [historicLenght, historic],
   () => {
     if (historicLenght.value > 0) {
-      handleTodayChart()
+      //handleTodayChart()
     }
   },
   {
@@ -107,7 +108,7 @@ var todayChartConfig: ChartConfiguration = {
         0,
       ],
       borderRadius: 10,
-      borderColor:'#A64AEE',
+      borderColor: '#A64AEE',
       backgroundColor: '#A64AEE4D',
       borderWidth: 2
     }]
@@ -173,12 +174,12 @@ const setMaxValue = (value: number, index: number | undefined = undefined) => {
 }
 
 onMounted(() => {
-  todayChart = new Chart(
-    todayChartCanvas.value ?? '',
-    todayChartConfig
-  )
-  setClients()
-  handleTodayChart()
+  // todayChart = new Chart(
+  //   todayChartCanvas.value ?? '',
+  //   todayChartConfig
+  // )
+  // setClients()
+  // handleTodayChart()
 })
 
 const setClients = async () => {
