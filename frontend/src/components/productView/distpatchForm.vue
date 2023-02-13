@@ -54,7 +54,7 @@ const listClients = async (value: string) => {
     const token = auth.getUser.token as token
     let {data} = await getClients(
         token.value,
-        value,
+        {'c.name': value, limit: 30},
         cancelToken.value.signal
     )
     if(data && data.length){

@@ -513,12 +513,15 @@ onMounted(async () => {
     // let getUn = await getUnits(token.value)
     // units.value = getUn.data 
     if (props.product != null){
-        let categoriesResult = categories.value.filter((cat) => JSON.parse(props.product.categories).values.includes(cat.id));
-        
         const pdtoTemp: Item = {...props.product}
-        pdtoTemp.categories = categoriesResult
+        if(Array.isArray(JSON.parse(props.product.categories).values)){
+            let categoriesResult = categories.value.filter((cat) => JSON.parse(props.product.categories).values.includes(cat.id));
+            console.log('cats', categoriesResult)
+            pdtoTemp.categories = categoriesResult
+        }else{
+            pdtoTemp.categories = [{}]
+        }
         newItem.value = pdtoTemp
-        console.log(newItem.value)
     }  
 })
 onUnmounted(() => {

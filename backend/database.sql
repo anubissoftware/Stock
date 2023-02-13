@@ -16,8 +16,8 @@
 
 
 -- Dumping database structure for stock
-CREATE DATABASE IF NOT EXISTS `stockDev` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `stockDev`;
+CREATE DATABASE IF NOT EXISTS `stock` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `stock`;
 
 -- Dumping structure for table stock.appPermission
 CREATE TABLE IF NOT EXISTS `appPermission` (
@@ -61,11 +61,11 @@ CREATE TABLE IF NOT EXISTS `boughts` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `FK_sales_users` (`registered_by`) USING BTREE,
   KEY `FK_boughts_enterprise` (`enterprise`),
-  CONSTRAINT `FK_boughts_enterprise` FOREIGN KEY (`enterprise`) REFERENCES `enterprise` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `boughts_ibfk_2` FOREIGN KEY (`registered_by`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `FK_boughts_enterprise` FOREIGN KEY (`enterprise`) REFERENCES `enterprise` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `boughts_ibfk_2` FOREIGN KEY (`registered_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=172 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table stock.boughts: ~65 rows (approximately)
+-- Dumping data for table stock.boughts: ~64 rows (approximately)
 DELETE FROM `boughts`;
 INSERT INTO `boughts` (`id`, `description`, `value`, `date`, `registered_by`, `enterprise`) VALUES
 	(92, '', 12500, '2022-11-23 10:43:42', 2, 1),
@@ -162,92 +162,11 @@ CREATE TABLE IF NOT EXISTS `boughtsDetail` (
   KEY `FK_sales_products` (`item`) USING BTREE,
   KEY `FK_salesDetail_sales` (`bought_id`) USING BTREE,
   CONSTRAINT `FK_boughtsDetail_boughts` FOREIGN KEY (`bought_id`) REFERENCES `boughts` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `boughtsDetail_ibfk_2` FOREIGN KEY (`item`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `boughtsDetail_ibfk_2` FOREIGN KEY (`item`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=192 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table stock.boughtsDetail: ~64 rows (approximately)
+-- Dumping data for table stock.boughtsDetail: ~0 rows (approximately)
 DELETE FROM `boughtsDetail`;
-INSERT INTO `boughtsDetail` (`id`, `item`, `extras`, `amount`, `value`, `date`, `bought_id`) VALUES
-	(112, 1, '', 25, 12500, '2022-11-23 10:43:42', 92),
-	(113, 5, '', 50, 400000, '2022-11-23 10:45:00', 93),
-	(114, 1, '', 3, 1500, '2022-11-24 08:24:03', 94),
-	(115, 5, '', 5, 40000, '2022-11-24 08:26:50', 95),
-	(116, 5, '', 10, 80000, '2022-11-25 10:39:30', 96),
-	(117, 5, '', 10, 80000, '2022-11-25 10:40:11', 97),
-	(118, 5, '', 5, 40000, '2022-11-25 10:40:39', 98),
-	(119, 5, '', 2, 16000, '2022-11-25 10:40:57', 99),
-	(120, 5, '', 2, 16000, '2022-11-25 10:41:52', 100),
-	(121, 5, '', 1, 8000, '2022-11-25 10:42:47', 101),
-	(122, 5, '', 1, 8000, '2022-11-25 10:43:29', 102),
-	(123, 5, '', 2, 16000, '2022-11-25 10:45:06', 103),
-	(124, 1, '', 50, 25000, '2022-11-26 14:30:07', 104),
-	(125, 5, '', 100, 800000, '2022-11-26 14:30:13', 105),
-	(126, 2, '', 200, 60000, '2022-11-26 14:30:21', 106),
-	(127, 1, '', 10, 5000, '2022-11-26 20:04:34', 107),
-	(128, 5, '', 10, 80000, '2022-11-26 20:05:25', 108),
-	(129, 5, '', 40, 320000, '2022-11-27 08:18:16', 109),
-	(130, 23, '', 50, 150000000, '2022-11-27 08:27:14', 110),
-	(131, 24, '', 1, 15000, '2022-11-27 08:28:44', 111),
-	(132, 24, '', 40, 600000, '2022-11-27 08:28:55', 112),
-	(133, 23, '', 10, 30000000, '2022-11-27 08:30:35', 113),
-	(134, 25, '', 30, 36000000, '2022-11-27 08:33:01', 114),
-	(135, 6, '', 40, 28000, '2022-11-27 08:33:44', 115),
-	(136, 26, '', 5, 50000, '2022-11-27 09:38:44', 116),
-	(137, 26, '', 5, 50000, '2022-11-28 08:41:39', 117),
-	(138, 23, '', 10, 30000000, '2022-11-28 19:17:05', 118),
-	(139, 27, '', 1, 18000, '2022-12-22 19:28:48', 119),
-	(140, 28, '', 1, 3000, '2022-12-22 19:30:37', 120),
-	(141, 1, '', 5, 2500, '2022-12-23 10:40:12', 121),
-	(142, 27, '', 10, 180000, '2022-12-23 10:40:19', 122),
-	(143, 27, '', 10, 180000, '2022-12-23 10:43:45', 123),
-	(144, 29, '', 30, 1200000, '2022-12-25 14:11:35', 124),
-	(145, 29, '', 123, 4920000, '2022-12-26 18:42:36', 125),
-	(146, 1, '', 700, 350000, '2022-12-29 21:31:50', 126),
-	(147, 23, '', 50, 150000000, '2022-12-31 18:19:05', 127),
-	(148, 30, '', 1, 10, '2023-01-11 21:18:47', 128),
-	(149, 31, '', 20, 200, '2023-01-11 21:20:14', 129),
-	(150, 32, '', 1, 10, '2023-01-11 21:20:33', 130),
-	(151, 30, '', 50, 500, '2023-01-11 21:22:53', 131),
-	(152, 32, '', 10, 100, '2023-01-12 14:37:18', 132),
-	(153, 23, '', 30, 90000000, '2023-01-12 21:12:23', 133),
-	(154, 1, '', 10, 5000, '2023-01-12 21:54:58', 134),
-	(155, 1, '', 20, 10000, '2023-01-12 21:55:05', 135),
-	(156, 1, '', 30, 15000, '2023-01-14 11:56:45', 136),
-	(157, 1, '', 10, 5000, '2023-01-14 11:58:44', 137),
-	(158, 33, '', 1, 80000, '2023-01-17 08:14:46', 138),
-	(159, 33, '', 99, 7920000, '2023-01-17 08:14:55', 139),
-	(160, 29, '', 91, 3640000, '2023-01-17 08:15:03', 140),
-	(161, 34, '', 100, 4000000, '2023-01-22 18:13:36', 141),
-	(162, 35, '', 1, 20000, '2023-01-22 18:14:13', 142),
-	(163, 35, '', 99, 1980000, '2023-01-22 18:14:39', 143),
-	(164, 34, '', 20, 800000, '2023-01-23 16:11:22', 144),
-	(165, 29, '', 5, 200000, '2023-01-23 19:57:26', 145),
-	(166, 29, '', 2, 80000, '2023-01-28 09:46:33', 146),
-	(167, 34, '', 10, 400000, '2023-02-05 21:38:57', 147),
-	(168, 36, '', 1, 0, '2023-02-09 12:36:57', 148),
-	(169, 37, '', 50, 3000000, '2023-02-09 14:28:18', 149),
-	(170, 38, '', 50, 3000000, '2023-02-09 14:29:48', 150),
-	(171, 39, '', 50, 3000000, '2023-02-09 14:30:21', 151),
-	(172, 40, '', 50, 3000000, '2023-02-09 14:32:09', 152),
-	(173, 41, '', 50, 3000000, '2023-02-09 14:33:35', 153),
-	(174, 42, '', 2, 30, '2023-02-09 14:37:04', 154),
-	(175, 43, '', 1, 1, '2023-02-09 14:40:54', 155),
-	(176, 43, '', 79, 790, '2023-02-09 14:41:49', 156),
-	(177, 42, '', 68, 1020, '2023-02-09 14:42:21', 157),
-	(178, 36, '', 79, 1185000, '2023-02-09 16:42:27', 158),
-	(179, 35, '', 8, 160000, '2023-02-09 16:42:36', 159),
-	(180, 33, '', 1, 80000, '2023-02-10 00:15:51', 160),
-	(181, 33, '', 1, 80000, '2023-02-10 00:16:28', 161),
-	(182, 33, '', 5, 400000, '2023-02-10 00:18:39', 162),
-	(183, 35, '', 10, 200000, '2023-02-10 00:40:16', 163),
-	(184, 34, '', 12, 480000, '2023-02-10 00:40:42', 164),
-	(185, 34, '', 5, 200000, '2023-02-10 08:41:07', 165),
-	(186, 33, '', 4, 320000, '2023-02-10 08:41:40', 166),
-	(187, 35, '', 8, 160000, '2023-02-10 10:42:09', 167),
-	(188, 44, '', 20, 1200000, '2023-02-10 10:44:33', 168),
-	(189, 44, '', 70, 4200000, '2023-02-10 10:45:22', 169),
-	(190, 44, '', 10, 600000, '2023-02-10 13:42:57', 170),
-	(191, 33, '', 5, 400000, '2023-02-11 22:41:22', 171);
 
 -- Dumping structure for table stock.category
 CREATE TABLE IF NOT EXISTS `category` (
@@ -278,19 +197,303 @@ INSERT INTO `category` (`id`, `name`, `color`, `enterprise`) VALUES
 	(30, 'Fabián Mejia', '#e01b24', 2),
 	(31, 'Comida animales ', '#00ff00', 2);
 
+-- Dumping structure for table stock.clientProduct
+CREATE TABLE IF NOT EXISTS `clientProduct` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `client_id` int(11) DEFAULT NULL,
+  `product_id` int(11) DEFAULT NULL,
+  `amount` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `client_id` (`client_id`),
+  KEY `product_id` (`product_id`),
+  CONSTRAINT `clientProduct_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `clientProduct_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1356 DEFAULT CHARSET=utf8;
+
+-- Dumping data for table stock.clientProduct: ~267 rows (approximately)
+DELETE FROM `clientProduct`;
+INSERT INTO `clientProduct` (`id`, `client_id`, `product_id`, `amount`) VALUES
+	(1089, 226, 461, 1),
+	(1090, 227, 461, 6),
+	(1091, 228, 461, 24),
+	(1092, 229, 461, 4),
+	(1093, 227, 462, 27),
+	(1094, 230, 462, 4),
+	(1095, 231, 462, 8),
+	(1096, 228, 462, 16),
+	(1097, 226, 463, 8),
+	(1098, 227, 463, 40),
+	(1099, 230, 463, 1),
+	(1100, 228, 463, 18),
+	(1101, 229, 463, 4),
+	(1102, 226, 464, 1),
+	(1103, 232, 464, 2),
+	(1104, 228, 464, 25),
+	(1105, 229, 464, 1),
+	(1106, 226, 465, 11),
+	(1107, 227, 465, 77),
+	(1108, 230, 465, 2),
+	(1109, 228, 465, 3),
+	(1110, 229, 465, 4),
+	(1111, 233, 465, 5),
+	(1112, 234, 465, 12),
+	(1113, 228, 466, 19),
+	(1114, 229, 466, 1),
+	(1115, 226, 467, 14),
+	(1116, 227, 467, 12),
+	(1117, 228, 467, 26),
+	(1118, 227, 468, 3),
+	(1119, 226, 469, 5),
+	(1120, 228, 469, 8),
+	(1121, 226, 470, 13),
+	(1122, 227, 470, 16),
+	(1123, 232, 470, 22),
+	(1124, 230, 470, -2),
+	(1125, 231, 470, 9),
+	(1126, 228, 470, 21),
+	(1127, 229, 470, 2),
+	(1128, 235, 470, 5),
+	(1129, 236, 470, 6),
+	(1130, 227, 471, 34),
+	(1131, 228, 471, 2),
+	(1132, 227, 472, 34),
+	(1133, 228, 472, 2),
+	(1134, 226, 473, 120),
+	(1135, 227, 473, 87),
+	(1136, 228, 473, 108),
+	(1137, 237, 473, 14),
+	(1138, 234, 473, 24),
+	(1139, 226, 474, 40),
+	(1140, 228, 474, 10),
+	(1141, 238, 474, 30),
+	(1142, 234, 474, 15),
+	(1143, 236, 474, 112),
+	(1144, 226, 475, 60),
+	(1145, 228, 475, 6),
+	(1146, 238, 475, 68),
+	(1147, 239, 475, 2),
+	(1148, 234, 475, 7),
+	(1149, 236, 475, 56),
+	(1150, 240, 475, 1),
+	(1151, 241, 476, 11),
+	(1152, 226, 476, 80),
+	(1153, 227, 476, 129),
+	(1154, 228, 476, 80),
+	(1155, 237, 476, 16),
+	(1156, 234, 476, 24),
+	(1157, 234, 477, 4),
+	(1158, 241, 478, 2),
+	(1159, 230, 478, 5),
+	(1160, 234, 478, 3),
+	(1161, 236, 478, 2),
+	(1162, 234, 479, 10),
+	(1163, 230, 480, -4),
+	(1164, 242, 480, 1),
+	(1165, 233, 480, 5),
+	(1166, 234, 480, 3),
+	(1167, 236, 480, 26),
+	(1168, 230, 481, 1),
+	(1169, 235, 483, 4),
+	(1170, 235, 484, 2),
+	(1171, 243, 487, 10),
+	(1172, 244, 490, 1),
+	(1173, 239, 492, 150),
+	(1174, 228, 495, 60),
+	(1175, 228, 496, 9),
+	(1176, 228, 498, 46),
+	(1177, 241, 500, 10),
+	(1178, 226, 500, 2000),
+	(1179, 227, 500, 6122),
+	(1180, 245, 500, 72),
+	(1181, 231, 500, 390),
+	(1182, 228, 500, 4640),
+	(1183, 238, 500, 1500),
+	(1184, 239, 500, 251),
+	(1185, 229, 500, 130),
+	(1186, 234, 500, 650),
+	(1187, 236, 500, 1400),
+	(1188, 243, 500, 190),
+	(1189, 246, 500, 39),
+	(1190, 240, 500, 28),
+	(1191, 230, 502, 5),
+	(1192, 231, 502, 36),
+	(1193, 228, 502, 3),
+	(1194, 239, 502, 20),
+	(1195, 229, 502, 1),
+	(1196, 234, 502, 7),
+	(1197, 236, 502, 15),
+	(1198, 243, 502, 4),
+	(1199, 241, 503, 9),
+	(1200, 227, 503, 170),
+	(1201, 230, 503, 38),
+	(1202, 231, 503, 24),
+	(1203, 228, 503, 15),
+	(1204, 239, 503, 10),
+	(1205, 247, 503, 17),
+	(1206, 234, 503, 56),
+	(1207, 248, 503, 1),
+	(1208, 236, 503, 20),
+	(1209, 243, 503, 4),
+	(1210, 249, 503, 6),
+	(1211, 240, 503, 7),
+	(1212, 226, 504, 100),
+	(1213, 228, 504, 14),
+	(1214, 229, 504, 5),
+	(1215, 250, 504, 1),
+	(1216, 236, 504, 57),
+	(1217, 243, 504, 4),
+	(1218, 230, 505, 23),
+	(1219, 239, 505, 1),
+	(1220, 250, 505, 12),
+	(1221, 243, 505, 4),
+	(1222, 226, 506, 100),
+	(1223, 246, 506, 180),
+	(1224, 240, 506, 1),
+	(1225, 239, 508, 200),
+	(1226, 227, 509, 23),
+	(1227, 228, 509, 38),
+	(1228, 229, 509, 4),
+	(1229, 251, 509, 99),
+	(1230, 227, 510, 1),
+	(1231, 229, 510, 4),
+	(1232, 251, 510, 42),
+	(1233, 227, 511, 34),
+	(1234, 252, 512, 14),
+	(1235, 234, 512, 1),
+	(1236, 228, 513, 7),
+	(1237, 252, 513, 12),
+	(1238, 239, 515, 6),
+	(1239, 229, 515, 8),
+	(1240, 234, 515, 1),
+	(1241, 236, 515, 6),
+	(1242, 240, 515, 6),
+	(1243, 239, 516, 6),
+	(1244, 229, 516, 8),
+	(1245, 236, 516, 6),
+	(1246, 240, 516, 6),
+	(1247, 227, 518, 34),
+	(1248, 239, 519, 1),
+	(1249, 246, 519, 2),
+	(1250, 227, 520, 21),
+	(1251, 228, 520, 11),
+	(1252, 229, 520, 8),
+	(1253, 234, 520, 5),
+	(1254, 227, 521, 51),
+	(1255, 253, 522, 10),
+	(1256, 227, 522, 12),
+	(1257, 228, 522, 6),
+	(1258, 254, 522, 11),
+	(1259, 234, 522, 35),
+	(1260, 255, 522, 2),
+	(1261, 227, 523, 70),
+	(1262, 228, 523, 32),
+	(1263, 229, 523, 8),
+	(1264, 227, 524, 38),
+	(1265, 228, 524, 16),
+	(1266, 254, 524, 4),
+	(1267, 234, 524, 55),
+	(1268, 226, 525, 8),
+	(1269, 227, 525, 2),
+	(1270, 256, 525, 30),
+	(1271, 227, 526, 57),
+	(1272, 228, 526, 72),
+	(1273, 229, 526, 1),
+	(1274, 246, 526, 2),
+	(1275, 253, 527, 7),
+	(1276, 226, 527, 31),
+	(1277, 227, 527, 34),
+	(1278, 228, 527, 17),
+	(1279, 228, 528, 4),
+	(1280, 227, 529, 28),
+	(1281, 230, 529, 24),
+	(1282, 228, 529, 46),
+	(1283, 229, 529, 2),
+	(1284, 227, 530, 6),
+	(1285, 228, 530, 20),
+	(1286, 229, 530, 4),
+	(1287, 227, 531, 368),
+	(1288, 230, 531, 12),
+	(1289, 228, 531, 218),
+	(1290, 229, 531, 11),
+	(1291, 241, 532, 2),
+	(1292, 227, 533, 3),
+	(1293, 230, 535, 1),
+	(1294, 231, 535, 20),
+	(1295, 228, 535, 1),
+	(1296, 239, 535, 5),
+	(1297, 234, 535, 11),
+	(1298, 236, 535, 61),
+	(1299, 228, 536, 1),
+	(1300, 239, 536, 13),
+	(1301, 228, 537, 1),
+	(1302, 230, 538, 1),
+	(1303, 228, 538, 1),
+	(1304, 226, 539, 104),
+	(1305, 231, 539, 20),
+	(1306, 226, 540, 28),
+	(1307, 226, 541, 18),
+	(1308, 252, 542, 5),
+	(1309, 228, 544, 1),
+	(1310, 238, 544, 263),
+	(1311, 234, 544, 3),
+	(1312, 236, 544, 10),
+	(1313, 234, 546, 2),
+	(1314, 230, 548, 3),
+	(1315, 231, 548, 60),
+	(1316, 228, 548, 3),
+	(1317, 238, 548, 200),
+	(1318, 252, 548, 3),
+	(1319, 236, 548, 165),
+	(1320, 246, 548, 2),
+	(1321, 227, 550, 1),
+	(1322, 234, 550, 2),
+	(1323, 228, 551, 6),
+	(1324, 239, 551, 17),
+	(1325, 234, 551, 1),
+	(1326, 228, 552, 2),
+	(1327, 228, 553, 102),
+	(1328, 252, 553, 2),
+	(1329, 234, 553, 4),
+	(1330, 257, 553, 1),
+	(1331, 227, 554, 2),
+	(1332, 228, 555, 2),
+	(1333, 230, 556, 1),
+	(1334, 231, 556, 20),
+	(1335, 228, 556, 1),
+	(1336, 234, 556, 48),
+	(1337, 257, 556, 2),
+	(1338, 228, 557, 2),
+	(1339, 253, 560, 6),
+	(1340, 239, 560, 4),
+	(1341, 229, 560, 6),
+	(1342, 258, 560, 1),
+	(1343, 250, 560, 2),
+	(1344, 236, 560, 1),
+	(1345, 249, 560, 8),
+	(1346, 240, 560, 4),
+	(1347, 226, 561, 172),
+	(1348, 227, 561, 692),
+	(1349, 232, 561, 21),
+	(1350, 231, 561, 140),
+	(1351, 228, 561, 504),
+	(1352, 229, 561, 2),
+	(1353, 233, 561, 39),
+	(1354, 236, 561, 18),
+	(1355, 246, 561, 1);
+
 -- Dumping structure for table stock.clients
 CREATE TABLE IF NOT EXISTS `clients` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '0',
-  `type` varchar(50) NOT NULL DEFAULT '0',
+  `type` varchar(50) NOT NULL DEFAULT '2',
   `nit` varchar(50) NOT NULL DEFAULT '0',
   `rut` int(11) DEFAULT NULL,
   `cv` varchar(50) NOT NULL DEFAULT '0',
   `email` varchar(50) NOT NULL DEFAULT '0',
   `registro` datetime NOT NULL DEFAULT current_timestamp(),
-  `contact_name` varchar(50) DEFAULT NULL,
-  `contact_phone` varchar(50) DEFAULT NULL,
-  `contact_email` varchar(50) DEFAULT NULL,
+  `contact_name` varchar(50) DEFAULT '''''',
+  `contact_phone` varchar(50) DEFAULT '''''',
+  `contact_email` varchar(50) DEFAULT '''''',
   `enterprise` int(11) DEFAULT NULL,
   `stage` int(1) DEFAULT 2,
   PRIMARY KEY (`id`),
@@ -300,16 +503,49 @@ CREATE TABLE IF NOT EXISTS `clients` (
   CONSTRAINT `FK_clients_clientStage` FOREIGN KEY (`stage`) REFERENCES `clientStage` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_clients_enterprise` FOREIGN KEY (`enterprise`) REFERENCES `enterprise` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_clients_media` FOREIGN KEY (`rut`) REFERENCES `media` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=259 DEFAULT CHARSET=utf8;
 
--- Dumping data for table stock.clients: ~5 rows (approximately)
+-- Dumping data for table stock.clients: ~38 rows (approximately)
 DELETE FROM `clients`;
 INSERT INTO `clients` (`id`, `name`, `type`, `nit`, `rut`, `cv`, `email`, `registro`, `contact_name`, `contact_phone`, `contact_email`, `enterprise`, `stage`) VALUES
 	(1, 'Fabiaan Enterprise S.A.S.', '2', '1005338906', 71, '0', 'fibianmejia@hotmail.com', '2023-01-13 09:13:42', 'Fabián Mejía', '3125677288', 'fibianmejia@hotmail.com', 2, 2),
 	(2, 'Cesar', '1', '1071584903', 72, '0', 'cesarphernandez09@gmail.com', '2023-01-13 12:47:21', 'Cesar Peña', '31374839', 'cesarphernandez09@gmail.com', 2, 2),
 	(72, 'Encocol', '2', '123456789', 74, '0', 'encocol@gmail.com', '2023-01-14 13:51:44', 'Diego Castillo', '317052809', 'diegogo@gmail.com', 2, 2),
 	(73, 'Encocol2', '2', '123456789', 75, '0', 'encocol@gmail.com', '2023-01-16 08:33:12', 'Diego Castillo', '317052809', 'diegogo@gmail.com', 2, 2),
-	(74, 'Blu', '1', '123456789', 76, '0', 'blu@gmail.com', '2023-01-21 08:34:23', 'Blu', '123', 'blu@gmail.com', 2, 2);
+	(74, 'Blu', '1', '123456789', 76, '0', 'blu@gmail.com', '2023-01-21 08:34:23', 'Blu', '123', 'blu@gmail.com', 2, 2),
+	(226, 'ASGLOBAL', '2', '0', NULL, '0', '0', '2023-02-12 22:35:59', '\'\'', '\'\'', '\'\'', 2, 2),
+	(227, 'CASAS ING.', '2', '0', NULL, '0', '0', '2023-02-12 22:35:59', '\'\'', '\'\'', '\'\'', 2, 2),
+	(228, 'CONSORCIO PATRIA', '2', '0', NULL, '0', '0', '2023-02-12 22:35:59', '\'\'', '\'\'', '\'\'', 2, 2),
+	(229, 'IGLESIA MINIS.', '2', '0', NULL, '0', '0', '2023-02-12 22:35:59', '\'\'', '\'\'', '\'\'', 2, 2),
+	(230, 'COMPUSER', '2', '0', NULL, '0', '0', '2023-02-12 22:35:59', '\'\'', '\'\'', '\'\'', 2, 2),
+	(231, 'CONDISVIAL', '2', '0', NULL, '0', '0', '2023-02-12 22:35:59', '\'\'', '\'\'', '\'\'', 2, 2),
+	(232, 'CLEMENTE', '2', '0', NULL, '0', '0', '2023-02-12 22:36:00', '\'\'', '\'\'', '\'\'', 2, 2),
+	(233, 'INGESAB', '2', '0', NULL, '0', '0', '2023-02-12 22:36:01', '\'\'', '\'\'', '\'\'', 2, 2),
+	(234, 'JHON LOPEZ', '2', '0', NULL, '0', '0', '2023-02-12 22:36:01', '\'\'', '\'\'', '\'\'', 2, 2),
+	(235, 'METALISA', '2', '0', NULL, '0', '0', '2023-02-12 22:36:02', '\'\'', '\'\'', '\'\'', 2, 2),
+	(236, 'PEDRO PEREZ', '2', '0', NULL, '0', '0', '2023-02-12 22:36:02', '\'\'', '\'\'', '\'\'', 2, 2),
+	(237, 'FYJ', '2', '0', NULL, '0', '0', '2023-02-12 22:36:03', '\'\'', '\'\'', '\'\'', 2, 2),
+	(238, 'CONSTRUCTORA MARDEL', '2', '0', NULL, '0', '0', '2023-02-12 22:36:03', '\'\'', '\'\'', '\'\'', 2, 2),
+	(239, 'EDILMA', '2', '0', NULL, '0', '0', '2023-02-12 22:36:04', '\'\'', '\'\'', '\'\'', 2, 2),
+	(240, 'VILLABEL', '2', '0', NULL, '0', '0', '2023-02-12 22:36:04', '\'\'', '\'\'', '\'\'', 2, 2),
+	(241, 'ARNULFO VECINO', '2', '0', NULL, '0', '0', '2023-02-12 22:36:04', '\'\'', '\'\'', '\'\'', 2, 2),
+	(242, 'DOUGLAS', '2', '0', NULL, '0', '0', '2023-02-12 22:36:05', '\'\'', '\'\'', '\'\'', 2, 2),
+	(243, 'UFRABE', '2', '0', NULL, '0', '0', '2023-02-12 22:36:06', '\'\'', '\'\'', '\'\'', 2, 2),
+	(244, 'CONSORCIO FRJ', '2', '0', NULL, '0', '0', '2023-02-12 22:36:06', '\'\'', '\'\'', '\'\'', 2, 2),
+	(245, 'CENTRO INMOBILIARIO', '2', '0', NULL, '0', '0', '2023-02-12 22:36:07', '\'\'', '\'\'', '\'\'', 2, 2),
+	(246, 'UNION ELECTRICA', '2', '0', NULL, '0', '0', '2023-02-12 22:36:07', '\'\'', '\'\'', '\'\'', 2, 2),
+	(247, 'GRUPO KOI', '2', '0', NULL, '0', '0', '2023-02-12 22:36:09', '\'\'', '\'\'', '\'\'', 2, 2),
+	(248, 'JAIRO PORTILLA', '2', '0', NULL, '0', '0', '2023-02-12 22:36:09', '\'\'', '\'\'', '\'\'', 2, 2),
+	(249, 'URBA. MARTINEZ', '2', '0', NULL, '0', '0', '2023-02-12 22:36:09', '\'\'', '\'\'', '\'\'', 2, 2),
+	(250, 'NESTOR PINZON', '2', '0', NULL, '0', '0', '2023-02-12 22:36:10', '\'\'', '\'\'', '\'\'', 2, 2),
+	(251, 'LEGF CONSTRUCCIONES', '2', '0', NULL, '0', '0', '2023-02-12 22:36:11', '\'\'', '\'\'', '\'\'', 2, 2),
+	(252, 'GARCIA VEGA', '2', '0', NULL, '0', '0', '2023-02-12 22:36:11', '\'\'', '\'\'', '\'\'', 2, 2),
+	(253, 'ALQUIOBRAS', '2', '0', NULL, '0', '0', '2023-02-12 22:36:13', '\'\'', '\'\'', '\'\'', 2, 2),
+	(254, 'FREDY', '2', '0', NULL, '0', '0', '2023-02-12 22:36:13', '\'\'', '\'\'', '\'\'', 2, 2),
+	(255, 'PARMO ING.', '2', '0', NULL, '0', '0', '2023-02-12 22:36:14', '\'\'', '\'\'', '\'\'', 2, 2),
+	(256, 'CHEPE ', '2', '0', NULL, '0', '0', '2023-02-12 22:36:14', '\'\'', '\'\'', '\'\'', 2, 2),
+	(257, 'RUBEN DARIO', '2', '0', NULL, '0', '0', '2023-02-12 22:36:20', '\'\'', '\'\'', '\'\'', 2, 2),
+	(258, 'LUZ AMPARO', '2', '0', NULL, '0', '0', '2023-02-12 22:36:21', '\'\'', '\'\'', '\'\'', 2, 2);
 
 -- Dumping structure for table stock.clientStage
 CREATE TABLE IF NOT EXISTS `clientStage` (
@@ -363,7 +599,7 @@ CREATE TABLE IF NOT EXISTS `dispatching` (
   CONSTRAINT `dispatching_ibfk_2` FOREIGN KEY (`quotation_id`) REFERENCES `quotation` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=144 DEFAULT CHARSET=utf8;
 
--- Dumping data for table stock.dispatching: ~0 rows (approximately)
+-- Dumping data for table stock.dispatching: ~3 rows (approximately)
 DELETE FROM `dispatching`;
 INSERT INTO `dispatching` (`id`, `out_store`, `received`, `quotation_id`, `created_at`, `created_by`) VALUES
 	(141, '2023-02-12 15:27:31', '2023-02-12 15:27:31', 110, '2023-02-12 15:27:31', 4),
@@ -386,10 +622,6 @@ CREATE TABLE IF NOT EXISTS `dispatchingDetail` (
 
 -- Dumping data for table stock.dispatchingDetail: ~0 rows (approximately)
 DELETE FROM `dispatchingDetail`;
-INSERT INTO `dispatchingDetail` (`id`, `quotation_detail_id`, `amount`, `dispatch_id`, `item_id`) VALUES
-	(134, 97, 1, 141, 33),
-	(135, 98, 5, 142, 33),
-	(136, 99, 5, 143, 34);
 
 -- Dumping structure for table stock.enterprise
 CREATE TABLE IF NOT EXISTS `enterprise` (
@@ -523,8 +755,8 @@ CREATE TABLE IF NOT EXISTS `losses` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `FK_sales_users` (`registered_by`) USING BTREE,
   KEY `FK_boughts_enterprise` (`enterprise`) USING BTREE,
-  CONSTRAINT `losses_ibfk_1` FOREIGN KEY (`enterprise`) REFERENCES `enterprise` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `losses_ibfk_2` FOREIGN KEY (`registered_by`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `losses_ibfk_1` FOREIGN KEY (`enterprise`) REFERENCES `enterprise` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `losses_ibfk_2` FOREIGN KEY (`registered_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table stock.losses: ~4 rows (approximately)
@@ -549,17 +781,11 @@ CREATE TABLE IF NOT EXISTS `lossesDetail` (
   KEY `FK_sales_products` (`item`) USING BTREE,
   KEY `FK_salesDetail_sales` (`losses_id`) USING BTREE,
   CONSTRAINT `FK_lossesDetail_losses` FOREIGN KEY (`losses_id`) REFERENCES `losses` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `lossesDetail_ibfk_2` FOREIGN KEY (`item`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `lossesDetail_ibfk_2` FOREIGN KEY (`item`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table stock.lossesDetail: ~4 rows (approximately)
+-- Dumping data for table stock.lossesDetail: ~0 rows (approximately)
 DELETE FROM `lossesDetail`;
-INSERT INTO `lossesDetail` (`id`, `item`, `extras`, `amount`, `value`, `date`, `losses_id`) VALUES
-	(113, 1, '', 13, 6500, '2022-11-23 10:45:17', 95),
-	(114, 23, '', 10, 30000000, '2023-01-12 21:55:23', 96),
-	(115, 29, '', 5, 20000, '2023-02-09 10:41:20', 97),
-	(116, 29, '', 3, 12000, '2023-02-09 10:57:07', 98),
-	(117, 35, '', 20, 400000, '2023-02-10 00:40:28', 99);
 
 -- Dumping structure for table stock.media
 CREATE TABLE IF NOT EXISTS `media` (
@@ -661,37 +887,112 @@ CREATE TABLE IF NOT EXISTS `products` (
   KEY `FK_products_units` (`unit`),
   CONSTRAINT `FK_products_enterprise` FOREIGN KEY (`enterprise`) REFERENCES `enterprise` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_products_units` FOREIGN KEY (`unit`) REFERENCES `units` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=562 DEFAULT CHARSET=utf8;
 
--- Dumping data for table stock.products: ~26 rows (approximately)
+-- Dumping data for table stock.products: ~101 rows (approximately)
 DELETE FROM `products`;
 INSERT INTO `products` (`id`, `name`, `description`, `unit`, `stock`, `rented`, `sold`, `toCraft`, `expired`, `currency`, `price`, `cost`, `wholesale`, `rent`, `onSales`, `onBuying`, `onLosses`, `onRenting`, `isRecipe`, `categories`, `creation`, `enterprise`, `published`, `removed`) VALUES
-	(1, 'Product 1', 'Tomates', 1, 56, 0, 794, 0, 13, 'COP', 700, 500, 600, NULL, 555800, 431500, 6500, 0, '0', '{"values":[1]}', '2022-11-02', 1, '0', '0'),
-	(2, 'Product 2', 'cebollas', 1, 26, 0, 174, 0, 0, 'COP', 2000, 300, 0, NULL, 348000, 60000, 0, 0, '0', '{"values":[1]}', '2022-11-02', 1, '1', '0'),
-	(5, 'Product 3', 'Pasta usada para la salsa de tomate. 250ml', 1, 6, 0, 232, 0, 0, 'COP', 15000, 8000, 12000, NULL, 3480000, 1904000, 0, 0, '1', '{"values":[1]}', '2022-11-17', 1, '1', '0'),
-	(6, 'Product 4', 'empaque de 5g', 1, 39, 0, 1, 0, 0, 'COP', 1000, 700, 800, NULL, 1000, 28000, 0, 0, '1', '{"values":[5]}', '2022-11-21', 1, '0', '0'),
-	(23, 'Product 5', '', 1, 2, 0, 138, 0, 10, 'COP', 4000000, 3000000, 3400000, NULL, 552000000, 450000000, 30000000, 0, '0', '{"values":[6]}', '2022-11-27', 1, '0', '0'),
-	(24, 'Product 6', 'pdto', 1, 37, 0, 4, 0, 0, 'COP', 30000, 15000, 0, NULL, 120000, 615000, 0, 0, '0', '{"values":[1]}', '2022-11-27', 1, '0', '0'),
-	(25, 'Product 7', '', 1, 0, 0, 30, 0, 0, 'COP', 1600000, 1200000, 0, NULL, 48000000, 36000000, 0, 0, '0', '{"values":[6]}', '2022-11-27', 1, '0', '0'),
-	(26, 'Product 8', 'a', 1, 4, 0, 6, 0, 0, 'COP', 15000, 10000, 0, NULL, 90000, 100000, 0, 0, '0', '{"values":[1]}', '2022-11-27', 1, '0', '0'),
-	(27, 'Product 9', 'Crema', 1, 0, 0, 21, 0, 0, 'COP', 23000, 18000, 21000, NULL, 483000, 378000, 0, 0, '0', '{"values":[19]}', '2022-12-22', 1, '0', '0'),
-	(28, 'Product 10', 'Crema', 1, 1, 0, 0, 0, 0, 'COP', 5000, 3000, 4000, NULL, 0, 3000, 0, 0, '0', '{"values":[19]}', '2022-12-22', 1, '0', '0'),
-	(29, 'Product 11', 'Lámina de aluminios', 1, 77, 5, 162, 0, 8, 'COP', 44000, 4000, 53005, 1600, 9467000, 10040000, 32000, 12500, '0', '{"values":[30]}', '2022-12-25', 2, '0', '1'),
-	(30, 'Product 12', 'a', 1, 41, 0, 10, 0, 0, 'COP', 10, 10, 10, NULL, 100, 510, 0, 0, '0', '{"values":[27]}', '2023-01-11', 2, '0', '1'),
-	(31, 'Product 13', 'b', 1, 20, 0, 0, 0, 0, 'COP', 0, 10, 10, 20, 0, 200, 0, 0, '0', '{"values":[27]}', '2023-01-11', 2, '0', '1'),
-	(32, 'Product 14', 'c', 1, 8, 0, 3, 0, 0, 'COP', 20, 10, 0, 20, 60, 110, 0, 0, '0', '{"values":[27]}', '2023-01-11', 2, '0', '1'),
-	(33, 'Product 15', '10kg de purina para perros', 1, 9, 52, 55, 0, 0, 'COP', 105000, 80000, 90000, 1500, 5913000, 9280000, 0, 0, '0', '{"values":[31]}', '2023-01-17', 2, '0', '0'),
-	(34, 'Product 16', 'Varilla', 1, 29, 94, 10, 0, 0, 'COP', 70000, 40000, 50000, 4300, 700000, 5880000, 0, 0, '0', '{"values":[28]}', '2023-01-22', 2, '0', '0'),
-	(35, 'Product 17', '', 1, 23, 0, 83, 0, 20, 'COP', 40000, 20000, 345000, NULL, 3335000, 2520000, 400000, 0, '0', '{"values":[27]}', '2023-01-22', 2, '0', '1'),
-	(36, 'pdto', 'pto', 1, 60, 0, 20, 0, 0, 'COP', 200000, 150000, 0, 1500, 20, 1185000, 0, 0, '0', '{"values":[27]}', '2023-02-09', 2, '0', '1'),
-	(37, 'New product', 'fibiaan', 1, 50, 0, 0, 0, 0, 'COP', 70000, 60000, 0, 1200, 0, 3000000, 0, 0, '0', '{"values":[27,30]}', '2023-02-09', 2, '0', '1'),
-	(38, 'New product', 'fibiaan', 1, 50, 0, 0, 0, 0, 'COP', 70000, 60000, 0, 1200, 0, 3000000, 0, 0, '0', '{"values":[27,30]}', '2023-02-09', 2, '0', '1'),
-	(39, 'New product', 'fibiaan', 1, 50, 0, 0, 0, 0, 'COP', 70000, 60000, 0, 1200, 0, 3000000, 0, 0, '0', '{"values":[27,30]}', '2023-02-09', 2, '0', '1'),
-	(40, 'New product', 'fibiaan', 1, 50, 0, 0, 0, 0, 'COP', 40000, 60000, 0, 1200, 0, 3000000, 0, 0, '0', '{"values":[27,30]}', '2023-02-09', 2, '0', '1'),
-	(41, 'New product', 'fibiaan', 1, 50, 0, 0, 0, 0, 'COP', 70000, 60000, 0, 1200, 0, 3000000, 0, 0, '0', '{"values":[27,30]}', '2023-02-09', 2, '0', '1'),
-	(42, 'h', 'h', 1, 70, 0, 0, 0, 0, 'COP', 15, 15, 15, 15, 0, 1050, 0, 0, '0', '{"values":[27]}', '2023-02-09', 2, '0', '1'),
-	(43, 'a', 'abc', 1, 75, 5, 0, 0, 0, 'COP', 10, 10, 10, 10, 0, 791, 0, 0, '0', '{"values":[27,28]}', '2023-02-09', 2, '0', '1'),
-	(44, 'Product 18', '10kg de purina para gato', 1, 79, 21, 0, 0, 0, 'COP', 75000, 60000, 70000, 450, 0, 6000000, 0, 0, '0', '{"values":[31]}', '2023-02-10', 2, '0', '0');
+	(461, 'ALINEADOR 1.00 mts', NULL, NULL, 101, 35, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(462, 'ALINEADOR 1.50 mts', NULL, NULL, 46, 55, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(463, 'ALINEADOR 2.00 mts', NULL, NULL, 28, 71, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(464, 'ALINEADOR 2.50 mts', NULL, NULL, 17, 29, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(465, 'ALINEADOR 3.00 mts', NULL, NULL, 1, 114, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(466, 'ALINEADOR 3.50 mts', NULL, NULL, 1, 20, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(467, 'ALINEADOR 4.00 mts', NULL, NULL, 22, 52, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(468, 'ALINEADOR 4.50 mts', NULL, NULL, 0, 3, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(469, 'ALINEADOR 5.00 mts', NULL, NULL, 0, 13, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(470, 'ALINEADOR 6.00 mts', NULL, NULL, 6, 92, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(471, 'ANDAMIO FORMALETA / BARANDA ', NULL, NULL, 15, 36, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(472, 'ANDAMIO FORMALETA / SOPORTE ', NULL, NULL, 0, 36, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(473, 'ANGULO 1200 mm', NULL, NULL, 0, 353, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(474, '"ANGULO 24"""', NULL, NULL, 0, 207, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(475, '"ANGULO 48"""', NULL, NULL, 0, 200, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(476, 'ANGULO 600 mm', NULL, NULL, 0, 340, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(477, 'CERCHA METALICA 1.00 mts ', NULL, NULL, 7, 4, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(478, 'CERCHA METALICA 2.00 mts', NULL, NULL, 21, 12, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(479, 'CERCHA METALICA 2.50 mts', NULL, NULL, 0, 10, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(480, 'CERCHA METALICA 3.00 mts', NULL, NULL, 90, 31, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(481, 'CERCHA METALICA 4.00 mts', NULL, NULL, 1, 1, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(482, '"CIRCULAR MEDIA DIAM .  250 X 48"" Cal.12"', NULL, NULL, 4, 0, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(483, 'CIRCULAR MEDIA DIAM 500 X 1200 mm', NULL, NULL, 2, 4, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(484, 'CIRCULAR MEDIA DIAM 500 X 600 mm', NULL, NULL, 0, 2, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(485, 'CIRCULAR MEDIA DIAM 700 X 1200 mm', NULL, NULL, 10, 0, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(486, 'CIRCULAR MEDIA DIAM 700 X 600 mm', NULL, NULL, 4, 0, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(487, 'CIRCULAR MEDIA DIAM 800 X 1200 mm', NULL, NULL, 0, 10, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(488, 'CIRCULAR MEDIA DIAM 800 X 600 mm', NULL, NULL, 4, 0, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(489, 'CONO SLUMP ACERO + VARIILLA 5/8 ', NULL, NULL, 1, 0, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(490, 'CORONA POZO INSPECCION JUEGO X 4 UNI', NULL, NULL, 0, 1, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(491, '"DISTANCIADOR / CORBARA PARA MURO 12"""', NULL, NULL, 65, 0, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(492, 'DISTANCIADOR / CORBATA PARA MURO  100 mm ', NULL, NULL, 0, 150, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(493, 'DISTANCIADOR / CORBATA PARA MURO  150 mm', NULL, NULL, 28, 0, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(494, 'DISTANCIADOR / CORBATA PARA MURO  200 mm', NULL, NULL, 457, 0, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(495, 'DISTANCIADOR / CORBATA PARA MURO  300 mm', NULL, NULL, 50, 60, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(496, 'DISTANCIADOR / CORBATA PARA MURO  400 mm', NULL, NULL, 147, 9, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(497, '"DISTANCIADOR / CORBATA PARA MURO 10"""', NULL, NULL, 25, 0, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(498, 'DISTANCIADOR / CORBATA PARA MURO 250 mm', NULL, NULL, 258, 46, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(499, 'DISTANCIADOR / CORBATA PARA MURO 350 mm', NULL, NULL, 9, 0, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(500, 'GRAPA / CHAPETA ', NULL, NULL, 6835, 17952, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(501, 'MARTILLO EXTRACTOR DISTANCIADOR ', NULL, NULL, 1, 0, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(502, 'PARAL METALICO CORRIENTE 1.00 mts', NULL, NULL, 31, 91, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(503, 'PARAL METALICO CORRIENTE 3.00 mts', NULL, NULL, 235, 389, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(504, 'PARAL METALICO CORRIENTE 4.00 mts', NULL, NULL, 385, 181, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(505, 'PARAL METALICO CORRIENTE 6.00 mts', NULL, NULL, 34, 40, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(506, 'PIN DOBLE ', NULL, NULL, 471, 281, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(507, 'PIN EXTERNO ', NULL, NULL, 191, 0, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(508, 'PIN SENCILLO ', NULL, NULL, 987, 200, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(509, 'RINC. METALICA 100 X 100 X 1200 mm', NULL, NULL, 0, 164, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(510, 'RINC. METALICA 100 X 100 X 600 mm', NULL, NULL, 0, 47, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(511, 'RINC. METALICA 100 X 150 X 1200 mm', NULL, NULL, 17, 34, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(512, '"RINC. METALICA 4"" X 4"" X 24"""', NULL, NULL, 140, 15, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(513, '"RINC. METALICA 4"" X 4"" X 48"""', NULL, NULL, 201, 19, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(514, '"RINC. METALICA 6"" X 6"" X 48"""', NULL, NULL, 10, 0, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(515, 'SECCION ANDAMIO / CRUCETA ', NULL, NULL, 5, 27, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(516, 'SECCION ANDAMIO / MARCO ', NULL, NULL, 0, 26, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(517, 'SELLO ANTIGOTEO ', NULL, NULL, 1300, 0, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(518, 'SOPORTE FACHADA PARA ANDAMIO  ', NULL, NULL, 7, 34, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(519, 'TAB. MADERA  700 X 1400 mm', NULL, NULL, 49, 3, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(520, 'TAB. METALICO  100 X 1200 mm', NULL, NULL, 26, 45, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(521, 'TAB. METALICO  150 X 1200 mm', NULL, NULL, 0, 51, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(522, 'TAB. METALICO  200 X 1200 mm', NULL, NULL, 12, 76, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(523, 'TAB. METALICO  250 X 1200 mm', NULL, NULL, 64, 110, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(524, 'TAB. METALICO  300 X 1200 mm', NULL, NULL, 0, 113, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(525, 'TAB. METALICO  350 X 1200 mm', NULL, NULL, 0, 40, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(526, 'TAB. METALICO  400 X 1200 mm', NULL, NULL, 38, 132, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(527, 'TAB. METALICO  450 X 1200 mm', NULL, NULL, 3, 89, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(528, 'TAB. METALICO  50 X 1200 mm', NULL, NULL, 1, 4, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(529, 'TAB. METALICO  500 X 1200 mm', NULL, NULL, 21, 100, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(530, 'TAB. METALICO  550 X 1200 mm', NULL, NULL, 13, 30, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(531, 'TAB. METALICO  600 X 1200 mm', NULL, NULL, 199, 609, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(532, '"TAB. METALICO 10"" X 48"""', NULL, NULL, 122, 2, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(533, 'TAB. METALICO 100 X 600 mm', NULL, NULL, 10, 3, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(534, '"TAB. METALICO 11"" X 48"""', NULL, NULL, 44, 0, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(535, '"TAB. METALICO 12"" X 48"""', NULL, NULL, 3, 99, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(536, '"TAB. METALICO 13"" X 48"""', NULL, NULL, 1, 14, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(537, '"TAB. METALICO 14"" X 48"""', NULL, NULL, 38, 1, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(538, '"TAB. METALICO 15"" X 48"""', NULL, NULL, 21, 2, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(539, '"TAB. METALICO 16"" X 48"""', NULL, NULL, 16, 124, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(540, '"TAB. METALICO 17"" X 48"""', NULL, NULL, 0, 28, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(541, '"TAB. METALICO 18"" X 48"""', NULL, NULL, 30, 18, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(542, '"TAB. METALICO 19"" X 48"""', NULL, NULL, 7, 5, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(543, '"TAB. METALICO 2"" X 48"""', NULL, NULL, 4, 0, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(544, '"TAB. METALICO 20"" X 48"""', NULL, NULL, 65, 277, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(545, '"TAB. METALICO 21"" X 48"""', NULL, NULL, 32, 0, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(546, '"TAB. METALICO 22"" X 48"""', NULL, NULL, 18, 2, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(547, '"TAB. METALICO 23"" X 48"""', NULL, NULL, 3, 0, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(548, '"TAB. METALICO 24"" X 48"""', NULL, NULL, 120, 436, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(549, '"TAB. METALICO 3"" X 48"""', NULL, NULL, 23, 0, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(550, 'TAB. METALICO 300 X 600 mm', NULL, NULL, 5, 3, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(551, '"TAB. METALICO 4"" X 48"""', NULL, NULL, 85, 31, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(552, '"TAB. METALICO 5"" X 48"""', NULL, NULL, 43, 2, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(553, '"TAB. METALICO 6"" X 48"""', NULL, NULL, 7, 109, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(554, 'TAB. METALICO 600 X 600 mm', NULL, NULL, 6, 2, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(555, '"TAB. METALICO 7"" X 48"""', NULL, NULL, 36, 2, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(556, '"TAB. METALICO 8"" X 48"""', NULL, NULL, 8, 97, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(557, '"TAB. METALICO 9"" X 48"""', NULL, NULL, 16, 2, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(558, '"TAB. METALICO FLEX 1"" X 48"""', NULL, NULL, 33, 0, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(559, '"TAB. METALICO FLEX 2"" X 48"""', NULL, NULL, 62, 0, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(560, 'TABLON MADERA 3.00 mts', NULL, NULL, 21, 32, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0'),
+	(561, 'TENSORES ', NULL, NULL, 419, 1589, 0, 0, 0, 'COP', 1, 1, 0, 0, 0, 0, 0, 0, '0', '{values: []}', '2023-02-12', 2, '0', '0');
 
 -- Dumping structure for table stock.projects
 CREATE TABLE IF NOT EXISTS `projects` (
@@ -758,7 +1059,7 @@ CREATE TABLE IF NOT EXISTS `quotation` (
   CONSTRAINT `FK_quotation_users_2` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8;
 
--- Dumping data for table stock.quotation: ~0 rows (approximately)
+-- Dumping data for table stock.quotation: ~3 rows (approximately)
 DELETE FROM `quotation`;
 INSERT INTO `quotation` (`id`, `serial`, `description`, `value`, `discount`, `taxing`, `client_id`, `email`, `project_id`, `enterprise_id`, `min_validity`, `user`, `max_validity`, `isRenting`, `one_day`, `from`, `to`, `creation`, `updated_by`, `deleted`, `stage`) VALUES
 	(110, NULL, NULL, 1500, 0, 0, 73, NULL, NULL, 2, NULL, 4, NULL, 1, 1, NULL, NULL, '2023-02-12 20:27:31', NULL, 0, 3),
@@ -779,18 +1080,14 @@ CREATE TABLE IF NOT EXISTS `quotationDetail` (
   `dispatching` int(11) DEFAULT 0,
   `returning` int(11) DEFAULT 0,
   PRIMARY KEY (`id`),
-  KEY `FK_quotationDetail_products` (`item_id`),
   KEY `FK_quotationDetail_quotation` (`quotation_id`),
-  CONSTRAINT `FK_quotationDetail_products` FOREIGN KEY (`item_id`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  KEY `FK_quotationDetail_products` (`item_id`),
+  CONSTRAINT `FK_quotationDetail_products` FOREIGN KEY (`item_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `FK_quotationDetail_quotation` FOREIGN KEY (`quotation_id`) REFERENCES `quotation` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table stock.quotationDetail: ~0 rows (approximately)
 DELETE FROM `quotationDetail`;
-INSERT INTO `quotationDetail` (`id`, `item_id`, `extras`, `amount`, `value`, `quotation_id`, `from`, `to`, `days`, `dispatching`, `returning`) VALUES
-	(97, 33, NULL, 1, 1500, 110, NULL, NULL, NULL, 1, 0),
-	(98, 33, NULL, 5, 1500, 111, NULL, NULL, NULL, 5, 0),
-	(99, 34, NULL, 5, 4300, 112, NULL, NULL, NULL, 5, 0);
 
 -- Dumping structure for table stock.quotationInfo
 CREATE TABLE IF NOT EXISTS `quotationInfo` (
@@ -808,13 +1105,6 @@ CREATE TABLE IF NOT EXISTS `quotationInfo` (
 
 -- Dumping data for table stock.quotationInfo: ~0 rows (approximately)
 DELETE FROM `quotationInfo`;
-INSERT INTO `quotationInfo` (`id`, `quotation_id`, `action`, `user`, `done`) VALUES
-	(391, 110, '0', 4, '2023-02-12 15:27:31'),
-	(392, 110, '3', NULL, '2023-02-12 15:27:31'),
-	(393, 111, '0', 4, '2023-02-12 15:34:59'),
-	(394, 111, '3', NULL, '2023-02-12 15:34:59'),
-	(395, 112, '0', 4, '2023-02-12 15:35:45'),
-	(396, 112, '3', NULL, '2023-02-12 15:35:45');
 
 -- Dumping structure for table stock.quotationMessages
 CREATE TABLE IF NOT EXISTS `quotationMessages` (
@@ -858,11 +1148,8 @@ CREATE TABLE IF NOT EXISTS `recipes` (
   CONSTRAINT `FK_recipes_products_2` FOREIGN KEY (`required`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
 
--- Dumping data for table stock.recipes: ~2 rows (approximately)
+-- Dumping data for table stock.recipes: ~0 rows (approximately)
 DELETE FROM `recipes`;
-INSERT INTO `recipes` (`id`, `result`, `required`, `amount`, `extras`) VALUES
-	(50, 5, 1, 2, 'Se debe remover la cáscara y cocinar por 20 minutos'),
-	(51, 6, 2, 2, 'Se debe pelar y cocinar');
 
 -- Dumping structure for table stock.returning
 CREATE TABLE IF NOT EXISTS `returning` (
@@ -969,10 +1256,10 @@ CREATE TABLE IF NOT EXISTS `sales` (
   KEY `FK_sales_customer` (`client_id`),
   KEY `FK_sales_enterprise` (`enterprise`),
   KEY `FK_sales_projects` (`project_id`),
-  CONSTRAINT `FK_sales_customer` FOREIGN KEY (`client_id`) REFERENCES `customer` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_sales_enterprise` FOREIGN KEY (`enterprise`) REFERENCES `enterprise` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_sales_projects` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_sales_users` FOREIGN KEY (`registered_by`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `FK_sales_customer` FOREIGN KEY (`client_id`) REFERENCES `customer` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `FK_sales_enterprise` FOREIGN KEY (`enterprise`) REFERENCES `enterprise` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `FK_sales_projects` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `FK_sales_users` FOREIGN KEY (`registered_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=175 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table stock.sales: ~8 rows (approximately)
@@ -1005,23 +1292,11 @@ CREATE TABLE IF NOT EXISTS `salesDetail` (
   KEY `FK_sales_products` (`item`) USING BTREE,
   KEY `FK_salesDetail_sales` (`sales_id`),
   CONSTRAINT `FK_salesDetail_sales` FOREIGN KEY (`sales_id`) REFERENCES `sales` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `salesDetail_ibfk_2` FOREIGN KEY (`item`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `salesDetail_ibfk_2` FOREIGN KEY (`item`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=222 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table stock.salesDetail: ~11 rows (approximately)
+-- Dumping data for table stock.salesDetail: ~0 rows (approximately)
 DELETE FROM `salesDetail`;
-INSERT INTO `salesDetail` (`id`, `item`, `extras`, `amount`, `value`, `date`, `sales_id`, `start_date`, `end_date`) VALUES
-	(211, 29, '', 10, 370000, '2023-02-04 21:38:22', 164, NULL, NULL),
-	(212, 35, '', 20, 800000, '2023-02-05 21:42:35', 165, NULL, NULL),
-	(213, 33, '', 6, 630000, '2023-02-09 15:12:33', 166, NULL, NULL),
-	(214, 34, '', 4, 280000, '2023-02-09 15:12:48', 167, NULL, NULL),
-	(215, 33, '', 5, 525000, '2023-02-09 16:03:40', 168, NULL, NULL),
-	(216, 36, '', 20, 20, '2023-02-09 16:42:43', 169, NULL, NULL),
-	(217, 33, '', 10, 1050000, '2023-02-10 00:19:27', 170, NULL, NULL),
-	(218, 33, '', 10, 1050000, '2023-02-10 00:19:44', 171, NULL, NULL),
-	(219, 33, '', 10, 1050000, '2023-02-10 00:35:49', 172, NULL, NULL),
-	(220, 35, '', 38, 1520000, '2023-02-10 08:30:25', 173, NULL, NULL),
-	(221, 35, '', 17, 680000, '2023-02-10 10:42:18', 174, NULL, NULL);
 
 -- Dumping structure for table stock.toContact
 CREATE TABLE IF NOT EXISTS `toContact` (
@@ -1084,7 +1359,7 @@ INSERT INTO `users` (`id`, `name`, `rol`, `nickname`, `password`, `registered`, 
 	(1, 'Fabián ', 2, 'fibiaan', '81dc9bdb52d04dc20036dbd8313ed055', '2022-10-14 16:23:48', 2, 'eyJpZCI6MSwibmFtZSI6IkZhYmnDoW4gIiwibmlja25hbWUiOiJmaWJpYWFuIiwiZW1haWwiOm51bGwsImVtYWlsX3ZlcmlmaWVkIjpudWxsLCJpc0FkbWluIjoiMCIsImVudGVycHJpc2VfaWQiOjIsImVudGVycHJpc2VfbmFtZSI6IkNpbWJyYXMgZGUgQ29sb21iaWEgUy5BLlMuIiwiZW50ZXJwcmlzZV9wYXRoIjoiaHR0cHM6Ly9zdG9ja2FwaS5hbnViaXNhcHBzLmNvbS9wdWJsaWMvbG9nb3MvZW5jb2NvbC5wbmciLCJzaG9ydGN1dCI6ImNpbWJyYXMiLCJyb2wiOjIsInJlbnRpbmciOjEsInF1b3RpbmciOjAsInNlbGxpbmciOjEsInByb2plY3RzIjoxLCJjb2xvcnMiOiJbe1widmFsdWVcIjpcIiM1ODM3MzlcIn0se1widmFsdWVcIjpcIiMwMDAwZmZcIn0se1widmFsdWVcIjpcIiMwMDAwMDBcIn1dIiwiY2FydCI6MCwiZXhwIjoxNjc2MjQxMjk5fQ==', '0', 'vpudjcJ6eGTgdB0hAAAR', NULL, NULL, NULL),
 	(2, 'César', 2, 'cesarp', '81dc9bdb52d04dc20036dbd8313ed055', '2022-10-22 23:21:05', 2, 'eyJpZCI6MiwibmFtZSI6IkPDqXNhciIsIm5pY2tuYW1lIjoiY2VzYXJwIiwiZW1haWwiOiJjZXNhcnBoZXJuYW5kZXowOUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6IjEiLCJpc0FkbWluIjoiMCIsImVudGVycHJpc2VfaWQiOjIsImVudGVycHJpc2VfbmFtZSI6IkNpbWJyYXMgZGUgQ29sb21iaWEgUy5BLlMuIiwiZW50ZXJwcmlzZV9wYXRoIjoiaHR0cHM6Ly9zdG9ja2FwaS5hbnViaXNhcHBzLmNvbS9wdWJsaWMvbG9nb3MvZW5jb2NvbC5wbmciLCJzaG9ydGN1dCI6ImNpbWJyYXMiLCJyb2wiOjIsInJlbnRpbmciOjEsInF1b3RpbmciOjAsInNlbGxpbmciOjEsImNvbG9ycyI6Ilt7XCJ2YWx1ZVwiOlwiI2MwMWMyOFwifSx7XCJ2YWx1ZVwiOlwiIzAwMDBmZlwifSx7XCJ2YWx1ZVwiOlwiI2E1MWQyZFwifV0iLCJjYXJ0IjowLCJleHAiOjE2NzYxMjU2OTZ9', '0', 'Vyji_QowsA72TfpVAABb', NULL, 'cesarphernandez09@gmail.com', '1'),
 	(3, 'Jerdirlson', 2, 'yeye', 'd93591bdf7860e1e4ee2fca799911215', '2022-11-23 10:58:59', 2, 'eyJpZCI6MywibmFtZSI6IkplcmRpcmxzb24iLCJuaWNrbmFtZSI6InlleWUiLCJlbWFpbCI6bnVsbCwiZW1haWxfdmVyaWZpZWQiOm51bGwsImlzQWRtaW4iOiIwIiwiZW50ZXJwcmlzZV9pZCI6MiwiZW50ZXJwcmlzZV9uYW1lIjoiQ2ltYnJhcyBkZSBDb2xvbWJpYSBTLkEuUy4iLCJlbnRlcnByaXNlX3BhdGgiOiJodHRwczovL3N0b2NrYXBpLmFudWJpc2FwcHMuY29tL3B1YmxpYy9sb2dvcy9lbmNvY29sLnBuZyIsInNob3J0Y3V0IjoiY2ltYnJhcyIsInJvbCI6MiwicmVudGluZyI6MSwicXVvdGluZyI6MCwic2VsbGluZyI6MSwiY29sb3JzIjoiW3tcInZhbHVlXCI6XCIjYzAxYzI4XCJ9LHtcInZhbHVlXCI6XCIjMDAwMGZmXCJ9LHtcInZhbHVlXCI6XCIjYTUxZDJkXCJ9XSIsImNhcnQiOjAsImV4cCI6MTY3NjA0ODUxOH0=', '0', 'hdf5vkXLObsM2y4-AAAu', NULL, NULL, NULL),
-	(4, 'Diego', 2, 'diegogo', '81dc9bdb52d04dc20036dbd8313ed055', '2023-01-11 18:51:11', 2, 'eyJpZCI6NCwibmFtZSI6IkRpZWdvIiwibmlja25hbWUiOiJkaWVnb2dvIiwiZW1haWwiOiJmaWJpYW5tZWppYUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6IjEiLCJpc0FkbWluIjoiMSIsImVudGVycHJpc2VfaWQiOjIsImVudGVycHJpc2VfbmFtZSI6IkNpbWJyYXMgZGUgQ29sb21iaWEgUy5BLlMuIiwiZW50ZXJwcmlzZV9wYXRoIjoiaHR0cHM6Ly9zdG9ja2FwaS5hbnViaXNhcHBzLmNvbS9wdWJsaWMvbG9nb3MvZW5jb2NvbC5wbmciLCJzaG9ydGN1dCI6ImNpbWJyYXMiLCJyb2wiOjIsInJlbnRpbmciOjEsInF1b3RpbmciOjAsInNlbGxpbmciOjEsImNvbG9ycyI6Ilt7XCJ2YWx1ZVwiOlwiIzU4MzczOVwifSx7XCJ2YWx1ZVwiOlwiIzAwMDBmZlwifSx7XCJ2YWx1ZVwiOlwiIzAwMDAwMFwifV0iLCJjYXJ0IjowLCJleHAiOjE2NzYyNDEyMzh9', '1', 'WHp-zevdR7dEYTv2AAAN', NULL, 'fibianmejia@gmail.com', '1');
+	(4, 'Diego', 2, 'diegogo', '81dc9bdb52d04dc20036dbd8313ed055', '2023-01-11 18:51:11', 2, 'eyJpZCI6NCwibmFtZSI6IkRpZWdvIiwibmlja25hbWUiOiJkaWVnb2dvIiwiZW1haWwiOiJmaWJpYW5tZWppYUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6IjEiLCJpc0FkbWluIjoiMSIsImVudGVycHJpc2VfaWQiOjIsImVudGVycHJpc2VfbmFtZSI6IkNpbWJyYXMgZGUgQ29sb21iaWEgUy5BLlMuIiwiZW50ZXJwcmlzZV9wYXRoIjoiaHR0cHM6Ly9zdG9ja2FwaS5hbnViaXNhcHBzLmNvbS9wdWJsaWMvbG9nb3MvZW5jb2NvbC5wbmciLCJzaG9ydGN1dCI6ImNpbWJyYXMiLCJyb2wiOjIsInJlbnRpbmciOjEsInF1b3RpbmciOjAsInNlbGxpbmciOjEsImNvbG9ycyI6Ilt7XCJ2YWx1ZVwiOlwiIzU4MzczOVwifSx7XCJ2YWx1ZVwiOlwiIzAwMDBmZlwifSx7XCJ2YWx1ZVwiOlwiIzAwMDAwMFwifV0iLCJjYXJ0IjowLCJleHAiOjE2NzYyNjExODF9', '1', '5i5UaVzJRkkLIZUgAAAV', NULL, 'fibianmejia@gmail.com', '1');
 
 -- Dumping structure for table stock.validationCodes
 CREATE TABLE IF NOT EXISTS `validationCodes` (

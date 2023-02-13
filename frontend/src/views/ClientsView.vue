@@ -186,7 +186,12 @@ const listClients = async () => {
 
     cancelToken.value = new AbortController();
 
-    let { data } = await getClients((auth.getUser.token as token).value, filter.value, cancelToken.value.signal)
+    const filtering = {
+        'c.name': filter.value,
+        limit: 100
+    }
+
+    let { data } = await getClients((auth.getUser.token as token).value, filtering, cancelToken.value.signal)
     if(!data) return
     cancelToken.value = undefined
     let clientList: Array<clientEnterpriseSchema> = data
@@ -202,6 +207,7 @@ const listClients = async () => {
 
 onMounted(() => {
     socket.socket?.on('clientCreated', (body: clientEnterpriseSchema) => {
+        console.log('service update', body)
         auth.addClient(body)
     })
     

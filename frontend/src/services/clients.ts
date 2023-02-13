@@ -2,13 +2,13 @@ import { ApiCLient } from '@/services/index';
 import type { clientEnterpriseSchema, projectSchema } from '@/schemas';
 
 
-export const getClients =  (token: string, filter: string, signal: any) => {
+export const getClients =  (token: string, filter: any, signal: any) => {
     return ApiCLient.get('clients', {
        headers: {
            'authorization': `bearer ${token}`
        },
        params: {
-        filter
+        ...filter
        },
        signal
     })

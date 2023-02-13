@@ -15,13 +15,12 @@ const handleName = (title: string) => {
 }
 
 export const readClients = async (req: Request, res: Response) => {
-    const db: DataBase = await initDatabase(res)
+    const db: DataBase = await initDatabase(res, req)
     const query: string = `
         SELECT c.*, m.filename, m.path, m.host, m.id as media_id from clients AS c 
         LEFT JOIN media AS m ON c.rut = m.id
-        WHERE enterprise = ? AND (name like "%${req.query.filter?.toString() ?? ''}%")
+        WHERE enterprise = ?
         ORDER BY registro DESC
-        LIMIT 100
     `
     const values: Array<string> = [
         req.userData.enterprise_id.toString()
@@ -110,7 +109,7 @@ export const importClients = async (req: Request, res: Response) => {
 
             for (const client of Object.keys(product.clients)) {
                 //Clients proccess
-                const validateClient:string = 'SELECT * FROM clients WHERE name = ? AND enterprise = ?'
+                const validateClient: string = 'SELECT * FROM clients WHERE name = ? AND enterprise = ?'
                 const valuesClient: Array<string> = [
                     client,
                     data.enterprise_id
@@ -135,12 +134,12 @@ export const importClients = async (req: Request, res: Response) => {
                 const clientProductResponse: OkPacket = await db.insertQuery(queryClientsProduct, valuesClientsProduct)
                 if (!clientProductResponse.insertId) throw new Error('No inserted ID in clientProduct query')
             }
-        } 
+        }
 
         db.connection.commit()
-        const clientsQuery:string = 'SELECT * FROM users WHERE enterprise = ?'
+        const clientsQuery: string = 'SELECT * FROM users WHERE enterprise = ?'
         const valuesClient: Array<string> = [data.enterprise_id]
-        const users =  await db.readQuery(clientsQuery, valuesClient)
+        const users = await db.readQuery(clientsQuery, valuesClient)
         db.closeConnection()
         res.json({
             ok: true
@@ -183,24 +182,45 @@ export const editClient = async (req: Request, res: Response) => {
         data.contact_email,
         data.id.toString()
     ]
+    const infoFile = data.rut.info.split(',')
+    const SourceUpdate = infoFile.length > 1
+    let buffer
+    if(SourceUpdate){
+        buffer = Buffer.from(infoFile[1], "base64")
+    }
+    const path: string = `/clients/${req.userData.enterprise_id}/`
+    const route: string = join(__dirname, '../../public', data.path ?? path)
     try {
         db.connection.beginTransaction()
         const response: OkPacket = await db.updateQuery(query, values)
         if (response.affectedRows == 0) throw new Error('No updated client')
-        const infoFile = data.rut.info.split(',')
-        if (infoFile.length > 1) {
+        if (SourceUpdate) {
             // Save new file
-            const buffer: Buffer = Buffer.from(infoFile[1], "base64")
-            const route: string = join(__dirname, '../../public', data.path)
-            const media: string = `
-                UPDATE media SET filename = ? WHERE id = ?
-            `
-            const mediaV: Array<string> = [
-                filename, data.media_id.toString()
-            ]
-            await db.updateQuery(media, mediaV)
-            await saveLocalResource(buffer, route, filename)
-            data.rut.info = env.SERVER_HOST + data.path + filename
+            if (data.media_id) {
+                const media: string = `
+                    UPDATE media SET filename = ? WHERE id = ?
+                `
+                const mediaV: Array<string> = [
+                    filename, data.media_id.toString()
+                ]
+                await db.updateQuery(media, mediaV)
+            } else {
+                const queryMedia: string = `
+                    INSERT INTO media (path, filename, host) VALUES
+                    (?, ?, ?)
+                `
+                const valuesMedia: Array<string> = [
+                    path,
+                    filename,
+                    env.SERVER_HOST
+                ]
+                const mediaResponse: OkPacket = await db.insertQuery(queryMedia, valuesMedia)
+                if (!mediaResponse.insertId) throw new Error('No inserted ID in media query')
+
+                db.updateQuery(`UPDATE clients SET rut = ? WHERE id = ?`, [
+                    mediaResponse.insertId.toString(), data.id.toString()
+                ])
+            }
         }
     } catch (err) {
         console.log(err)
@@ -213,6 +233,10 @@ export const editClient = async (req: Request, res: Response) => {
         return
     }
     db.connection.commit()
+    if(SourceUpdate){
+        await saveLocalResource(buffer, route, filename)
+        data.rut.info = env.SERVER_HOST + data.path + filename
+    }
     db.closeConnection()
     res.json({
         ok: true
@@ -269,7 +293,7 @@ export const saveProject = async (req: Request, res: Response) => {
     let values: Array<string>
     const db: DataBase = await initDatabase(res)
     let resp: OkPacket
-    if((bd.id)){
+    if ((bd.id)) {
         query = `
             UPDATE projects SET name = ?, address = ?, contact_name = ?, contact_phone = ?,
                 contact_email = ?, budget = ?, renting = ? WHERE id = ? `
@@ -279,7 +303,7 @@ export const saveProject = async (req: Request, res: Response) => {
             bd.id.toString()
         ]
         resp = await db.updateQuery(query, values)
-    }else{
+    } else {
         query = `
             INSERT INTO projects (name, address, contact_name, contact_phone,
                 contact_email, client_id, budget, renting) VALUES
@@ -291,13 +315,13 @@ export const saveProject = async (req: Request, res: Response) => {
         ]
         resp = await db.insertQuery(query, values)
     }
-    if(resp.insertId > 0 || resp.affectedRows > 0){
+    if (resp.insertId > 0 || resp.affectedRows > 0) {
         bd.id = bd.id ?? resp.insertId
         res.json({
             ok: true
         })
         return bd
-    } else{
+    } else {
         res.status(204)
         res.end()
         return
@@ -311,14 +335,14 @@ export const deleteProject = async (req: Request, res: Response) => {
     ]
     const db: DataBase = await initDatabase(res)
     const resp: OkPacket = await db.insertQuery(query, values)
-    if(resp.affectedRows > 0){
+    if (resp.affectedRows > 0) {
         res.json({
             ok: true
         })
         return req.body
     }
     res.end()
-    return 
+    return
 }
 
 export const getProjects = async (req: Request, res: Response) => {
@@ -327,14 +351,14 @@ export const getProjects = async (req: Request, res: Response) => {
     `
     const values: Array<string> = [
         req.query.client_id.toString(),
-        
+
     ]
     const db: DataBase = await initDatabase(res)
-    const resp: Array<any> = await db.readQuery(query, values) 
+    const resp: Array<any> = await db.readQuery(query, values)
     db.closeConnection()
-    if(resp.length > 0){
+    if (resp.length > 0) {
         res.status(200)
-    }else{
+    } else {
         res.status(204)
     }
     res.json(resp)
