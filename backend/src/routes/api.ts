@@ -1,5 +1,5 @@
 import { createNewDispatch, createNewReturn, dispatchDetail, dispatchUpdate, editQuotation, getAllQuotation, listDispatch, listInvoices, listReturn, quotationDetail, returnDetail, returnUpdate, sendQuotationEmail, updateQuotationStage } from './../controllers/accountingController';
-import { addClient, deleteClient, deleteProject, editClient, getProjects, readClients, saveProject } from './../controllers/clientController';
+import { addClient, deleteClient, deleteProject, editClient, getProjects, importClients, readClients, saveProject } from './../controllers/clientController';
 import { loginCustomer, setTokenCustomer } from '../controllers/customerController';
 import { activateCustomer, menusInRol } from './../controllers/loginController';
 import { saveEnterpriseLogo } from './../controllers/mediaController';
@@ -31,10 +31,15 @@ declare global {
 const middleware = async (req: Request, res: Response, next: NextFunction) => {
     const authorization: string = req.headers.authorization;
     if (!authorization) {
-        console.log('no auth')
-        res.status(401)
-        res.end()
-        return
+        if((req.hostname == 'anubisapps.com' || req.hostname == 'localhost') && req.body.enterprise_id ) {
+            next()
+            return
+        } else {
+            console.log('no auth')
+            res.status(401)
+            res.end()
+            return
+        }
     }
     const token: string = authorization.split(' ')[1]
     const db: DataBase = await initDatabase(res)
@@ -338,6 +343,13 @@ export default (app: Express, io: Server): void => {
     })
 
     app.get('/clients/projects', middleware, getProjects)
+
+    app.post('/clients/import', middleware, async (req: Request, res: Response) => {
+        const data: any = await importClients(req, res)
+        for(const user of data) {
+            io.to('e' + user.enterprise_id).emit('userConnected', {nickname: user.nickname })
+        }
+    })
 
     app.post('/clients/projects', middleware, async (req: Request, res: Response) => {
         const data: projectSchema = await saveProject(req, res)

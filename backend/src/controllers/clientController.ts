@@ -91,6 +91,71 @@ export const addClient = async (req: Request, res: Response) => {
     return data
 }
 
+export const importClients = async (req: Request, res: Response) => {
+    let data = req.body
+    const db: DataBase = await initDatabase(res)
+    db.connection.beginTransaction()
+    try {
+        for (const product of data.products) {
+            //Products proccess
+            const queryProduct: string = `INSERT INTO products (name, stock, rented, enterprise) VALUES (?,?,?,?)`
+            const valuesProduct: Array<string> = [
+                product.name,
+                product.avaliable,
+                product.dispatched,
+                data.enterprise_id
+            ]
+            const productResponse: OkPacket = await db.insertQuery(queryProduct, valuesProduct)
+            if (!productResponse.insertId) throw new Error('No inserted ID in product query')
+
+            for (const client of Object.keys(product.clients)) {
+                //Clients proccess
+                const validateClient:string = 'SELECT * FROM clients WHERE name = ? AND enterprise = ?'
+                const valuesClient: Array<string> = [
+                    client,
+                    data.enterprise_id
+                ]
+                const ClientExistsResponse: Array<any> = await db.readQuery(validateClient, valuesClient)
+                let ClientResponse: OkPacket;
+                if (!ClientExistsResponse[0]) {
+                    const queryClient: string = `INSERT INTO clients (name, enterprise) VALUES (?, ?)`
+                    valuesClient.push(product.stock)
+                    valuesClient.push(product.rented)
+                    ClientResponse = await db.insertQuery(queryClient, valuesClient)
+                    if (!ClientResponse.insertId) throw new Error('No inserted ID in client query')
+                }
+
+                //ClientProduct proccess
+                const queryClientsProduct: string = `INSERT INTO clientProduct (client_id, product_id, amount) VALUES (?,?,?)`
+                const valuesClientsProduct: Array<string> = [
+                    ClientExistsResponse[0] ? ClientExistsResponse[0].id : ClientResponse.insertId,
+                    productResponse.insertId,
+                    product.clients[client],
+                ]
+                const clientProductResponse: OkPacket = await db.insertQuery(queryClientsProduct, valuesClientsProduct)
+                if (!clientProductResponse.insertId) throw new Error('No inserted ID in clientProduct query')
+            }
+        } 
+
+        db.connection.commit()
+        const clientsQuery:string = 'SELECT * FROM users WHERE enterprise = ?'
+        const valuesClient: Array<string> = [data.enterprise_id]
+        const users =  await db.readQuery(clientsQuery, valuesClient)
+        db.closeConnection()
+        res.json({
+            ok: true
+        })
+        return users
+
+    } catch (error) {
+        console.log(error)
+        db.connection.rollback()
+        db.closeConnection()
+        res.status(500)
+        res.end()
+    }
+}
+
 export const editClient = async (req: Request, res: Response) => {
     let data: clientEnterpriseSchema = req.body
     let types: { id: number, name: string } = data.type as { id: number, name: string }
