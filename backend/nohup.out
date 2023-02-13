@@ -484,3 +484,528 @@ src/controllers/productController.ts(449,18): error TS1123: Variable declaration
 
 
 9:10:53 PM - Found 0 errors. Watching for file changes.
+c8:08:42 AM - Starting compilation in watch mode...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+8:08:43 AM - Found 3 errors. Watching for file changes.
+c4:25:42 PM - Starting compilation in watch mode...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+4:25:43 PM - Found 3 errors. Watching for file changes.
+c4:30:16 PM - Starting compilation in watch mode...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+4:30:18 PM - Found 3 errors. Watching for file changes.
+c4:30:48 PM - Starting compilation in watch mode...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+4:30:49 PM - Found 3 errors. Watching for file changes.
+c4:32:50 PM - Starting compilation in watch mode...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+4:32:51 PM - Found 3 errors. Watching for file changes.
+c5:00:55 PM - Starting compilation in watch mode...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+5:00:57 PM - Found 3 errors. Watching for file changes.
+c6:13:57 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+6:13:58 PM - Found 3 errors. Watching for file changes.
+c7:09:43 PM - Starting compilation in watch mode...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+7:09:45 PM - Found 3 errors. Watching for file changes.
+c8:35:13 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+8:35:14 PM - Found 3 errors. Watching for file changes.
+c8:36:21 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+8:36:22 PM - Found 3 errors. Watching for file changes.
+c8:39:13 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+8:39:13 PM - Found 3 errors. Watching for file changes.
+c8:49:57 PM - Starting compilation in watch mode...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+8:49:58 PM - Found 3 errors. Watching for file changes.
+c8:50:32 PM - Starting compilation in watch mode...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+8:50:34 PM - Found 3 errors. Watching for file changes.
+c8:51:18 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+8:51:19 PM - Found 3 errors. Watching for file changes.
+c8:51:57 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+8:51:57 PM - Found 3 errors. Watching for file changes.
+c8:53:42 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+8:53:43 PM - Found 3 errors. Watching for file changes.
+c8:54:02 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+8:54:02 PM - Found 3 errors. Watching for file changes.
+c8:54:22 PM - File change detected. Starting incremental compilation...
+
+src/routes/api.ts(34,13): error TS1109: Expression expected.
+
+8:54:23 PM - Found 1 error. Watching for file changes.
+c8:54:25 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+8:54:25 PM - Found 3 errors. Watching for file changes.
+c8:55:45 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+8:55:45 PM - Found 3 errors. Watching for file changes.
+c8:57:11 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+8:57:12 PM - Found 3 errors. Watching for file changes.
+c8:57:49 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+8:57:49 PM - Found 3 errors. Watching for file changes.
+c8:58:00 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+8:58:01 PM - Found 3 errors. Watching for file changes.
+c8:58:22 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+8:58:22 PM - Found 3 errors. Watching for file changes.
+c8:59:48 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+8:59:48 PM - Found 3 errors. Watching for file changes.
+c9:00:00 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:00:00 PM - Found 3 errors. Watching for file changes.
+c9:00:29 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:00:29 PM - Found 3 errors. Watching for file changes.
+c9:01:51 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:01:51 PM - Found 3 errors. Watching for file changes.
+c9:03:05 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:03:05 PM - Found 3 errors. Watching for file changes.
+c9:03:29 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:03:29 PM - Found 3 errors. Watching for file changes.
+c9:04:31 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:04:31 PM - Found 3 errors. Watching for file changes.
+c9:04:41 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:04:42 PM - Found 3 errors. Watching for file changes.
+c9:07:03 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:07:03 PM - Found 3 errors. Watching for file changes.
+c9:07:30 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:07:30 PM - Found 3 errors. Watching for file changes.
+c9:08:00 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:08:00 PM - Found 3 errors. Watching for file changes.
+c9:08:07 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:08:07 PM - Found 3 errors. Watching for file changes.
+c9:08:38 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:08:38 PM - Found 3 errors. Watching for file changes.
+c9:10:19 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:10:19 PM - Found 3 errors. Watching for file changes.
+c9:10:46 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:10:46 PM - Found 3 errors. Watching for file changes.
+c9:11:03 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:11:03 PM - Found 3 errors. Watching for file changes.
+c9:11:07 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:11:07 PM - Found 3 errors. Watching for file changes.
+c9:11:45 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:11:45 PM - Found 3 errors. Watching for file changes.
+c9:12:46 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:12:46 PM - Found 3 errors. Watching for file changes.
+c9:13:05 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:13:05 PM - Found 3 errors. Watching for file changes.
+c9:13:27 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:13:28 PM - Found 3 errors. Watching for file changes.
+c9:14:09 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:14:09 PM - Found 3 errors. Watching for file changes.
+c9:15:25 PM - Starting compilation in watch mode...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:15:27 PM - Found 3 errors. Watching for file changes.
+c9:17:31 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:17:32 PM - Found 3 errors. Watching for file changes.
+c9:17:55 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:17:55 PM - Found 3 errors. Watching for file changes.
+c9:17:57 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:17:57 PM - Found 3 errors. Watching for file changes.
+c9:18:02 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:18:02 PM - Found 3 errors. Watching for file changes.
+c9:18:05 PM - Starting compilation in watch mode...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:18:07 PM - Found 3 errors. Watching for file changes.
+c9:19:02 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:19:02 PM - Found 3 errors. Watching for file changes.
+c9:19:16 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:19:16 PM - Found 3 errors. Watching for file changes.
+c9:19:56 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:19:56 PM - Found 3 errors. Watching for file changes.
+c9:21:13 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:21:13 PM - Found 3 errors. Watching for file changes.
+c9:24:42 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:24:42 PM - Found 3 errors. Watching for file changes.
+c9:51:01 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:51:01 PM - Found 3 errors. Watching for file changes.
+c9:59:35 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:59:35 PM - Found 3 errors. Watching for file changes.
+c9:59:43 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+9:59:44 PM - Found 3 errors. Watching for file changes.
+c10:07:40 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+10:07:41 PM - Found 3 errors. Watching for file changes.
+c10:26:10 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+10:26:10 PM - Found 3 errors. Watching for file changes.
+c10:28:57 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+10:28:57 PM - Found 3 errors. Watching for file changes.
+c10:30:41 PM - Starting compilation in watch mode...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+10:30:43 PM - Found 3 errors. Watching for file changes.
+c10:31:43 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+10:31:44 PM - Found 3 errors. Watching for file changes.
+c10:32:59 PM - File change detected. Starting incremental compilation...
+
+src/controllers/productController.ts(31,45): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+src/controllers/productController.ts(105,13): error TS2322: Type '{ id: number; name: string; description: string; unit: number; stock: number; cost: number; price: number; isRecipe: string; categories: category[]; wholesale: number; rent: any; }' is not assignable to type 'productToEmit'.
+  Object literal may only specify known properties, and 'rent' does not exist in type 'productToEmit'.
+src/controllers/productController.ts(105,24): error TS2339: Property 'rent' does not exist on type 'productToSave'.
+
+10:32:59 PM - Found 3 errors. Watching for file changes.

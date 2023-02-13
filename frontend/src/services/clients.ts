@@ -22,6 +22,13 @@ export const addClients = (token: string, body: clientEnterpriseSchema) => {
     })
 }
 
+export const importClients = (token: string, body: any) => {
+    return ApiCLient.post('clients/import', {...body}, {
+        headers: {
+            'authorization': `bearer ${token}`
+        }
+    })
+}
 export const editClient = (token: string, body: clientEnterpriseSchema) => {
     return ApiCLient.post('/clients/update', {...body}, {
         headers: {

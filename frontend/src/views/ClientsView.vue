@@ -12,9 +12,17 @@
                             {{ clients.length + " " + strings.title[language] }}
                         </div>
                     </h1>
-                    <div class="flex h-fit ">
+                    <div class="flex gap-3 h-fit ">
                         <Button v-if="writePer" exactColor color="secondary" icon="Add" :content=strings.newClient[language]
                             @click="unSetClient(); modalClientOpen = true" />
+                        <Button exactColor size="sm" color="secondary" icon="Link" @click="generateLink()" />
+                        <Button exactColor size="sm" color="secondary" content="CSV" icon="scan" @click="readFile()" />
+                        <input class="hidden" 
+                        ref="importFile" 
+                        type="file" 
+                        @change="getFile(($event.target as HTMLInputElement).files)"
+                        accept=".xlsx,.xls,.csv"
+                        />
                     </div>
                 </div>
                 <Input class="my-2 px-2 tablet:w-1/2 phone:w-full rounded-lg border-solid outline-secondary"
@@ -75,20 +83,21 @@ import Header2 from '@/components/Header2.vue';
 import language from '@/services/language';
 import { Button, Modal, Input } from '@/components/Generics/generics';
 import { editPer, writePer } from '@/composables/permissions';
-import { onBeforeMount, onMounted, onUnmounted, computed, ref, type Ref, type ComputedRef, watch } from 'vue';
+import { onBeforeMount, onMounted, onUnmounted, computed, ref, type Ref, type ComputedRef, watch, type InputHTMLAttributes } from 'vue';
 import { getClients } from '@/services/clients'
 import type { clientEnterpriseSchema, token } from '@/schemas'
 import DataTable from '@/components/datatable/DataTable.vue';
 import ClientCreationForm from '@/components/ClientCreationForm.vue';
 import { modalComp } from '@/classes/Modal';
 import ContextMenu from '@/components/context/ContextMenu.vue';
-import { addClients, removeClient as removeClientService,
+import { addClients, importClients, removeClient as removeClientService,
 editClient as editClientService } from '@/services/clients'
 import socket from '@/composables/socket'
 import { setHelper, sidebarStatus } from '@/composables/sidebarStatus';
 import ClientProjects from '@/components/ClientProjects.vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth'
+import { alertMessageApp} from '@/composables/alertFunction'
 
 const router = useRouter()
 const strings = {
@@ -134,6 +143,7 @@ const clientCache = {
         info: ''
     }
 }
+const importFile = ref()
 let clientFinal = {}
 const contextMenuData: Ref<{ left: number, top: number, show: boolean }> = ref({
     left: 0,
@@ -236,6 +246,86 @@ const editClient = () => {
 const updateFinal = (event: any) => {
     clientFinal = event
 }
+
+const generateLink = async () => {
+    const initLink = window.location.hostname == 'localhost' ? 
+    `http://localhost:${window.location.port}/` : "https://stockapi.anubisapps.com"
+    
+    await navigator.clipboard.writeText(initLink + 'newClient');
+}
+
+const readFile = async () => {
+    const file = importFile.value as HTMLElement
+    file.click()
+}
+
+const getFile = async (files : any) => {
+    const reader = new FileReader()
+    reader.readAsText(files[0])
+    reader.onload = ( async (event) => {
+        const csv = event.target?.result as string
+        let lines = csv.split('\n')
+        let productsCsv: Array<any> = []
+        let headers = lines[0].split(';')
+
+        for (let i = 1; i < lines.length; i++) {
+            let clients = {} as any
+            let currentline = lines[i].split(';')
+            if (currentline[0] !== '') {
+                for (let j = 0; j < headers.length; j++) {
+                    if (headers[j] != 'INV. TOTAL'
+                        && headers[j] != 'ITEMS'
+                        && headers[j] != 'alquilado'
+                        && headers[j] != 'disponible'
+                        && currentline[j] != '' 
+                        && currentline[j] != '0' 
+                        && currentline[j] != '\r') {
+                        clients[headers[j]] = currentline[j]
+                    }
+                    
+                }
+                productsCsv.push({
+                    name: currentline[headers.findIndex(key => key == 'ITEMS')],
+                    stock: currentline[headers.findIndex(key => key == 'INV. TOTAL')],
+                    dispatched: currentline[headers.findIndex(key => key == 'alquilado')],
+                    avaliable: currentline[headers.findIndex(key => key == 'disponible')],
+                    clients: clients
+                })
+            }
+        }
+        modalComp.modal.show({
+            title: 'Desea ejecutar esta acción',
+            description: 'Al realizar esta acción, todos los usuarios seran deslogueados por seguridad',
+            inputValue: '',
+        }).then(async (r) => {
+            if (r.success) {
+                let result = await importClients((auth.getUser.token as token).value,
+                {
+                    enterprise_id: auth.getUser.enterprise_id,
+                    products: productsCsv
+                })
+                if (result.status == 200) {
+                    alertMessage('Atención',
+                    'Todos los clientes y productos fueron añadidos',
+                    'success');
+                }
+            }
+        })
+    })
+}
+
+const alertMessage = (title: string, description: string, type: string) => {
+    alertMessageApp.value = {
+        title,
+        description,
+        type,
+        show: true
+    }
+    setTimeout(() => {
+        alertMessageApp.value.show = false
+    }, 3000);
+}
+
 
 const addNewClient = () => {
     console.log(clientFinal)

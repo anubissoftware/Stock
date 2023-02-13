@@ -67,7 +67,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     const setColors = (colorArray: any) => {
-        colors.value = colorArray
+        colors.value = colorArray ?? []
         localStorage.setItem('colors', JSON.stringify(colors.value))
         const root = document.querySelector(':root') as HTMLStyleElement
         
