@@ -158,7 +158,16 @@ export class DataBase {
                     }
                     str += ')'
                 } else {
-                    str += ` ${key} like '%${val}%' `
+                    if(key.includes('!')){
+                        const aux = key.replace('!', '')
+                        if(val.includes('.')){
+                            str += ` ${aux} not like ${val}`
+                        }else{
+                            str += ` ${aux} not like '%${val}%' `
+                        }
+                    }else{
+                        str += ` ${key} like '%${val}%' `
+                    }
                 }
                 if (index < (len)) {
                     str += ' and '

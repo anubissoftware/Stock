@@ -2,8 +2,12 @@ import type { token } from '@/schemas';
 import { ApiCLient } from '@/services/index';
 import { useAuthStore } from '@/stores/auth';
 
-export const formatSerial = (id: number) => {
-    return id?.toString(16).toUpperCase()
+export const formatSerial = (id: number): string => {
+    return id?.toString(16).toUpperCase() ?? ''
+}
+
+export const convertSerial = (id: string): number => {
+    return !Number.isNaN(parseInt(id, 16)) && !parseInt(id, 16) ? parseInt(id, 16) : 0
 }
 
 export const listInvoices = (params: any, signal: any) => {

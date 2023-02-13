@@ -11,18 +11,11 @@
                     props.size == 'sm' ? 'py-1' : 'py-4',
               props.notificationColor ? `border-${props.notificationColor}-700` : 'border-gray-500'
             
-            ]" 
-            v-model="stringValue" 
-            @focus="() => {
-              openList = props.readonly ? false : true
-              stringValue 
-            }" 
-            type="search"
-            autocomplete="off"
-            :required="props.required" 
-            @keyup.up="listNavigation('up')"
-            @keyup.down="listNavigation('down')" 
-            @keyup.enter="setModelValue()" />
+            ]" v-model="stringValue" @focus="() => {
+                openList = props.readonly ? false : true
+                stringValue
+              }" type="search" autocomplete="off" :required="props.required" @keyup.up="listNavigation('up')"
+        @keyup.down="listNavigation('down')" @keyup.enter="setModelValue()" />
       <label for="input" class="absolute text-base font-bold left-0 top-[50%] -translate-y-1/2 bg-transparent 
             py-0 px-1 my-0 mx-2
             text-gray-600 ease-out transition-all duration-200
@@ -30,8 +23,9 @@
         :class="props.notificationColor ? `text-${props.notificationColor}-700` : 'text-gray-600'">
         {{ props.label }}
       </label>
-      <ul v-if="itemsList.length && openList" class="absolute w-full border border-black rounded-b-lg bg-white text-start"
-        style="z-index: 999;">
+      <ul v-if="itemsList.length && openList"
+        class="absolute w-full border border-black rounded-b-lg bg-white text-start max-h-32 overflow-y-scroll"
+        style="z-index: 999999;">
         <li v-for="(item, index) in itemsList" :key="index"
           class="p-1 border-t border-black hover:bg-gray-200 select-none cursor-pointer"
           :class="index == currPosition ? 'bg-gray-300' : ''" @click="clickedModelValue(item)">
@@ -70,7 +64,7 @@ onClickOutside(component, () => {
 const stringValue = computed(
   {
     get(): any {
-      if(typeof finalValue.value == 'string'){
+      if (typeof finalValue.value == 'string') {
         return finalValue.value
       } else {
         return finalValue.value[props.value ?? 'nombre']
@@ -172,6 +166,7 @@ input:not(:placeholder-shown)+label {
 input:not(:focus)::placeholder {
   opacity: 0;
 }
+
 .inputRequired:has(input:required) label:after {
   content: ' *';
   color: black;

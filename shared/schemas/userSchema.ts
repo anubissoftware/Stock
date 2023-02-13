@@ -19,6 +19,7 @@ export interface userSchema {
     quoting?: boolean
     cart?: number
     selling?: number
+    projects?: number
     email?: string   
     email_verified?: string
     colors?: string

@@ -95,6 +95,9 @@ onBeforeMount(async () => {
         await listInfo()
     }
     returning.value = { ...props.return}
+    if(!props.return.quotation_serial){
+        returning.value.quotation_serial = ''
+    }
     returning.value.return_date = moment(returning.value.return_date).format('YYYY-MM-DDTHH:mm:ss')
     console.log('RETURNING',returning)
     emits('update', returning.value)

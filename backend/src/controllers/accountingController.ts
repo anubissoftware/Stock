@@ -484,10 +484,13 @@ export const updateStockDispatched = async (res: Response, params: {qdi: number,
 }
 
 export const listDispatch = async (req: Request, res: Response) => {
-    const query = `SELECT d.*, q.serial as quotation_serial, q.client_id, c.name FROM dispatching AS d
+    const query = `SELECT GROUP_CONCAT(dd.id) AS dd_grouped, qd.dispatching, qd.returning, qd.id as quotation_detail_id, d.*, q.serial as quotation_serial, q.client_id, c.name FROM dispatching AS d
+    LEFT JOIN dispatchingDetail AS dd ON dd.dispatch_id = d.id
+    INNER JOIN quotationDetail AS qd ON qd.id = dd.quotation_detail_id
     INNER JOIN quotation AS q ON d.quotation_id = q.id
     INNER JOIN clients AS c ON q.client_id = c.id
     WHERE enterprise_id = ?
+    GROUP BY id
     ORDER BY d.created_at DESC
     `
     const values = [

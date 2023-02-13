@@ -42,7 +42,12 @@
                             Creation Dispatch
                         </div>
                         <div v-else>
-                            Dispatch, Quotation {{ dispatchSelected.quotation_serial.toString(36) }}
+                            <span v-if="dispatchSelected.quotation_serial">
+                                Dispatch, Quotation {{ formatSerial(dispatchSelected.quotation_serial) }}
+                            </span>
+                            <span v-else>
+                                Dispatch {{ formatSerial(dispatchSelected.id) }}
+                            </span>
                         </div>
                     </template>
 
@@ -91,7 +96,7 @@
 <script lang="ts" setup>
 import Header2 from '@/components/Header2.vue';
 import language from '@/services/language';
-import { getDispatch, getDispatchDetail, createDispatch, updateDispatch } from '@/services/accounting'
+import { getDispatch, getDispatchDetail, createDispatch, updateDispatch, formatSerial } from '@/services/accounting'
 import { Button, Modal, Input } from '@/components/Generics/generics';
 import { editPer, writePer } from '@/composables/permissions';
 import { onBeforeMount, onMounted, onUnmounted, computed, ref, type Ref, type ComputedRef, watch } from 'vue';
@@ -110,7 +115,7 @@ import moment from 'moment';
 const router = useRouter()
 const strings = {
     title: {
-        Spanish: "Despachos",
+        Spanish: "Remisiones",
         English: "Dispatchs"
     },
     newDispatch: {
@@ -246,8 +251,11 @@ const listDispatchs = async () => {
     }
 
     let { data } = await getDispatch((store.getUser.token as token).value, { 'c.name': filter.value, ...filters }, cancelToken.value.signal)
-    if (!data) dispatchs.value = []
     cancelToken.value = undefined
+    if (!data) {
+        dispatchs.value = []
+        return
+    }
     dispatchs.value = data
     console.log(dispatchs)
 }

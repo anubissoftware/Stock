@@ -44,6 +44,7 @@ import { writePer, editPer } from '@/composables/permissions';
 import { useAuthStore } from '@/stores/auth'
 import AddItem from '@/components/NewItem.vue'
 import type { token } from '@/schemas';
+import Modal from './Generics/Modal.vue';
 
 export interface contextProps {
     top: number,
@@ -51,7 +52,7 @@ export interface contextProps {
     product: any
 }
 
-const emit = defineEmits(['close', 'edit'])
+const emit = defineEmits(['close', 'edit', 'dispatch', 'return', 'closeWithData'])
 const props = defineProps<contextProps>()
 const auth = useAuthStore()
 
@@ -108,35 +109,13 @@ const sellItem = () => {
 };
 
 const dispatchItem = () => {
-    modalComp.modal.show({
-        title: 'Remitiendo Producto',
-        description: '',
-        input: true,
-        inputValue: '',
-        inputInfo: {
-            label: 'Cantidad'
-        }
-    }).then(async (res: promiseResponse) => {
-        if (res.success) {
-            let { status } = await dispatchProduct(token.value, [{ id: props.product.id, amount: parseInt(res.value), description: '' }])
-        }
-    })
+    emit('dispatch')
+    emit('closeWithData')
 };
 
 const returnItem = () => {
-    modalComp.modal.show({
-        title: 'Remitiendo Producto',
-        description: '',
-        input: true,
-        inputValue: '',
-        inputInfo: {
-            label: 'Cantidad'
-        }
-    }).then(async (res: promiseResponse) => {
-        if (res.success) {
-            let { status } = await returnProduct(token.value, [{ id: props.product.id, amount: parseInt(res.value), description: '' }])
-        }
-    })
+    emit('return')
+    emit('closeWithData')
 }
 
 const buyItem = () => {

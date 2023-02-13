@@ -257,6 +257,7 @@ export default (app: Express, io: Server): void => {
     })
 
     app.post('/product/dispatch', middleware, async (req: Request, res: Response) => {
+        console.log('here')
         const updated: boolean = await dispatchItem(req, res)
 
         if(updated){

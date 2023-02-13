@@ -44,7 +44,7 @@
             </label>
         </div>
         <div v-if="props.typeColor" class="w-1/5">
-          <input type="color" class=" h-12" v-model="stringValue">
+          <input type="color" class=" h-12" v-model="stringValue" @blur="emits('blur')">
         </div>
         <span v-if="props.hint" class="laptop:text-sm tablet:text-xs py-1"
         :class="`text-${props.hintColor ?? 'black'}`">
@@ -73,7 +73,7 @@ export interface contentInput {
   readonly?: boolean
   disabled?: boolean
 }
-const emits = defineEmits(['update:modelValue'])
+const emits = defineEmits(['update:modelValue', 'blur'])
 const props = defineProps<contentInput>()
 const viewPassword: Ref<boolean> = ref(false)
 

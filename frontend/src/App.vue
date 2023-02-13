@@ -24,14 +24,9 @@ import { loaderApp } from '@/composables/loaderFunction'
 import { useAuthStore } from './stores/auth'
 import { useProductStore } from './stores/products';
 import type { rentProductType } from '@/stores/products'
+import { alertMessageContent } from './composables/alert';
 
 const showMessage = ref(false)
-const alertMessageContent: any = ref({
-  title: '',
-  description: '',
-  type: '',
-  show: false
-})
 const LoaderContent = ref({
   show: false
 })

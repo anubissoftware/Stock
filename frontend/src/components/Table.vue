@@ -131,11 +131,12 @@
 
         </div>
         <PdtoContext ref="productContextMenu" v-if="contextProductData.show" :top="contextProductData.top"
-            :left="contextProductData.left" :product="itemSelected"
-            @edit="editItem"
-            @close="contextProductData.show = false; itemSelected = null" />
+            :left="contextProductData.left" :product="itemSelected" @edit="editItem" @dispatch="dispatchItem"
+            @close="contextProductData.show = false; itemSelected = null"
+            @closeWithData="contextProductData.show = false" @return="returnItem" />
         <!-- Modal add Item -->
-        <AddItem v-if="dialogItem" :process="procesDialog" :product="productToEdit" @close="dialogItem = false, productToEdit = null" />
+        <AddItem v-if="dialogItem" :process="procesDialog" :product="productToEdit"
+            @close="dialogItem = false, productToEdit = null" />
 
         <Modal v-if="sidebarStatus.createQuotation" @close="sidebarStatus.createQuotation = false">
             <template v-slot:header>
@@ -154,6 +155,38 @@
             </template>
         </Modal>
 
+        <Modal v-if="dispatchView.show" @close="dispatchView.show = false; itemSelected = null">
+            <template v-slot:header>
+                Remisión de producto
+            </template>
+            <template v-slot:body>
+                <DistpatchForm ref="dispatchForm" />
+            </template>
+            <template v-slot:actions>
+                <div class="flex w-full">
+                    <Button exactColor color="third" class="mr-2" icon="close" content="Cancelar"
+                        @click="dispatchView.show = false;" />
+                    <Button exactColor color="primary" icon="save" content="Guardar" @click="createDispatchItem()"/>
+                </div>
+            </template>
+        </Modal>
+
+        <Modal v-if="returnView.show" @close="returnView.show = false; itemSelected = null">
+            <template v-slot:header>
+                Devolución de producto
+            </template>
+            <template v-slot:body>
+                <ReturnForm ref="returnForm" :product="itemSelected" />
+            </template>
+            <template v-slot:actions>
+                <div class="flex w-full">
+                    <Button exactColor color="third" class="mr-2" icon="close" content="Cancelar"
+                        @click="returnView.show = false;" />
+                    <Button exactColor color="primary" icon="save" content="Guardar" @click="createReturnItem()"/>
+                </div>
+            </template>
+        </Modal>
+
         <!-- Actions decisions modals -->
         <Alert v-show="alertMessageContent.show" @close="alertMessageContent.show = false"
             :title="alertMessageContent.title" :description="alertMessageContent.description"
@@ -165,7 +198,7 @@
 import { computed, type ComputedRef, ref, onMounted, onBeforeUnmount, onBeforeMount, type Ref } from 'vue';
 import { Alert, Icon, Button, Input, Modal } from '@/components/Generics/generics'
 import AddItem from '@/components/NewItem.vue'
-import type { productSchema, productsInCartType, token } from '@/schemas'
+import type { productBasicTransaction, productSchema, productsInCartType, token, productReturnTransaction } from '@/schemas'
 import PdtoContext from './pdtoContext.vue';
 import { onClickOutside } from '@vueuse/core'
 import language from '@/services/language';
@@ -175,18 +208,30 @@ import { sidebarStatus } from '@/composables/sidebarStatus';
 import { useRoute, useRouter } from 'vue-router';
 import CreateQuotation from './CreateQuotation.vue';
 import { loaded, useShoppingCart } from '@/composables/ShoppingCart';
-import { saveQuotation } from '@/services/accounting'
+import { formatSerial, saveQuotation } from '@/services/accounting'
 import moment from 'moment';
-import { modalComp, type modalResponse } from '@/classes/Modal';
+import { modalComp, type modalResponse, type promiseResponse } from '@/classes/Modal';
 import { currencyFormat } from '@/composables/utils';
 import { useProductStore } from '@/stores/products';
 import { useAuthStore } from '@/stores/auth'
 import socket from '@/composables/socket'
+import DistpatchForm from './productView/distpatchForm.vue';
+import { dispatchProduct, returnProduct } from '@/services/product';
+import ReturnForm from './productView/returnForm.vue';
 
 const route = useRoute()
 const router = useRouter()
 const shopping = useShoppingCart()
 const createQuotationComponent = ref()
+const dispatchForm = ref()
+const returnForm = ref()
+
+const alertMessageContent: any = ref({
+    title: '',
+    description: '',
+    type: '',
+    show: false
+})
 
 const productContextMenu = ref()
 onClickOutside(productContextMenu, () => {
@@ -288,6 +333,93 @@ const strings = {
         English: 'Renting'
     }
 }
+const dispatchView = ref({
+    show: false
+})
+const returnView = ref({
+    show: false
+})
+const dispatchItem = () => {
+    dispatchView.value.show = true
+}
+const returnItem = () => {
+    returnView.value.show = true
+}
+const createReturnItem = () => {
+    if(!returnForm.value.canSave) return
+
+    const payload: productReturnTransaction = {
+        dispatch_id: returnForm.value.returnInfo.dispatch.id,
+        quotation_id: returnForm.value.returnInfo.dispatch.quotation_id,
+        products: [
+            {
+                id: itemSelected.value.id,
+                amount: returnForm.value.returnInfo.amount,
+                quotation_detail_id: returnForm.value.returnInfo.dispatch.quotation_detail_id
+            }
+        ]
+    }
+    console.log('payload', payload)
+    modalComp.modal.show({
+        title: 'Devolución de Producto',
+        description: '',
+        input: false,
+        inputValue: '',
+    }).then(async (res: promiseResponse) => {
+        if (res.success) {
+            const token = auth.getUser.token as token
+            let { status, data }  = await returnProduct(token.value, payload)
+
+            returnView.value.show = false
+            alertMessageContent.value = {
+                title: `Se ha creado la devolución #${formatSerial(data.returning_id)}`,
+                description: '',
+                type: 'success',
+                show: true
+            }
+            setTimeout(() => {
+                alertMessageContent.value.show = false
+            }, 3000);
+        }
+    })
+}
+const createDispatchItem = () => {
+    if (!dispatchForm.value.canSave) return
+
+    const payload: productBasicTransaction = {
+        client_id: dispatchForm.value.dispatchInfo.client.id,
+        products: [
+            {
+                id: itemSelected.value.id,
+                rent: itemSelected.value.rent,
+                description: '',
+                amount: dispatchForm.value.dispatchInfo.amount
+            }
+        ]
+    }
+    modalComp.modal.show({
+        title: 'Remitiendo Producto',
+        description: '',
+        input: false,
+        inputValue: '',
+    }).then(async (res: promiseResponse) => {
+        if (res.success) {
+            const token = auth.getUser.token as token
+            let { status, data } = await dispatchProduct(token.value, payload)
+            dispatchView.value.show = false
+            alertMessageContent.value = {
+                title: `Se ha creado la remisión #${formatSerial(data.dispatching_id)}`,
+                description: 'Este número de remisión será necesario para cuando se realice la devolución del producto',
+                type: 'success',
+                show: true
+            }
+            setTimeout(() => {
+                alertMessageContent.value.show = false
+            }, 3000);
+        }
+    })
+}
+
 const pdto = useProductStore()
 const auth = useAuthStore()
 const headers = ref([
@@ -310,17 +442,10 @@ const data: ComputedRef<Array<productSchema>> = computed(() => {
 const configTable = ref({
     color: 'black',
 })
-const showMessage = ref(false)
-const alertMessageContent: any = ref({
-    title: '',
-    description: '',
-    type: '',
-    show: false
-})
 
-const itemSelected: any = ref({})
+const itemSelected: Ref<any> = ref({})
 const dialogItem = ref(false)
-const procesDialog:Ref<'creation' | 'edit'> = ref('creation')
+const procesDialog: Ref<'creation' | 'edit'> = ref('creation')
 const productToEdit = ref(null)
 const filter = ref('')
 
@@ -371,7 +496,6 @@ const alertMessage = (title: string, description: string, type: string) => {
 }
 
 onBeforeMount(() => {
-    //console.log('validating quotation', loaded.quotation)
     if (route.query.quote == '2' && Object.keys(loaded.quotation).length == 0) {
         router.push({
             name: 'quote'
@@ -381,7 +505,6 @@ onBeforeMount(() => {
 
 onMounted(() => {
     socket.socket?.on('productUpdated', (body: any) => {
-        console.log('Se actualizo producto', body)
         alertMessage(`Producto ${body.name} actualizado`,
             'Proceso completado.',
             'success')
@@ -409,14 +532,14 @@ const addNewQuotation = async () => {
 
     modalComp.modal.show({
         title: route.query.id ? 'Editar cotización' : 'Guardar cotización',
-        description: route.query.id ? 
-        '¿Deseas <strong>editar</strong> esta cotización?' : 
-        '¿Deseas <strong>guardar</strong> esta cotización?',
+        description: route.query.id ?
+            '¿Deseas <strong>editar</strong> esta cotización?' :
+            '¿Deseas <strong>guardar</strong> esta cotización?',
         inputValue: ''
-    }).then( async (r: modalResponse) => {
+    }).then(async (r: modalResponse) => {
         if (r.success) {
             const quote = createQuotationComponent.value.whoQuotate
-            
+
             const payload = {
                 value: createQuotationComponent.value.totalDue.replaceAll('$', '').replaceAll(',', ''),
                 id: route.query.id ?? null,
@@ -438,7 +561,6 @@ const addNewQuotation = async () => {
                 taxing: quote.taxing
             }
 
-            console.log(payload)
             let { data } = await saveQuotation((auth.getUser.token as token).value, payload)
             if (data?.ok) {
                 shopping.clearBasket()

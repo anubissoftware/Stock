@@ -9,8 +9,12 @@ export const isRenting = computed(() => {
 })
 
 export const quotate = computed(() => {
-    const user: userData = useAuthStore().getUser
-    return user.quoting
+    const modules: modulesSchema[]  = useAuthStore().getMenus
+    return modules.find(mod => mod.url == '/dashboard/quote')
+})
+
+export const projects = computed(() => {
+    return useAuthStore().getUser.projects == 1
 })
 
 export const writePer = computed(() => {

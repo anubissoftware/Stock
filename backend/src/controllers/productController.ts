@@ -1,5 +1,6 @@
+import { productReturning, productReturnTransaction, productStock } from '@/schemas/productSchema';
 import moment from 'moment';
-import { recipeSchema, productToEmit, productSchema, productToSave, productToRemove, productToSell, recipeCrafting, productInMenu, productsToSell, decreaseStock} from '@/schemas'
+import { recipeSchema, productToEmit, productSchema, productToSave, productToRemove, productToSell, recipeCrafting, productInMenu, productsToSell, decreaseStock, productBasicTransaction } from '@/schemas'
 import { Request, Response } from "express";
 import { OkPacket } from "mysql";
 import { DataBase, initDatabase } from "../classes/db";
@@ -292,7 +293,7 @@ const bougthProcess = async (payload: productToSell, req: Request, db: DataBase)
             history.insertId.toString()
         ]
         await db.insertQuery(queryDetail, valuesDetail)
-    }else{
+    } else {
         throw new Error('No se puede guardar la transacción')
     }
 }
@@ -406,116 +407,174 @@ export const expireItems = async (req: Request, res: Response): Promise<boolean>
 }
 
 export const dispatchItem = async (req: Request, res: Response) => {
-    const payload: productToSell[] = req.body.products
+    const query: productBasicTransaction = req.body
+    let quote_total = 0
+    let quote_id = 0
+    let dispatching_id = 0
+    const payload: productStock[] = query.products
+    const queryQuotation: string = `INSERT INTO quotation (value, client_id, user, isRenting, one_day, stage, enterprise_id) 
+    VALUES (0, ?, ?, 1, 1, 3, ?)`
     const queryPdto: string = `UPDATE products SET rented = rented + ?, stock = stock - ? WHERE id = ?`
     const queryDispatch: string = `
-        INSERT INTO dispatching (out_store, received, created_by)
-        VALUES (?, ?, ?)
+        INSERT INTO dispatching (out_store, received, created_by, quotation_id)
+        VALUES (?, ?, ?, ?)
     `
-    let queryDispatchDetail: string = `
-        INSERT INTO dispatchingDetail (amount, dispatch_id, item_id)
+    let queryDispatchDetail: string = ` 
+        INSERT INTO dispatchingDetail (amount, dispatch_id, item_id, quotation_detail_id)
         VALUES (
     `
     const db: DataBase = await initDatabase(res)
     let response: OkPacket;
-    try{
+    try {
         db.connection.beginTransaction()
+        let quote: OkPacket = await db.insertQuery(queryQuotation, [
+            query.client_id.toString(), req.userData.id.toString(), req.userData.enterprise_id.toString()
+        ])
+        if (quote.insertId == 0) {
+            throw new Error('Quotation not registered')
+        }
+        quote_id = quote.insertId
+
         let dispt: OkPacket = await db.insertQuery(queryDispatch, [
             moment().format('YYYY-MM-DDTHH:mm:ss'),
             moment().format('YYYY-MM-DDTHH:mm:ss'),
-            req.userData.id.toString()
+            req.userData.id.toString(),
+            quote.insertId.toString()
         ])
-        if(dispt.insertId != 0){
-            for(const el of payload){
+        if (dispt.insertId != 0) {
+            dispatching_id = dispt.insertId
+            let total = 0
+            for (const el of payload) {
                 const dd: OkPacket = await db.updateQuery(queryPdto, [
                     el.amount.toString(),
                     el.amount.toString(),
                     el.id.toString()
                 ])
-                if(dd.affectedRows == 0){
+                total += (el.amount * el.rent)
+                const qd: OkPacket = await db.insertQuery(`INSERT INTO quotationDetail (
+                    item_id, amount, value, quotation_id, dispatching
+                ) VALUES (?, ?, ?, ?, ?)`, [
+                    el.id.toString(), el.amount.toString(), el.rent.toString(), quote_id.toString(), el.amount.toString()
+                ])
+                if(qd.insertId == 0){
+                    console.log('qd:', el)
+                    throw new Error('Quotation detail not inserted')
+                }
+                if (dd.affectedRows == 0) {
                     throw new Error('Product not updated: ' + queryPdto)
                 }
                 const vals: Array<string> = [
                     el.amount.toString(),
                     dispt.insertId.toString(),
-                    el.id.toString()
+                    el.id.toString(),
+                    qd.insertId.toString()
                 ]
-                queryDispatchDetail += vals.join(',') + '),' 
+                queryDispatchDetail += vals.join(',') + '),'
             }
+            quote_total = total
             queryDispatchDetail = queryDispatchDetail.slice(0, -1)
 
             const ddd: OkPacket = await db.insertQuery(queryDispatchDetail, [])
-            if(ddd.affectedRows == 0){
-                throw new Error('Detail dispatch not inserted' +  queryDispatchDetail.toString())
+            if (ddd.affectedRows == 0) {
+                throw new Error('Detail dispatch not inserted' + queryDispatchDetail.toString())
             }
 
-        }else{
+        } else {
             throw new Error('Dispatch not inserted: ' + queryDispatch)
         }
-        
-    }catch(err) {
+
+    } catch (err) {
         console.error('err dispatching item -> ', err)
         db.connection.rollback()
         res.end()
         return false
     }
-    db.connection.commit()
-    res.end()
+
+    await db.connection.commit()
+    const updateValue: OkPacket = await db.insertQuery('UPDATE quotation SET `value` = ? WHERE id = ?', [
+        quote_total.toString(), quote_id.toString()
+    ])
+    if(dispatching_id > 0){
+        res.json({
+            dispatching_id
+        })
+        // hay que añadir el actualizar la cotización de WS
+    }else{
+        res.end()
+    }
     return true
 }
 
 export const returnItem = async (req: Request, res: Response) => {
-    const payload: productToSell[] = req.body.products
+    const query: productReturnTransaction = req.body
+    let returning_id = 0
+    const payload: productReturning[] = query.products
     const queryPdto: string = `UPDATE products SET rented = rented - ?, stock = stock + ? WHERE id = ?`
-    const queryDispatch: string = 'INSERT INTO `returning` (return_date, created_by) VALUES (?, ?)'
+    const queryDispatch: string = 'INSERT INTO `returning` (return_date, created_by, quotation_id) VALUES (?, ?, ?)'
     let queryDispatchDetail: string = `
-        INSERT INTO returningDetail (amount, return_id, item_id)
+        INSERT INTO returningDetail (amount, return_id, item_id, quotation_detail_id)
         VALUES (
     `
     const db: DataBase = await initDatabase(res)
     let response: OkPacket;
-    try{
+    try {
         db.connection.beginTransaction()
         let dispt: OkPacket = await db.insertQuery(queryDispatch, [
             moment().format('YYYY-MM-DD HH:mm:ss'),
-            req.userData.id.toString()
+            req.userData.id.toString(),
+            query.quotation_id.toString()
         ])
-        if(dispt.insertId != 0){
-            for(const el of payload){
+        if (dispt.insertId != 0) {
+            returning_id = dispt.insertId
+            for (const el of payload) {
                 const dd: OkPacket = await db.updateQuery(queryPdto, [
                     el.amount.toString(),
                     el.amount.toString(),
                     el.id.toString()
                 ])
-                if(dd.affectedRows == 0){
+                if (dd.affectedRows == 0) {
                     throw new Error('Product not updated: ' + queryPdto)
+                }
+                const updateQuotationDetail = await db.updateQuery("UPDATE quotationDetail SET `returning` = `returning` + ? WHERE item_id = ? AND quotation_id = ?", [
+                    el.amount.toString(), el.id.toString(), query.quotation_id.toString()
+                ])
+                if(updateQuotationDetail.affectedRows == 0){
+                    console.error(el)
+                    throw new Error('Quotation detail not updated')
                 }
                 const vals: Array<string> = [
                     el.amount.toString(),
                     dispt.insertId.toString(),
-                    el.id.toString()
+                    el.id.toString(),
+                    el.quotation_detail_id.toString()
                 ]
-                queryDispatchDetail += vals.join(',') + '),' 
+                queryDispatchDetail += vals.join(',') + '),'
             }
             queryDispatchDetail = queryDispatchDetail.slice(0, -1)
 
             const ddd: OkPacket = await db.insertQuery(queryDispatchDetail, [])
-            if(ddd.affectedRows == 0){
-                throw new Error('Detail returning not inserted' +  queryDispatchDetail.toString())
+            if (ddd.affectedRows == 0) {
+                throw new Error('Detail returning not inserted' + queryDispatchDetail.toString())
             }
 
-        }else{
+        } else {
             throw new Error('Returning not inserted: ' + queryDispatch)
         }
-        
-    }catch(err) {
+
+    } catch (err) {
         console.error('err returning item -> ', err)
         db.connection.rollback()
         res.end()
         return false
     }
     db.connection.commit()
-    res.end()
+    if(returning_id > 0){
+        res.json({
+            returning_id
+        })
+    }else{
+        res.end()
+    }
     return true
 }
 

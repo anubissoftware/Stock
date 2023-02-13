@@ -44,7 +44,12 @@
                             Creation Return
                         </div>
                         <div v-else>
-                            Return, Quotation {{ returnSelected.quotation_serial.toString(36) }}
+                            <span v-if="returnSelected.quotation_serial">
+                                Returning, Quotation {{ formatSerial(returnSelected.quotation_serial) }}
+                            </span>
+                            <span v-else>
+                                Returning {{ formatSerial(returnSelected.id) }}
+                            </span>
                         </div>
                     </template>
 
@@ -87,7 +92,7 @@
 <script lang="ts" setup>
 import Header2 from '@/components/Header2.vue';
 import language from '@/services/language';
-import { getReturn, getReturnDetail, createReturn, updateReturn } from '@/services/accounting'
+import { getReturn, getReturnDetail, createReturn, updateReturn, formatSerial } from '@/services/accounting'
 import { Button, Modal, Input, Alert } from '@/components/Generics/generics';
 import { editPer, writePer } from '@/composables/permissions';
 import { onBeforeMount, onMounted, onUnmounted, computed, ref, type Ref, type ComputedRef, watch } from 'vue';
@@ -235,10 +240,12 @@ const listReturns = async () => {
     }
 
     let { data } = await getReturn((store.getUser.token as token).value, { 'c.name': filter.value, ...filters }, cancelToken.value.signal)
-    if (!data) returns.value = []
     cancelToken.value = undefined
+    if (!data) {
+        returns.value = []
+        return
+    }
     returns.value = data
-    console.log(returns)
 }
 
 onMounted(() => {

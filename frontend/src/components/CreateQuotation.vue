@@ -8,7 +8,7 @@
         <div class="laptop:w-1/2 phone:w-full pr-2 pb-6">
             <Autocomplete v-model="whoQuotate.project" :items="projects" value="name" color="black"
                 :readonly="props.editable?.client" placeholder="Proyecto" label="Proyecto" size="md" type="text"
-                v-if="displayInputs.projects" />
+                v-if="displayInputs.projects && projectos" />
         </div>
 
         <div class="laptop:w-1/2 phone:w-full pr-2 pb-6">
@@ -134,6 +134,7 @@ import { Icon } from './Generics/generics';
 import { Input, Autocomplete, CheckBox } from './Generics/generics';
 import { currencyFormat } from '@/composables/utils';
 import { useAuthStore } from '@/stores/auth'
+import { projects as projectos } from '@/composables/permissions'
 
 export interface createQuotationProps {
     editable?: {
@@ -220,6 +221,7 @@ const clientEmail = ref('')
 
 const getProjects = async (value: string) => {
     whoQuotate.value.project = ''
+    if(!projectos) return
     if (typeof whoQuotate.value.client == 'object') {
         if (Object.keys(loaded.quotation).length > 0) {
             clientEmail.value = (loaded.quotation as quotationSchema).email ?? ''
@@ -227,7 +229,7 @@ const getProjects = async (value: string) => {
             clientEmail.value = whoQuotate.value.client.contact_email
         }
         if (cancelToken.value) {
-            cancelToken.value.abort
+            cancelToken.value.abort()
         }
         cancelToken.value = new AbortController()
         const token = store.getUser.token as token
@@ -236,6 +238,7 @@ const getProjects = async (value: string) => {
             { client_id: whoQuotate.value.client.id, name: value },
             cancelToken.value.signal
         )
+        cancelToken.value = undefined
         if (data && data.length) {
             projects.value = data
             if (route.query.project && !firstTimes.value.project) {

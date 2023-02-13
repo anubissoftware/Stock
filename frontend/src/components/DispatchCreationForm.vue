@@ -110,6 +110,9 @@ onBeforeMount(async () => {
         await listInfo()
     }
     dispatch.value = { ...props.dispatch }
+    if(!props.dispatch.quotation_serial){
+        dispatch.value.quotation_serial = ''
+    }
     dispatch.value.out_store = moment(dispatch.value.out_store).format('YYYY-MM-DDTHH:mm:ss')
     dispatch.value.check_out = checkDateOut.value
     dispatch.value.received = moment(dispatch.value.received).format('YYYY-MM-DDTHH:mm:ss')

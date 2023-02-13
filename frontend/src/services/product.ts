@@ -1,3 +1,4 @@
+import type { productBasicTransaction , productReturnTransaction} from '@/schemas/productSchema';
 import type { categorySchema, productSchema } from '@/schemas'
 import { ApiCLient } from '@/services/index'
 
@@ -115,16 +116,16 @@ const sellProduct = (token: string, body: Array<{id: number, amount: number, des
     })
 }
 
-const dispatchProduct = (token: string, body: Array<{id: number, amount: number, description: string}>) => {
-    return ApiCLient.post('product/dispatch', {products: body, clientName: ''}, {
+const dispatchProduct = (token: string, body: productBasicTransaction) => {
+    return ApiCLient.post('product/dispatch', {...body}, {
         headers: {
             'authorization': `bearer ${token}`
         }
     })
 }
 
-const returnProduct = (token: string, body: Array<{id: number, amount: number, description: string}>) => {
-    return ApiCLient.post('product/return', {products: body, clientName: ''}, {
+const returnProduct = (token: string, body: productReturnTransaction) => {
+    return ApiCLient.post('product/return', {...body}, {
         headers: {
             'authorization': `bearer ${token}`
         }
