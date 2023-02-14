@@ -351,6 +351,7 @@ const createReturnItem = () => {
     const payload: productReturnTransaction = {
         dispatch_id: returnForm.value.returnInfo.dispatch.id,
         quotation_id: returnForm.value.returnInfo.dispatch.quotation_id,
+        client_id: returnForm.value.returnInfo.dispatch.client_id,
         products: [
             {
                 id: itemSelected.value.id,

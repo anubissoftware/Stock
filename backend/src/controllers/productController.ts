@@ -411,6 +411,7 @@ export const dispatchItem = async (req: Request, res: Response) => {
     let quote_total = 0
     let quote_id = 0
     let dispatching_id = 0
+    let client_data = []
     const payload: productStock[] = query.products
     const queryQuotation: string = `INSERT INTO quotation (value, client_id, user, isRenting, one_day, stage, enterprise_id) 
     VALUES (0, ?, ?, 1, 1, 3, ?)`
@@ -463,6 +464,15 @@ export const dispatchItem = async (req: Request, res: Response) => {
                 if (dd.affectedRows == 0) {
                     throw new Error('Product not updated: ' + queryPdto)
                 }
+                const r = await db.upsert('clientProduct', {
+                    amount: 'amount + ' + el.amount.toString()
+                }, {
+                    client_id: query.client_id.toString(),
+                    product_id: el.id.toString()
+                })
+
+                if(!r) throw new Error('Table clientProduct not updated')
+                client_data.push(r)
                 const vals: Array<string> = [
                     el.amount.toString(),
                     dispt.insertId.toString(),
@@ -478,7 +488,6 @@ export const dispatchItem = async (req: Request, res: Response) => {
             if (ddd.affectedRows == 0) {
                 throw new Error('Detail dispatch not inserted' + queryDispatchDetail.toString())
             }
-
         } else {
             throw new Error('Dispatch not inserted: ' + queryDispatch)
         }
@@ -489,16 +498,15 @@ export const dispatchItem = async (req: Request, res: Response) => {
         res.end()
         return false
     }
-
     await db.connection.commit()
-    const updateValue: OkPacket = await db.insertQuery('UPDATE quotation SET `value` = ? WHERE id = ?', [
+    await db.insertQuery('UPDATE quotation SET `value` = ? WHERE id = ?', [
         quote_total.toString(), quote_id.toString()
     ])
     if(dispatching_id > 0){
         res.json({
             dispatching_id
         })
-        // hay que añadir el actualizar la cotización de WS
+        // hay que añadir el actualizar la cotización, el dc y el clientData
     }else{
         res.end()
     }
@@ -508,6 +516,7 @@ export const dispatchItem = async (req: Request, res: Response) => {
 export const returnItem = async (req: Request, res: Response) => {
     const query: productReturnTransaction = req.body
     let returning_id = 0
+    let client_data = []
     const payload: productReturning[] = query.products
     const queryPdto: string = `UPDATE products SET rented = rented - ?, stock = stock + ? WHERE id = ?`
     const queryDispatch: string = 'INSERT INTO `returning` (return_date, created_by, quotation_id) VALUES (?, ?, ?)'
@@ -542,6 +551,17 @@ export const returnItem = async (req: Request, res: Response) => {
                     console.error(el)
                     throw new Error('Quotation detail not updated')
                 }
+
+                const r = await db.upsert('clientProduct', {
+                    amount: 'amount - ' + el.amount.toString()
+                }, {
+                    client_id: query.client_id.toString(),
+                    product_id: el.id.toString()
+                })
+
+                if(!r) throw new Error('Table clientProduct not updated')
+                client_data.push(r)
+
                 const vals: Array<string> = [
                     el.amount.toString(),
                     dispt.insertId.toString(),
@@ -572,6 +592,7 @@ export const returnItem = async (req: Request, res: Response) => {
         res.json({
             returning_id
         })
+        // hay que añadir el actualizar la cotización, el dc y el clientData
     }else{
         res.end()
     }

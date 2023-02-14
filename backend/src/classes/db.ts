@@ -50,10 +50,10 @@ export class DataBase {
                         port: this.port
                     });
                     this.connection.connect((err) => {
-                        if(err){
+                        if (err) {
                             console.error(err)
                             reject(false)
-                        }else{
+                        } else {
                             resolve(true)
                         }
                     });
@@ -158,14 +158,14 @@ export class DataBase {
                     }
                     str += ')'
                 } else {
-                    if(key.includes('!')){
+                    if (key.includes('!')) {
                         const aux = key.replace('!', '')
-                        if(val.includes('.')){
+                        if (val.includes('.')) {
                             str += ` ${aux} not like ${val}`
-                        }else{
+                        } else {
                             str += ` ${aux} not like '%${val}%' `
                         }
-                    }else{
+                    } else {
                         str += ` ${key} like '%${val}%' `
                     }
                 }
@@ -211,7 +211,7 @@ export class DataBase {
     async updateQuery(query: string, values: Array<string> | null): Promise<OkPacket> {
         return await new Promise((resolve, reject) => {
             this.connection.query(query, [...values], (err, res) => {
-                if (err){
+                if (err) {
                     console.error(err)
                     reject(new Error(err.sqlMessage))
                 }
@@ -220,26 +220,155 @@ export class DataBase {
         })
     }
 
-    async updateQueryDynamic(table: string, body: any ): Promise<OkPacket> {
-        let query:string = `UPDATE ${table} SET `
+    async updateQueryDynamic(table: string, body: any): Promise<OkPacket> {
+        let query: string = `UPDATE ${table} SET `
         let bodyKeys = Object.keys(body)
-        for(const [index, key] of bodyKeys.entries()){
-            if (body[key] !==  null && body[key] !== undefined && body[key] !== '') {
-                if (key != 'id' ) {
+        for (const [index, key] of bodyKeys.entries()) {
+            if (body[key] !== null && body[key] !== undefined && body[key] !== '') {
+                if (key != 'id') {
                     this.validateParam(key)
                     this.validateParam(body[key])
-                    query+= `${key} = '${body[key]}',`;
+                    query += `${key} = '${body[key]}',`;
                 }
             }
         }
         query = query.slice(0, -1); //Remove last commas
-        query+= ` WHERE id = ${body.id}`
+        query += ` WHERE id = ${body.id}`
         return await new Promise((resolve, reject) => {
             this.connection.query(query, [], (err, res) => {
                 if (err) reject(new Error(err.sqlMessage))
                 resolve(res)
             })
         })
+    }
+
+    dynamicConditionalQueryGet(table: string, conditions: any) {
+        let str = `SELECT * FROM ${table} WHERE `
+        const len = Object.keys(conditions).length - 1
+        for (const [index, key] of Object.keys(conditions).entries()) {
+            this.validateParam(key)
+            const val = conditions[key].toString()
+            this.validateParam(val)
+            if (val.split(',').length > 1) {
+                const localVal = val.split(',')
+                str += '('
+                for (const [index, vl] of localVal.entries()) {
+                    str += ` ${key} like '%${vl}%'`
+                    if (index < localVal.length - 1) {
+                        str += ' or '
+                    }
+                }
+                str += ')'
+            } else {
+                if (key.includes('!')) {
+                    const aux = key.replace('!', '')
+                    if (val.includes('.')) {
+                        str += ` ${aux} not like ${val}`
+                    } else {
+                        str += ` ${aux} not like '%${val}%' `
+                    }
+                } else {
+                    str += ` ${key} like '%${val}%' `
+                }
+            }
+            if (index < (len)) {
+                str += ' and '
+            }
+        }
+
+        return str
+    }
+
+    dynamicConditionalQueryUpdate(table: string, toInsert: any, conditions: any){
+        let setter = ''
+        let ifs = ''
+        for(const [index, key] of Object.keys(toInsert).entries()){
+            this.validateParam(key)
+            this.validateParam(toInsert[key])
+            setter += ` ${key} = ${toInsert[key]},`
+        }
+        setter = setter.slice(0,-1)
+
+        for(const [index, key] of Object.keys(conditions).entries()){
+            this.validateParam(key)
+            this.validateParam(conditions[key])
+            ifs += ` ${key} = ${conditions[key]} and`
+        }
+        ifs = ifs.slice(0, -3)
+
+        return `UPDATE ${table} SET ${setter} WHERE ${ifs}`
+    }
+
+    dynamicConditionalQueryInsert(table, values){
+        let headers = []
+        let vals = []
+
+        for(const [index, key] of Object.keys(values).entries()){
+            this.validateParam(key)
+            this.validateParam(values[key])
+            headers.push(key)
+            const val = (values[key] as string).replace(key, '').replaceAll('+', '').replaceAll('-', '').replaceAll(' ', '')
+            vals.push(val)
+        }
+
+        return `INSERT INTO ${table} (${headers.join()}) VALUES (${vals.join()})`
+    }
+
+    async upsert(table: string, toInsert: any, conditions: any) {
+        if (Object.keys(conditions).length == 0) {
+            this.response.json({
+                message: 'Cannot upsert without conditions'
+            })
+            throw new Error('Cannot upsert without conditions')
+        }
+        if (Object.keys(toInsert).length == 0) {
+            this.response.json({
+                message: 'There aren\'t values to update'
+            })
+            throw new Error('There aren\'t values to update')
+        }
+
+        const there: Array<any> = await new Promise((rsv, rej) => {
+            const query = this.dynamicConditionalQueryGet(table, conditions)
+            this.connection.query(query, [], (err, res) => {
+                if(err){
+                    console.error(err)
+                    rej(new Error(err.sqlMessage))
+                }
+                rsv(res)
+            })
+        })
+
+        if(there.length > 0){
+            //update
+            const query = this.dynamicConditionalQueryUpdate(table, toInsert, conditions)
+            console.log('updateQuery', query)
+            const updated: OkPacket = await new Promise((resolve, reject) => {
+                this.connection.query(query, [], (err,res) =>{
+                    if(err){
+                        console.error(err)
+                        reject(new Error(err.sqlMessage))
+                    }
+                    resolve(res)
+                })
+            })
+            if(updated.changedRows == 0) return null
+            return {...toInsert, ...conditions}
+        }else{
+            //insert
+            const query = this.dynamicConditionalQueryInsert(table, {...toInsert, ...conditions})
+            const inserted: OkPacket = await new Promise((resolve, reject) => {
+                this.connection.query(query, [], (err, res) => {
+                    if(err){
+                        console.error(err)
+                        reject(new Error(err.sqlMessage))
+                    }
+                    resolve(res)
+                })
+            })
+            if(inserted.insertId == 0) return null
+            return {id: inserted.insertId, ...toInsert, ...conditions}
+        }
     }
 
     closeConnection() {

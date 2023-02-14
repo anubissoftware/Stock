@@ -84,6 +84,7 @@ export interface productBasicTransaction {
 export interface productReturnTransaction{
     dispatch_id: number;
     quotation_id: number;
+    client_id: number;
     products: productReturning[];
 }
 
