@@ -617,6 +617,9 @@ const reformatItem = async () => {
     newItem.value.categories = newItem.value.categories.map( (cat: any) => {
         return cat.id
     })
+    if(newItem.value.categories.length == 0){
+        newItem.value.categories = {}
+    }
 }
 
 const mapRecipe = async () => {
