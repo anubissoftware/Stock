@@ -15,8 +15,8 @@
                     <div class="flex gap-3 h-fit ">
                         <Button v-if="writePer" exactColor color="secondary" icon="Add" :content=strings.newClient[language]
                             @click="unSetClient(); modalClientOpen = true" />
-                        <Button exactColor size="sm" color="secondary" icon="Link" @click="generateLink()" />
-                        <Button exactColor size="sm" color="secondary" content="CSV" icon="scan" @click="readFile()" />
+                        <Button exactColor size="sm" color="secondary" icon="Link" @click="generateLink()" v-if="false"/>
+                        <Button exactColor size="sm" color="secondary" content="CSV" icon="scan" @click="readFile()" v-if="auth.getUser.isAdmin == '1'"/>
                         <input class="hidden" 
                         ref="importFile" 
                         type="file" 

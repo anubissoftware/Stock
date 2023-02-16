@@ -68,7 +68,6 @@ export const syncUserWithGoogle = async (req: Request, res: Response): Promise<a
         const values: Array<string> = [payload.email.toString(), id.toString()]
         const db: DataBase = await initDatabase(res)
         const rps: OkPacket = await db.updateQuery(query, values)
-        console.log(rps)
         db.closeConnection()
         if (rps.affectedRows > 0) {
             res.json({

@@ -124,6 +124,7 @@ export const updateProduct = async (req: Request, res: Response): Promise<object
     if (pdtBody && keysBody.length > 0 && pdtBody.id) {
         const db: DataBase = await initDatabase(res);
         const response: OkPacket = await db.updateQueryDynamic('products', pdtBody);
+        db.closeConnection()
         if (response.affectedRows > 0) {
             res.status(200)
             res.end()
@@ -457,7 +458,7 @@ export const dispatchItem = async (req: Request, res: Response) => {
                 ) VALUES (?, ?, ?, ?, ?)`, [
                     el.id.toString(), el.amount.toString(), el.rent.toString(), quote_id.toString(), el.amount.toString()
                 ])
-                if(qd.insertId == 0){
+                if (qd.insertId == 0) {
                     console.log('qd:', el)
                     throw new Error('Quotation detail not inserted')
                 }
@@ -471,7 +472,7 @@ export const dispatchItem = async (req: Request, res: Response) => {
                     product_id: el.id.toString()
                 })
 
-                if(!r) throw new Error('Table clientProduct not updated')
+                if (!r) throw new Error('Table clientProduct not updated')
                 client_data.push(r)
                 const vals: Array<string> = [
                     el.amount.toString(),
@@ -502,14 +503,50 @@ export const dispatchItem = async (req: Request, res: Response) => {
     await db.insertQuery('UPDATE quotation SET `value` = ? WHERE id = ?', [
         quote_total.toString(), quote_id.toString()
     ])
-    if(dispatching_id > 0){
+    db.closeConnection()
+    if (dispatching_id > 0) {
         res.json({
             dispatching_id
         })
         // hay que añadir el actualizar la cotización, el dc y el clientData
-    }else{
+    } else {
         res.end()
     }
+    return true
+}
+
+export const returnItemAux = async (req: Request, res: Response) => {
+    const query: productReturnTransaction = req.body
+    const payload: productReturning[] = query.products
+    const queryPdto: string = `UPDATE products SET rented = rented - ?, rented_imported = rented_imported - ?, stock = stock + ? WHERE id = ?`
+    const db: DataBase = await initDatabase(res)
+    try {
+        db.connection.beginTransaction()
+        for (const pdto of payload) {
+            const pu: OkPacket = await db.updateQuery(queryPdto, [
+                pdto.amount.toString(), pdto.amount.toString(), pdto.amount.toString(), pdto.id.toString()
+            ])
+            if (pu.affectedRows == 0) throw new Error('No updated pdto' + pdto.id)
+
+            const r = await db.upsert('clientProduct', {
+                amount: 'amount - ' + pdto.amount.toString(),
+                'amount_imported': 'amount_imported - ' + pdto.amount.toString()
+            }, {
+                client_id: query.client_id.toString(),
+                product_id: pdto.id.toString()
+            })
+
+            if (!r) throw new Error('Table clientProduct not updated')
+        }
+    } catch (err) {
+        db.connection.rollback()
+        console.error('No returned in aux', query)
+        res.end()
+        return false
+    }
+    db.connection.commit()
+    db.closeConnection()
+    res.end()
     return true
 }
 
@@ -519,7 +556,7 @@ export const returnItem = async (req: Request, res: Response) => {
     let client_data = []
     const payload: productReturning[] = query.products
     const queryPdto: string = `UPDATE products SET rented = rented - ?, stock = stock + ? WHERE id = ?`
-    const queryDispatch: string = 'INSERT INTO `returning` (return_date, created_by, quotation_id) VALUES (?, ?, ?)'
+    const queryReturning: string = 'INSERT INTO `returning` (return_date, created_by, quotation_id) VALUES (?, ?, ?)'
     let queryDispatchDetail: string = `
         INSERT INTO returningDetail (amount, return_id, item_id, quotation_detail_id)
         VALUES (
@@ -528,7 +565,7 @@ export const returnItem = async (req: Request, res: Response) => {
     let response: OkPacket;
     try {
         db.connection.beginTransaction()
-        let dispt: OkPacket = await db.insertQuery(queryDispatch, [
+        let dispt: OkPacket = await db.insertQuery(queryReturning, [
             moment().format('YYYY-MM-DD HH:mm:ss'),
             req.userData.id.toString(),
             query.quotation_id.toString()
@@ -547,7 +584,7 @@ export const returnItem = async (req: Request, res: Response) => {
                 const updateQuotationDetail = await db.updateQuery("UPDATE quotationDetail SET `returning` = `returning` + ? WHERE item_id = ? AND quotation_id = ?", [
                     el.amount.toString(), el.id.toString(), query.quotation_id.toString()
                 ])
-                if(updateQuotationDetail.affectedRows == 0){
+                if (updateQuotationDetail.affectedRows == 0) {
                     console.error(el)
                     throw new Error('Quotation detail not updated')
                 }
@@ -559,7 +596,7 @@ export const returnItem = async (req: Request, res: Response) => {
                     product_id: el.id.toString()
                 })
 
-                if(!r) throw new Error('Table clientProduct not updated')
+                if (!r) throw new Error('Table clientProduct not updated')
                 client_data.push(r)
 
                 const vals: Array<string> = [
@@ -578,7 +615,7 @@ export const returnItem = async (req: Request, res: Response) => {
             }
 
         } else {
-            throw new Error('Returning not inserted: ' + queryDispatch)
+            throw new Error('Returning not inserted: ' + queryReturning)
         }
 
     } catch (err) {
@@ -588,12 +625,13 @@ export const returnItem = async (req: Request, res: Response) => {
         return false
     }
     db.connection.commit()
-    if(returning_id > 0){
+    db.closeConnection()
+    if (returning_id > 0) {
         res.json({
             returning_id
         })
         // hay que añadir el actualizar la cotización, el dc y el clientData
-    }else{
+    } else {
         res.end()
     }
     return true
@@ -631,6 +669,7 @@ export const listHistoric = async (req: Request, res: Response) => {
         req.query.date.toString(), req.userData.enterprise_id.toString()
     ]
     const response: Array<historicSells> = await db.readQuery<historicSells>(query, values)
+    db.closeConnection()
     if (response.length > 0) {
         res.json(response)
         res.end()

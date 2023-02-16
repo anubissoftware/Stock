@@ -22,6 +22,18 @@ export const addClients = (token: string, body: clientEnterpriseSchema) => {
     })
 }
 
+export const clientProducts = (token: string, body: any, signal: any) => {
+    return ApiCLient.get('clients/products/renting', {
+        headers: {
+            'authorization': `bearer ${token}`
+        },
+        params: {
+            ...body
+        },
+        signal
+    })
+}
+
 export const importClients = (token: string, body: any) => {
     return ApiCLient.post('clients/import', {...body}, {
         headers: {

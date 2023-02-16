@@ -124,6 +124,14 @@ const dispatchProduct = (token: string, body: productBasicTransaction) => {
     })
 }
 
+const returnProductAux = (token: string, body: productReturnTransaction) => {
+    return ApiCLient.post('product/return/aux', {...body}, {
+        headers: {
+            'authorization': `bearer ${token}`
+        }
+    })
+}
+
 const returnProduct = (token: string, body: productReturnTransaction) => {
     return ApiCLient.post('product/return', {...body}, {
         headers: {
@@ -185,5 +193,6 @@ export {
     wholesaleProduct,
     craftProduct,
     dispatchProduct,
-    returnProduct
+    returnProduct,
+    returnProductAux
 }

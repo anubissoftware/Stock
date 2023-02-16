@@ -1,10 +1,10 @@
 import { createNewDispatch, createNewReturn, dispatchDetail, dispatchUpdate, editQuotation, getAllQuotation, listDispatch, listInvoices, listReturn, quotationDetail, returnDetail, returnUpdate, sendQuotationEmail, updateQuotationStage } from './../controllers/accountingController';
-import { addClient, deleteClient, deleteProject, editClient, getProjects, importClients, readClients, saveProject } from './../controllers/clientController';
+import { addClient, clientProductReading, deleteClient, deleteProject, editClient, getProjects, importClients, readClients, saveProject } from './../controllers/clientController';
 import { loginCustomer, setTokenCustomer } from '../controllers/customerController';
 import { activateCustomer, menusInRol } from './../controllers/loginController';
 import { saveEnterpriseLogo } from './../controllers/mediaController';
 import { validateEmail, validateCellphone, registerUser } from '../controllers/loginController';
-import { sellItems, buyItems, craftItems, expireItems, listPublishedProducts, listHistoric,listAllProducts, registerProduct, removeProduct, updateProduct, dispatchItem, returnItem } from '../controllers/productController';
+import { sellItems, buyItems, craftItems, expireItems, listPublishedProducts, listHistoric,listAllProducts, registerProduct, removeProduct, updateProduct, dispatchItem, returnItem, returnItemAux } from '../controllers/productController';
 import { getUnits } from '../controllers/unitController';
 import { categoryQuery, productToEmit, decreaseStock, modulesSchema, clientEnterpriseSchema, projectSchema, quotationSchema,  userData, UserLogin, userLogOut, dispatchScheme, returnScheme } from '@/schemas';
 import { deleteCategory, getCategories, saveCategory, updateCategory } from '../controllers/categoryController';
@@ -35,7 +35,7 @@ const middleware = async (req: Request, res: Response, next: NextFunction) => {
             next()
             return
         } else {
-            console.log('no auth')
+            console.log('no auth', req.hostname)
             res.status(401)
             res.end()
             return
@@ -262,7 +262,6 @@ export default (app: Express, io: Server): void => {
     })
 
     app.post('/product/dispatch', middleware, async (req: Request, res: Response) => {
-        console.log('here')
         const updated: boolean = await dispatchItem(req, res)
 
         if(updated){
@@ -272,6 +271,14 @@ export default (app: Express, io: Server): void => {
 
     app.post('/product/return', middleware, async (req: Request, res: Response) => {
         const updated: boolean = await returnItem(req, res)
+
+        if(updated){
+            io.to('e' + req.userData.enterprise_id).emit('productReturned', req.body.products)
+        }
+    })
+
+    app.post('/product/return/aux', middleware, async (req: Request, res: Response) => {
+        const updated: boolean = await returnItemAux(req, res)
 
         if(updated){
             io.to('e' + req.userData.enterprise_id).emit('productReturned', req.body.products)
@@ -296,7 +303,6 @@ export default (app: Express, io: Server): void => {
 
     app.post('/logo', middleware, async (req: Request, res: Response) => {
         const response: boolean = await saveEnterpriseLogo(req, res)
-        console.log('sending upload')
         io.to('e' + req.userData.enterprise_id).emit('logoUpdated')
     })
 
@@ -366,6 +372,8 @@ export default (app: Express, io: Server): void => {
             io.to('e' + req.userData.enterprise_id).emit('projectsChange-' + data.client_id, data)
         }
     })
+
+    app.get('/clients/products/renting', middleware, clientProductReading)
 
     app.post('/quotation/', middleware, async (req: Request, res: Response) => {
         let data: quotationSchema | any;

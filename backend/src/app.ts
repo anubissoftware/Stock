@@ -44,7 +44,6 @@ app.get('/ping', (req: Request, res: Response) => {
 });
 
 app.post('/contact', async (req: Request, res: Response) => {
-    console.log(req.body)
     const db: DataBase = await initDatabase(res)
     const query: string = 'INSERT INTO toContact (name, telf) VALUES (?, ?)'
     const values: Array<string> = [req.body.name, req.body.telf]

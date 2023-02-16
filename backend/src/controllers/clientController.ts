@@ -1,6 +1,6 @@
 import { DataBase, initDatabase } from './../classes/db';
 import { Request, Response } from "express";
-import { clientEnterpriseSchema, projectSchema } from '@/schemas';
+import { clientEnterpriseSchema, clientProduct, projectSchema } from '@/schemas';
 
 import { join } from 'path'
 import * as dotenv from 'dotenv'
@@ -26,6 +26,24 @@ export const readClients = async (req: Request, res: Response) => {
         req.userData.enterprise_id.toString()
     ]
     const response: Array<clientEnterpriseSchema> = await db.readQuery<clientEnterpriseSchema>(query, values)
+    db.closeConnection()
+    res.json(response)
+}
+
+export const clientProductReading = async (req: Request, res: Response) => {
+    const db: DataBase = await initDatabase(res, req)
+    const query: string = `
+        SELECT c.name as client_name, cp.amount as amount_rented, c.id as client_id, p.*,
+        cp.amount_imported
+        FROM clients AS c
+        LEFT JOIN clientProduct AS cp ON cp.client_id = c.id
+        INNER JOIN products AS p ON p.id = cp.product_id
+        WHERE c.enterprise = ?
+    `
+    const values: Array<string> = [
+        req.userData.enterprise_id.toString()
+    ]
+    const response: Array<clientProduct> = await db.readQuery(query, values)
     db.closeConnection()
     res.json(response)
 }
@@ -97,10 +115,11 @@ export const importClients = async (req: Request, res: Response) => {
     try {
         for (const product of data.products) {
             //Products proccess
-            const queryProduct: string = `INSERT INTO products (name, stock, rented, enterprise) VALUES (?,?,?,?)`
+            const queryProduct: string = `INSERT INTO products (name, stock, rented, rented_imported, enterprise) VALUES (?,?,?,?,?)`
             const valuesProduct: Array<string> = [
                 product.name,
                 product.avaliable,
+                product.dispatched,
                 product.dispatched,
                 data.enterprise_id
             ]
@@ -125,10 +144,11 @@ export const importClients = async (req: Request, res: Response) => {
                 }
 
                 //ClientProduct proccess
-                const queryClientsProduct: string = `INSERT INTO clientProduct (client_id, product_id, amount) VALUES (?,?,?)`
+                const queryClientsProduct: string = `INSERT INTO clientProduct (client_id, product_id, amount, amount_imported) VALUES (?,?,?,?)`
                 const valuesClientsProduct: Array<string> = [
                     ClientExistsResponse[0] ? ClientExistsResponse[0].id : ClientResponse.insertId,
                     productResponse.insertId,
+                    product.clients[client],
                     product.clients[client],
                 ]
                 const clientProductResponse: OkPacket = await db.insertQuery(queryClientsProduct, valuesClientsProduct)

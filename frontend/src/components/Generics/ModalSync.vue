@@ -9,7 +9,7 @@
       <body class="phone:text-base  tablet:text-lg py-8">
         <div v-html="modalInfo.description">
         </div>
-        <div v-if="modalInfo.input">
+        <div v-if="modalInfo.input" class="pt-6">
           <Input class="w-full" v-model="modalInfo.inputValue" :color="modalInfo.inputInfo?.color ?? 'black'"
             :placeholder="modalInfo.inputInfo?.placeHolder ?? 'Answer here'"
             :label="modalInfo.inputInfo?.label ?? 'Answer'" :size="modalInfo.inputInfo?.size ?? 'md'"

@@ -82,8 +82,8 @@ export interface productBasicTransaction {
     products: productStock[]
 }
 export interface productReturnTransaction{
-    dispatch_id: number;
-    quotation_id: number;
+    dispatch_id?: number;
+    quotation_id?: number;
     client_id: number;
     products: productReturning[];
 }
@@ -102,3 +102,11 @@ export type historicTransactions = {
     losses: number,
     date: string
 }
+
+export interface clientProduct extends productSchema{
+    id: number
+    client_id: number
+    product_id: number
+    amount: number
+}
+

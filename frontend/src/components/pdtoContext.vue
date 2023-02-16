@@ -17,6 +17,9 @@
         <div @click="returnItem()" v-if="(product?.rent != 0 && product?.rent != null) && editPer && auth.getUser.renting">
             Devolución
         </div>
+        <div @click="returnItemEspecial()" v-if="(product?.rent != 0 && product?.rent != null) && editPer && auth.getUser.renting">
+            Dev. sin Remisión
+        </div>
         <div v-if="product?.isRecipe == '1' && editPer" @click="crafting()">
             Preparar
         </div>
@@ -38,7 +41,7 @@
 <script lang="ts" setup>
 import { ref, type Ref, computed, defineEmits, defineProps } from 'vue';
 import { modalComp, type promiseResponse } from '@/classes/Modal';
-import { deprecateProduct, sellProduct, buyProduct, wholesaleProduct, deleteItemService, craftProduct, dispatchProduct, returnProduct } from '@/services/product';
+import { deprecateProduct, sellProduct, buyProduct, wholesaleProduct, deleteItemService, craftProduct, returnProductAux } from '@/services/product';
 import { useShoppingCart } from '@/composables/ShoppingCart';
 import { writePer, editPer } from '@/composables/permissions';
 import { useAuthStore } from '@/stores/auth'
@@ -52,7 +55,7 @@ export interface contextProps {
     product: any
 }
 
-const emit = defineEmits(['close', 'edit', 'dispatch', 'return', 'closeWithData'])
+const emit = defineEmits(['close', 'edit', 'dispatch', 'return', 'returnAux', 'closeWithData'])
 const props = defineProps<contextProps>()
 const auth = useAuthStore()
 
@@ -115,6 +118,11 @@ const dispatchItem = () => {
 
 const returnItem = () => {
     emit('return')
+    emit('closeWithData')
+}
+
+const returnItemEspecial = () => {
+    emit('returnAux')
     emit('closeWithData')
 }
 

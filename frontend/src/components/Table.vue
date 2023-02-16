@@ -133,7 +133,7 @@
         <PdtoContext ref="productContextMenu" v-if="contextProductData.show" :top="contextProductData.top"
             :left="contextProductData.left" :product="itemSelected" @edit="editItem" @dispatch="dispatchItem"
             @close="contextProductData.show = false; itemSelected = null"
-            @closeWithData="contextProductData.show = false" @return="returnItem" />
+            @closeWithData="contextProductData.show = false" @return="returnItem" @return-aux="returnItemAux"/>
         <!-- Modal add Item -->
         <AddItem v-if="dialogItem" :process="procesDialog" :product="productToEdit"
             @close="dialogItem = false, productToEdit = null" />
@@ -187,6 +187,26 @@
             </template>
         </Modal>
 
+        <Modal v-if="returnView.aux" @close="returnView.aux = false; itemSelected = null">
+            <template v-slot:header>
+                Devolución Especial de producto
+            </template>
+            <template v-slot:body>
+                <p>
+                    Este tipo de devolución solo debe usarse si la remisión no se generó en este 
+                    software y fue importada.
+                </p>
+                <ReturnForm filter-client ref="returnFormAux" :product="itemSelected" />
+            </template>
+            <template v-slot:actions>
+                <div class="flex w-full">
+                    <Button exactColor color="third" class="mr-2" icon="close" content="Cancelar"
+                        @click="returnView.aux = false;" />
+                    <Button exactColor color="primary" icon="save" content="Guardar" @click="createReturnItemAux()"/>
+                </div>
+            </template>
+        </Modal>
+
         <!-- Actions decisions modals -->
         <Alert v-show="alertMessageContent.show" @close="alertMessageContent.show = false"
             :title="alertMessageContent.title" :description="alertMessageContent.description"
@@ -216,7 +236,7 @@ import { useProductStore } from '@/stores/products';
 import { useAuthStore } from '@/stores/auth'
 import socket from '@/composables/socket'
 import DistpatchForm from './productView/distpatchForm.vue';
-import { dispatchProduct, returnProduct } from '@/services/product';
+import { dispatchProduct, returnProduct, returnProductAux } from '@/services/product';
 import ReturnForm from './productView/returnForm.vue';
 
 const route = useRoute()
@@ -225,6 +245,7 @@ const shopping = useShoppingCart()
 const createQuotationComponent = ref()
 const dispatchForm = ref()
 const returnForm = ref()
+const returnFormAux = ref()
 
 const alertMessageContent: any = ref({
     title: '',
@@ -337,7 +358,8 @@ const dispatchView = ref({
     show: false
 })
 const returnView = ref({
-    show: false
+    show: false,
+    aux: false,
 })
 const dispatchItem = () => {
     dispatchView.value.show = true
@@ -345,6 +367,11 @@ const dispatchItem = () => {
 const returnItem = () => {
     returnView.value.show = true
 }
+
+const returnItemAux = () => {
+    returnView.value.aux = true
+}
+
 const createReturnItem = () => {
     if(!returnForm.value.canSave) return
 
@@ -384,6 +411,44 @@ const createReturnItem = () => {
         }
     })
 }
+
+const createReturnItemAux = () => {
+    if(!returnFormAux.value.canSave) return
+
+    const payload: productReturnTransaction = {
+        client_id: returnFormAux.value.returnInfo.client.client_id,
+        products: [
+            {
+                id: itemSelected.value.id,
+                amount: returnFormAux.value.returnInfo.amount
+            }
+        ]
+    }
+    console.log('payload', payload)
+
+    modalComp.modal.show({
+        title: 'Devolución de Producto sin remisión',
+        description: 'Este proceso solo se debe realizar si no se cuenta con un consecutivo de Remisión. De lo contrario podría afectar todos los procesos de gestión de inventario.',
+        input: false,
+        inputValue: '',
+    }).then(async (res: promiseResponse) => {
+        if (res.success) {
+            const token = auth.getUser.token as token
+            let { status, data } = await returnProductAux(token.value, payload)
+            returnView.value.aux = false
+            alertMessageContent.value = {
+                title: `Se ha realizado la devolución de las unidades a tu inventario.`,
+                description: '',
+                type: 'success',
+                show: true
+            }
+            setTimeout(() => {
+                alertMessageContent.value.show = false
+            }, 3000);
+        }
+    })
+}
+
 const createDispatchItem = () => {
     if (!dispatchForm.value.canSave) return
 

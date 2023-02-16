@@ -165,6 +165,9 @@ export class DataBase {
                         } else {
                             str += ` ${aux} not like '%${val}%' `
                         }
+                    } else if(key.includes('>')){
+                        const aux = key.replace('>', '')
+                        str += ` ${aux} > ${val} `
                     } else {
                         str += ` ${key} like '%${val}%' `
                     }
@@ -342,7 +345,6 @@ export class DataBase {
         if(there.length > 0){
             //update
             const query = this.dynamicConditionalQueryUpdate(table, toInsert, conditions)
-            console.log('updateQuery', query)
             const updated: OkPacket = await new Promise((resolve, reject) => {
                 this.connection.query(query, [], (err,res) =>{
                     if(err){
