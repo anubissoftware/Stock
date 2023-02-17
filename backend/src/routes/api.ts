@@ -109,7 +109,7 @@ export default (app: Express, io: Server): void => {
         const token: string = Buffer.from(JSON.stringify(userResponse), 'utf-8').toString('base64')
         const userId: string = response[0].id.toString();
         const settoken: OkPacket = await setToken(userId, token, db);
-        const menus: Array<modulesSchema> = await menusInRol(req, userResponse.rol, db)
+        const menus: Array<modulesSchema> = await menusInRol(req, userResponse.rol, userResponse, db)
         db.closeConnection()
         if (settoken.changedRows > 0) {
             res.json({

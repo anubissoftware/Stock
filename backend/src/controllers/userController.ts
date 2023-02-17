@@ -108,7 +108,7 @@ export const googleLogin = async (req: Request, res: Response, io: Server): Prom
         const tokenUser: string = Buffer.from(JSON.stringify(userResponse), 'utf-8').toString('base64')
         const userId: string = userResponse.id.toString();
         const settoken: OkPacket = await setToken(userId, tokenUser, db);
-        const menus: Array<modulesSchema> = await menusInRol(req, userResponse.rol, db)
+        const menus: Array<modulesSchema> = await menusInRol(req, userResponse.rol, userResponse, db)
         db.closeConnection()
         if (settoken.changedRows > 0) {
             res.json({
