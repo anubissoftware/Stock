@@ -96,6 +96,7 @@ import moment from 'moment';
 import type { token } from '@/schemas';
 import { getPartners, createPartners, updatePartners } from '@/services/partners'
 import { modalComp, type modalResponse, type promiseResponse } from '@/classes/Modal';
+import { subscribe, unsubscribe } from '@/suscribers/partnerSuscriber';
 const router = useRouter()
 const strings = {
     title: {
@@ -183,22 +184,10 @@ onBeforeMount(async () => {
     await listPartners()
 })
 onMounted(() => {
-    socket.socket?.on('partnerCreate', (body: any) => {
-        const newPartner = {...body.partner}
-        newPartner.id = body.id
-        console.log(newPartner)
-        partners.value.unshift(newPartner)
-    })
-    socket.socket?.on('partnerUpdate', (body: partnerSchema | any) => {
-        console.log(body)
-        if (body.remove === '0') {
-            partners.value.splice(partners.value.findIndex(partner => partner.id == body.id), 1)
-        }
-    })
+    subscribe(partners)
 })
 onUnmounted(() => {
-    socket.socket?.removeListener("partnerCreate")
-    socket.socket?.removeListener("partnerUpdate")
+   unsubscribe()
 })
 
 
@@ -330,7 +319,7 @@ const remove = async () => {
         if (res.success) {
             const response = await updatePartners((store.getUser.token as token).value, {
                 id : partnerSelected.value.id,
-                removed : 0,
+                removed : 1,
             })
         }
     })
