@@ -135,7 +135,8 @@ const listInfo = async () => {
         })[0]
     }
     let filter: any = {
-        'q.stage': '2,3'
+        'q.stage': '2,3',
+        '!q.serial': 'null'
     }
     if (router.currentRoute.value.query.id) {
         const query = router.currentRoute.value.query

@@ -52,7 +52,7 @@ export const useShoppingCart = () => {
         },
         showCart: () => {
             return (productsInCart.length > 0
-            || route.value == '/dashboard/mystock') && auth.getUser.cart
+            || route.value == '/dashboard/mystock') && auth.getPlugins.includes('cart')
         },
         addProduct: (el: productsInCartType) => {
             const exists = productsInCart.filter(pdto => pdto.id == el.id)

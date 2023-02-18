@@ -137,7 +137,7 @@ export const editQuotation = async (req: Request, res: Response): Promise<quotat
 
 export const createNewQuotation = async (req: Request, res: Response): Promise<quotationSchema | null> => {
     const values: quotationSchema = req.body
-    const getSerial: string = `SELECT q.serial + 1 as serial FROM quotation AS q WHERE q.enterprise_id = ? ORDER BY q.serial DESC LIMIT 1`
+    const getSerial: string = `SELECT q.serial + 1 as serial FROM quotation AS q WHERE q.enterprise_id = ? AND q.serial != NULL ORDER BY q.serial DESC LIMIT 1`
     const getSerialV: Array<string> = [
         req.userData.enterprise_id.toString()
     ]

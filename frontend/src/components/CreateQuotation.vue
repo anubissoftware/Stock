@@ -12,7 +12,7 @@
         </div>
 
         <div class="laptop:w-1/2 phone:w-full pr-2 pb-6">
-            <Input class=" w-full " color="black" placeholder="Valor liquidado" label="Valor liquidado" size="md"
+            <Input class=" w-full " color="black" placeholder="Valor Cotizado" label="Valor cotizado" size="md"
                 type="text" required @update:model-value="null" :disabled="true" v-model="totalDue" />
         </div>
 

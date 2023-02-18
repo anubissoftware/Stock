@@ -14,7 +14,7 @@ import { menusInRol } from './loginController';
 const loginQuerySelect: string = `
     SELECT u.id, u.name, u.nickname, u.email, u.email_verified ,u.isAdmin, u.enterprise as enterprise_id, e.name as enterprise_name,
     m.path as enterprise_path, e.shortcut, u.rol, e.renting, e.quoting, e.selling, e.projects, e.colors,
-    e.cart
+    e.cart, e.macros, e.transactions, e.models, e.plugins
     FROM users AS u 
     INNER JOIN enterprise as e ON e.id = u.enterprise
     LEFT JOIN media as m ON m.id = e.logo

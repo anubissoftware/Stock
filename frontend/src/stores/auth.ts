@@ -5,6 +5,7 @@ import type { clientEnterpriseSchema, modulesSchema, notificationSchema, userSch
 import socket from '@/composables/socket'
 import { setHelper } from '@/composables/sidebarStatus'
 import { useShoppingCart } from '@/composables/ShoppingCart';
+import type { allPlugins, basicProductTransactions, enterpriseModel, macroOperations } from '@/schemas/model';
 
 export const useAuthStore = defineStore('auth', () => {
     const isAuthenticated: Ref<boolean> = ref(false)
@@ -16,6 +17,26 @@ export const useAuthStore = defineStore('auth', () => {
 
     const getAuthentication: ComputedRef<boolean> = computed((): boolean => {
         return isAuthenticated.value
+    })
+
+    const getModel: ComputedRef<Array<enterpriseModel>> = computed((): Array<enterpriseModel> => {
+        if(Object.keys(user.value).length == 0 ) return []
+        return JSON.parse((user.value as userSchema).models as string)
+    })
+
+    const getMacros: ComputedRef<Array<macroOperations>> = computed((): Array<macroOperations> => {
+        if(Object.keys(user.value).length == 0 ) return []
+        return JSON.parse((user.value as userSchema).macros as string)
+    })
+
+    const getPlugins: ComputedRef<Array<allPlugins>> = computed((): Array<allPlugins> => {
+        if(Object.keys(user.value).length == 0 ) return []
+        return JSON.parse((user.value as userSchema).plugins as string)
+    })
+
+    const getTransactions: ComputedRef<Array<basicProductTransactions>> = computed((): Array<basicProductTransactions> => {
+        if(Object.keys(user.value).length == 0 ) return []
+        return JSON.parse((user.value as userSchema).transactions as string)
     })
 
     const getUser: ComputedRef<userSchema> = computed((): userSchema => {
@@ -36,6 +57,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     const setUser = (userLogged: JSON): void => {
         user.value = userLogged
+        console.log('user', userLogged)
         isAuthenticated.value = true
         localStorage.setItem('user', JSON.stringify(user.value))
     }
@@ -113,6 +135,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     return {
         getAuthentication, getUser, getMenus, getClients, getNotifications,
+        getMacros, getModel, getPlugins, getTransactions,
         setUser, logOut, setModules, setColors, setClients, addClient, removeClient, pushNotification, modules
     }
 })

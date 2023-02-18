@@ -63,9 +63,16 @@
                         currencyFormat(item.wholesale ?? 0)
                     }}
                     </div>
-                    <div class="w-[14%] tablet:flex phone:hidden justify-center overflow-x-hidden text-ellipsis">{{
-                        currencyFormat(item.rent ?? 0)
-                    }}</div>
+                    <div class="w-[14%] tablet:flex phone:hidden justify-center overflow-x-hidden text-ellipsis">
+                        <span v-if="isRenting">
+                            {{
+                                currencyFormat(item.rent ?? 0)
+                            }}
+                        </span>
+                        <span v-else>
+                            N/A
+                        </span>
+                      </div>
                     <div class="tablet:w-[4%] tablet:flex phone:w-[10%] justify-center">
                         <Icon v-if="editPer" icon="more_vert" class="icon_hover"
                             @click="openProductContext($event, item)" />
@@ -137,6 +144,24 @@
         <!-- Modal add Item -->
         <AddItem v-if="dialogItem" :process="procesDialog" :product="productToEdit"
             @close="dialogItem = false, productToEdit = null" />
+
+        <Modal v-if="sidebarStatus.createDispatch" @close="sidebarStatus.createDispatch = false">
+            <template v-slot:header>
+                Crear Remisión
+            </template>
+
+            <template v-slot:body>
+                <dispatchModalVue />
+            </template>
+
+            <template v-slot:actions>
+                <div class="flex w-full">
+                    <Button exactColor color="third" class="mr-2" icon="close" content="Cancelar"
+                        @click="sidebarStatus.createDispatch = false;" />
+                    <Button exactColor color="primary" icon="save" content="Guardar" />
+                </div>
+            </template>
+        </Modal>
 
         <Modal v-if="sidebarStatus.createQuotation" @close="sidebarStatus.createQuotation = false">
             <template v-slot:header>
@@ -238,6 +263,7 @@ import socket from '@/composables/socket'
 import DistpatchForm from './productView/distpatchForm.vue';
 import { dispatchProduct, returnProduct, returnProductAux } from '@/services/product';
 import ReturnForm from './productView/returnForm.vue';
+import dispatchModalVue from './productView/dispatchModal.vue';
 
 const route = useRoute()
 const router = useRouter()
@@ -578,7 +604,7 @@ onMounted(() => {
 
     if (isQuoteMode.value) {
         alertMessage('Modo de cotización',
-            'Para crear una cotización, añada los productos al carrito y seleccione crear cotización',
+            'Para crear una cotización, añada los productos a la transacción y seleccione crear cotización',
             'success')
     }
     if (route.query.quote == '1') {

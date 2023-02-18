@@ -4,7 +4,8 @@ import { useWindowSize } from "@vueuse/core";
 export const sidebarStatus = reactive({
     open: false,
     helper: false,
-    createQuotation: false
+    createQuotation: false,
+    createDispatch: false
 })
 
 export const setSidebar = (status: boolean) => {

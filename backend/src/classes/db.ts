@@ -162,6 +162,8 @@ export class DataBase {
                         const aux = key.replace('!', '')
                         if (val.includes('.')) {
                             str += ` ${aux} not like ${val}`
+                        } else if(val == 'null'){
+                            str += ` ${aux} is not NULL `
                         } else {
                             str += ` ${aux} not like '%${val}%' `
                         }
@@ -197,6 +199,8 @@ export class DataBase {
                     query = aux.join('')
                 }
             }
+
+            // console.log(query)
 
             return await new Promise((resolve, reject) => {
                 this.connection.query(query, [...values], (err, res) => {

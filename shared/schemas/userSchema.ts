@@ -26,6 +26,10 @@ export interface userSchema {
     enterprise_path?: string
     shortcut?: string
     enterprise_name?: string
+    macros?: string
+    transactions?: string
+    models?: string
+    plugins?: string
 }
 import type { modulesSchema } from "./modulesSchema"
 export type Auth = {

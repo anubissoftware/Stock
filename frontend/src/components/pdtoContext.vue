@@ -1,39 +1,39 @@
 
 <template>
     <div class="right-click-menu flex flex-col rounded-xl select-none" ref="contextMenu"
-        :style="{ top: place.x, left: place.y }">
-        <div @click="buyItem()" v-if="editPer">
+        :style="{ top: place.x, left: place.y }" v-if="editPer">
+        <div @click="buyItem()" v-if="editPer && productTransactions.bought">
             Comprar
         </div>
-        <div @click="sellItem()" v-if="product?.price != 0 && editPer && auth.getUser.selling">
+        <div @click="sellItem()" v-if="product?.price != 0 && productTransactions.sale">
             Vender
         </div>
-        <div @click="wholeSale()" v-if="product?.wholesale != 0 && editPer && auth.getUser.selling">
+        <div @click="wholeSale()" v-if="product?.wholesale != 0 && productTransactions.whole">
             Al por Mayor
         </div>
-        <div @click="dispatchItem()" v-if="(product?.rent != 0 && product?.rent != null) && editPer && auth.getUser.renting">
+        <div @click="dispatchItem()" v-if="(product?.rent != 0 && product?.rent != null) && isRenting && productTransactions.dispatch">
             Remisión
         </div>
-        <div @click="returnItem()" v-if="(product?.rent != 0 && product?.rent != null) && editPer && auth.getUser.renting">
+        <div @click="returnItem()" v-if="(product?.rent != 0 && product?.rent != null) && isRenting && productTransactions.return && productTransactions.dispatch">
             Devolución
         </div>
-        <div @click="returnItemEspecial()" v-if="(product?.rent != 0 && product?.rent != null) && editPer && auth.getUser.renting">
+        <div @click="returnItemEspecial()" v-if="(product?.rent != 0 && product?.rent != null) && isRenting && productTransactions.return">
             Dev. sin Remisión
         </div>
-        <div v-if="product?.isRecipe == '1' && editPer" @click="crafting()">
+        <div v-if="product?.isRecipe == '1'" @click="crafting()">
             Preparar
         </div>
-        <div @click="deprecating()" v-if="editPer">
+        <div @click="deprecating()" v-if="productTransactions.expire">
             Vencidos
         </div>
-        <div @click="remove()" v-if="editPer && writePer">
+        <div @click="remove()" v-if="writePer">
             Eliminar producto
         </div>
-        <div v-if="(product?.price != 0 || product?.rent) && editPer" @click="emit('edit', product), emit('close')">
+        <div v-if="(product?.price != 0 || product?.rent)" @click="emit('edit', product), emit('close')">
             Editar producto
         </div>
-        <div v-if="(product?.price != 0 || product?.rent) && editPer && auth.getUser.cart" @click="addToCart()">
-            Añadir al carrito
+        <div v-if="(product?.price != 0 || product?.rent) && canShoppingCart" @click="addToCart()">
+            Añadir a transacción
         </div>
     </div>
 </template>
@@ -43,11 +43,9 @@ import { ref, type Ref, computed, defineEmits, defineProps } from 'vue';
 import { modalComp, type promiseResponse } from '@/classes/Modal';
 import { deprecateProduct, sellProduct, buyProduct, wholesaleProduct, deleteItemService, craftProduct, returnProductAux } from '@/services/product';
 import { useShoppingCart } from '@/composables/ShoppingCart';
-import { writePer, editPer } from '@/composables/permissions';
+import { writePer, editPer, isRenting, canShoppingCart, productTransactions } from '@/composables/permissions';
 import { useAuthStore } from '@/stores/auth'
-import AddItem from '@/components/NewItem.vue'
 import type { token } from '@/schemas';
-import Modal from './Generics/Modal.vue';
 
 export interface contextProps {
     top: number,

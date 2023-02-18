@@ -3,7 +3,7 @@
         <button class="relative px-2 py-1 mr-2 flex justify-center rounded-lg 
             hover:bg-white hover:text-primary" :class="listOpened.view ? ' bg-white text-primary' : ''"
             @click="toggleMenu()">
-            <Icon icon="shopping_cart" />
+            <Icon icon="local_shipping" />
             <span class="phone:hidden tablet:flex">
                 {{ strings.shopping[language] }}
             </span>
@@ -58,7 +58,7 @@
                     <div class="flex py-1 rounded phone:w-full justify-center items-center cursor-pointer text-secondary hover:text-white hover:bg-secondary
                  font-bold
                 " @click="sidebarStatus.createQuotation = true"
-                    v-if="quotate"
+                    v-if="macros.quote"
                 >
                         <Icon icon="request_quote" />
                         {{ strings.quote[language] }}
@@ -73,9 +73,9 @@
                     </div>
                     <div class="flex py-1 rounded phone:w-full tablet:w-1/2 justify-center items-center cursor-pointer text-secondary hover:text-white hover:bg-secondary
                  font-bold
-                " @click="sellProducts()">
-                        <Icon icon="sell" />
-                        {{ strings.sell[language] }}
+                " v-if="macros.dispatch" @click="sidebarStatus.createDispatch = true">
+                        <Icon icon="ios_share" />
+                        {{ strings.dispatch[language] }}
                     </div>
                     <div class="flex py-1 rounded phone:w-full justify-center items-center cursor-pointer text-extra hover:text-white hover:bg-extra
                  font-bold
@@ -98,7 +98,7 @@ import { useShoppingCart } from '@/composables/ShoppingCart';
 import { onClickOutside } from '@vueuse/core';
 import { sellProduct } from '@/services/product';
 import language from '@/services/language';
-import {quotate} from '@/composables/permissions'
+import {macros} from '@/composables/permissions'
 import { sidebarStatus } from '@/composables/sidebarStatus';
 import { useRouter } from 'vue-router';
 import { currencyFormat } from '@/composables/utils';
@@ -159,8 +159,8 @@ const sellProducts = async () => {
 
 const strings = {
     shopping: {
-        Spanish : 'Carrito',
-        English : 'Shopping'
+        Spanish : 'Transacción',
+        English : 'Transaction'
     },
     noProducts : {
         Spanish : 'No hay productos aún...',
@@ -170,9 +170,9 @@ const strings = {
         Spanish : 'Vaciar',
         English : 'Clear basket'
     },
-    sell : {
-        Spanish : 'Vender',
-        English : 'Sell'
+    dispatch : {
+        Spanish : 'Remisión',
+        English : 'Dispatch'
     },
     quote: {
         Spanish: 'Cotizar',

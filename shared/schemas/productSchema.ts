@@ -1,3 +1,4 @@
+import { partnerSchema } from "./partnerSchema"
 
 export interface category{
     id: number,
@@ -16,7 +17,13 @@ export interface productsInCartType {
     value: number
     max?: number
     renting?: number
+    partners?: {
+        partner_id: number,
+        amount: number,
+        sigla: string | partnerSchema
+    }[]
 }
+
 
 export interface recipeSchema{
     id: number,
@@ -68,6 +75,7 @@ export interface productSchema{
     showAction?: boolean
     infoCategories?: Array<category>
     quotation_detail_id?: number
+    partner?: number
 }
 
 export type productInMenu = Pick<productSchema, "id" | "currency" | "description" | "enterprise" | "name" | "price">
@@ -76,7 +84,7 @@ export type productToEmit = Pick<productSchema, "id" | "name" | "description" | 
 export type productToRemove = Pick<productSchema, "id">
 
 export type productStock = Pick<productSchema, "id" | "amount" | "description" | "rent">
-export type productReturning = Pick<productSchema, "id" | "amount" | "quotation_detail_id">
+export type productReturning = Pick<productSchema, "id" | "amount" | "quotation_detail_id" | "partner">
 export interface productBasicTransaction {
     client_id: number;
     products: productStock[]

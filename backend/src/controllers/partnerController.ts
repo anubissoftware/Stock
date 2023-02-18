@@ -1,5 +1,5 @@
 import { DataBase, initDatabase } from "../classes/db"
-import { partnerSchema } from "../schemas/partnerSchema"
+import { partnerSchema } from "@/schemas"
 import { Request, Response } from "express"
 import { OkPacket } from "mysql"
 import { Server } from "socket.io"
@@ -35,7 +35,7 @@ export const createNewPartner = async (req:Request, res: Response, io?: Server):
 }
 export const listPartners = async (req: Request, res: Response) => {
     try {
-        const query = 'SELECT p.* FROM partners AS p WHERE enterprise = ? AND removed = 1 ORDER BY p.created_at DESC'    
+        const query = 'SELECT p.* FROM partners AS p WHERE enterprise = ? AND removed = 0 ORDER BY p.created_at DESC'    
         const values = [
             req.userData.enterprise_id.toString()
         ]
