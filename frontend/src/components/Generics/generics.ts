@@ -16,6 +16,7 @@ import Switch from '@/components/Generics/Switch.vue';
 import Textarea from '@/components/Generics/Textarea.vue';
 import Loader from '@/components/Generics/Loader.vue';
 import ColorPicker from '@/components/Generics/ColorPicker.vue';
+import Tag from '@/components/Generics/Tag.vue';
 
 export {
     Autocomplete,
@@ -35,5 +36,6 @@ export {
     Switch,
     Textarea, 
     Loader, 
-    ColorPicker
+    ColorPicker, 
+    Tag
 }

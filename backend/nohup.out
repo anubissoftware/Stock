@@ -484,3 +484,57 @@ src/controllers/productController.ts(449,18): error TS1123: Variable declaration
 
 
 9:10:53 PM - Found 0 errors. Watching for file changes.
+c2:42:00 PM - Starting compilation in watch mode...
+
+src/controllers/clientController.ts(3,34): error TS2305: Module '"@/schemas"' has no exported member 'clientProduct'.
+src/controllers/productController.ts(1,10): error TS2305: Module '"@/schemas/productSchema"' has no exported member 'productReturning'.
+src/controllers/productController.ts(1,28): error TS2305: Module '"@/schemas/productSchema"' has no exported member 'productReturnTransaction'.
+src/controllers/productController.ts(1,54): error TS2305: Module '"@/schemas/productSchema"' has no exported member 'productStock'.
+src/controllers/productController.ts(3,163): error TS2305: Module '"@/schemas"' has no exported member 'productBasicTransaction'.
+
+2:42:01 PM - Found 5 errors. Watching for file changes.
+c2:42:22 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(3,34): error TS2305: Module '"@/schemas"' has no exported member 'clientProduct'.
+src/controllers/productController.ts(1,10): error TS2305: Module '"@/schemas/productSchema"' has no exported member 'productReturning'.
+src/controllers/productController.ts(1,28): error TS2305: Module '"@/schemas/productSchema"' has no exported member 'productReturnTransaction'.
+src/controllers/productController.ts(1,54): error TS2305: Module '"@/schemas/productSchema"' has no exported member 'productStock'.
+src/controllers/productController.ts(3,163): error TS2305: Module '"@/schemas"' has no exported member 'productBasicTransaction'.
+
+2:42:23 PM - Found 5 errors. Watching for file changes.
+c4:08:19 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(3,34): error TS2305: Module '"@/schemas"' has no exported member 'clientProduct'.
+src/controllers/productController.ts(1,10): error TS2305: Module '"@/schemas/productSchema"' has no exported member 'productReturning'.
+src/controllers/productController.ts(1,28): error TS2305: Module '"@/schemas/productSchema"' has no exported member 'productReturnTransaction'.
+src/controllers/productController.ts(1,54): error TS2305: Module '"@/schemas/productSchema"' has no exported member 'productStock'.
+src/controllers/productController.ts(3,163): error TS2305: Module '"@/schemas"' has no exported member 'productBasicTransaction'.
+
+4:08:19 PM - Found 5 errors. Watching for file changes.
+c4:24:21 PM - Starting compilation in watch mode...
+
+src/controllers/clientController.ts(3,34): error TS2305: Module '"@/schemas"' has no exported member 'clientProduct'.
+src/controllers/productController.ts(1,10): error TS2305: Module '"@/schemas/productSchema"' has no exported member 'productReturning'.
+src/controllers/productController.ts(1,28): error TS2305: Module '"@/schemas/productSchema"' has no exported member 'productReturnTransaction'.
+src/controllers/productController.ts(1,54): error TS2305: Module '"@/schemas/productSchema"' has no exported member 'productStock'.
+src/controllers/productController.ts(3,163): error TS2305: Module '"@/schemas"' has no exported member 'productBasicTransaction'.
+
+4:24:23 PM - Found 5 errors. Watching for file changes.
+c4:26:26 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(3,34): error TS2305: Module '"@/schemas"' has no exported member 'clientProduct'.
+src/controllers/productController.ts(1,10): error TS2305: Module '"@/schemas/productSchema"' has no exported member 'productReturning'.
+src/controllers/productController.ts(1,28): error TS2305: Module '"@/schemas/productSchema"' has no exported member 'productReturnTransaction'.
+src/controllers/productController.ts(1,54): error TS2305: Module '"@/schemas/productSchema"' has no exported member 'productStock'.
+src/controllers/productController.ts(3,163): error TS2305: Module '"@/schemas"' has no exported member 'productBasicTransaction'.
+
+4:26:26 PM - Found 5 errors. Watching for file changes.
+c4:37:35 PM - File change detected. Starting incremental compilation...
+
+src/controllers/clientController.ts(3,34): error TS2305: Module '"@/schemas"' has no exported member 'clientProduct'.
+src/controllers/productController.ts(1,10): error TS2305: Module '"@/schemas/productSchema"' has no exported member 'productReturning'.
+src/controllers/productController.ts(1,28): error TS2305: Module '"@/schemas/productSchema"' has no exported member 'productReturnTransaction'.
+src/controllers/productController.ts(1,54): error TS2305: Module '"@/schemas/productSchema"' has no exported member 'productStock'.
+src/controllers/productController.ts(3,163): error TS2305: Module '"@/schemas"' has no exported member 'productBasicTransaction'.
+
+4:37:35 PM - Found 5 errors. Watching for file changes.

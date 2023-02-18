@@ -17,6 +17,7 @@ import moment from 'moment'
 import { OkPacket } from "mysql";
 import { changeBrandColors, validateEnterprise } from '../controllers/enterpriseController';
 import { createNewQuotation, deleteQuotation, listQuotations, generateQuotationDocument } from '../controllers/accountingController';
+import { createNewPartner, listPartners, updatePartner } from '../controllers/partnerController';
 
 declare global {
     namespace Express {
@@ -320,6 +321,14 @@ export default (app: Express, io: Server): void => {
     })
     app.post('/login/activateCustomer', async (req: Request, res: Response) => {
         await activateCustomer(req, res)
+    })
+
+    app.get('/partners/', middleware, listPartners)
+    app.post('/partners/', middleware, async (req: Request, res: Response) => {
+        await createNewPartner(req, res, io)
+    })
+    app.post('/partners/update', middleware, async (req: Request, res: Response) => {
+        await updatePartner(req, res, io)
     })
 
     app.get('/clients/', middleware, readClients)
