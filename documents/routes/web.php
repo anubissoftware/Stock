@@ -14,6 +14,7 @@
 */
 
 $router->get('/quotation/pdf/{quotation_id}', 'DocumentController@generateQuotationPDF');
+$router->get('/dispatch/pdf/{dispatch_id}', 'DocumentController@generateDispatchPDF');
 $router->get('/preview', function () {
     return view('wrapper');
 });
