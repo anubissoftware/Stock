@@ -40,11 +40,7 @@
                 <div class="w-full flex border p-1" v-for="(partner, index) in pdto.partners" :key="index">
                     <span class="w-1/2 border-r italic">
                         <Autocomplete class="w-full" placeholder="" label="" size="sm" v-model="partner.sigla"
-                            :items="partners" value="sigla" color="black" type="text" required @update:model-value="() => {
-                                if(typeof partner.sigla == 'object'){
-                                    partner.partner_id = partner.sigla.id
-                                }
-                            }"  />
+                            :items="partners" value="sigla" color="black" type="text" required @update:model-value="null" />
                     </span>
                     <div class="w-1/2 flex justify-center items-center">
                         <input type="number" v-model="partner.amount"
@@ -59,10 +55,6 @@
             </div>
         </div>
 
-        <span class="italic text-left">
-            Verifica que las cantidades correspondan a lo que se remitirá.
-        </span>
-
     </div>
 </template>
 
@@ -71,7 +63,7 @@ import { useShoppingCart } from '@/composables/ShoppingCart';
 import type { clientschema, token, productsInCartType, partnerSchema } from '@/schemas';
 import { getClients } from '@/services/clients';
 import { useAuthStore } from '@/stores/auth';
-import { ref, type Ref, onMounted, computed, type ComputedRef } from 'vue';
+import { ref, type Ref, onMounted } from 'vue';
 import { getPartners } from '@/services/partners'
 import Button from '../Generics/Button.vue';
 import { Autocomplete, CheckBox } from '../Generics/generics';
@@ -86,13 +78,6 @@ const shopping = useShoppingCart()
 const pdtos: Ref<productsInCartType[]> = ref([])
 const partners: Ref<partnerSchema[]> = ref([])
 const clientes: Ref<Array<clientschema>> = ref([])
-
-const canSave: ComputedRef<boolean> = computed(() => {
-
-    return typeof dispatchingInfo.value.old_process == 'object'
-})
-
-defineExpose({dispatchingInfo, pdtos, canSave})
 
 const cancelToken: Ref<undefined | AbortController> = ref(undefined)
 

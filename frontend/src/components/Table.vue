@@ -151,14 +151,14 @@
             </template>
 
             <template v-slot:body>
-                <dispatchModalVue ref="dispatchModal"/>
+                <dispatchModalVue />
             </template>
 
             <template v-slot:actions>
                 <div class="flex w-full">
                     <Button exactColor color="third" class="mr-2" icon="close" content="Cancelar"
                         @click="sidebarStatus.createDispatch = false;" />
-                    <Button exactColor color="primary" icon="save" content="Guardar" @click="createDispatchEspecial()"/>
+                    <Button exactColor color="primary" icon="save" content="Guardar" />
                 </div>
             </template>
         </Modal>
@@ -243,7 +243,7 @@
 import { computed, type ComputedRef, ref, onMounted, onBeforeUnmount, onBeforeMount, type Ref } from 'vue';
 import { Alert, Icon, Button, Input, Modal } from '@/components/Generics/generics'
 import AddItem from '@/components/NewItem.vue'
-import type { productBasicTransaction, productSchema, productsInCartType, token, productReturnTransaction, productStock } from '@/schemas'
+import type { productBasicTransaction, productSchema, productsInCartType, token, productReturnTransaction } from '@/schemas'
 import PdtoContext from './pdtoContext.vue';
 import { onClickOutside } from '@vueuse/core'
 import language from '@/services/language';
@@ -272,7 +272,6 @@ const createQuotationComponent = ref()
 const dispatchForm = ref()
 const returnForm = ref()
 const returnFormAux = ref()
-const dispatchModal = ref()
 
 const alertMessageContent: any = ref({
     title: '',
@@ -474,62 +473,6 @@ const createReturnItemAux = () => {
             }, 3000);
         }
     })
-}
-
-const createDispatchEspecial = () => {
-    if(!dispatchModal.value.dispatchingInfo.client.id) return
-
-    console.log(dispatchModal.value.dispatchingInfo, dispatchModal.value.pdtos)
-    let productos: productStock[] = []
-    dispatchModal.value.pdtos.forEach((pdto: productsInCartType) => {
-        productos.push({
-            id: pdto.id,
-            description: '',
-            rent: 0,
-            amount: pdto.amount
-        })
-        pdto.partners?.forEach(ptop => {
-            productos.push({
-                id: pdto.id,
-                description: '',
-                rent: 0,
-                amount: ptop.amount,
-                partner_id: ptop.partner_id
-            })
-        })
-
-    })
-
-    const payload = {
-        client_id: dispatchModal.value.dispatchingInfo.client.id,
-        products: [...productos]
-    }
-
-    modalComp.modal.show({
-        title: 'Remitiendo Producto',
-        description: '',
-        input: false,
-        inputValue: '',
-    }).then(async (res: promiseResponse) => {
-        if (res.success) {
-            const token = auth.getUser.token as token
-            let { status, data } = await dispatchProduct(token.value, payload)
-            
-            if(!data.dispatching_id) return
-            sidebarStatus.createDispatch = false
-            alertMessageContent.value = {
-                title: `Se ha creado la remisión #${formatSerial(data.dispatching_id)}`,
-                description: 'Este número de remisión será necesario para cuando se realice la devolución del producto',
-                type: 'success',
-                show: true
-            }
-            setTimeout(() => {
-                alertMessageContent.value.show = false
-            }, 3000);
-        }
-    })
-
-
 }
 
 const createDispatchItem = () => {
