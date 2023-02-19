@@ -43,22 +43,27 @@
         border: 0.5px solid black;
         padding: 3px;
     }
+
     .products-empty>td {
         font-style: italic;
         border: 0.5px solid black;
         padding: 10px 0px;
     }
-    .totals{
+
+    .totals {
         text-align: center;
         font-weight: bold;
     }
-    .descriptions{
+
+    .descriptions {
         text-align: right;
     }
 </style>
 
 <body>
-
+    @php
+        // dd($dispatch->enterprise_name);
+    @endphp
     <header>
         <table style="width: 100%; border-spacing: 0px; border-collapse: inherit">
             <thead>
@@ -77,8 +82,8 @@
                 <tr>
                     <th colspan="8">
                         <div style="min-height:80px; padding: 15px 0px">
-                            <span style="font-size: 24px"> {{$dispatch->enterprise_name}} </span> <br>
-                            <!-- <pre> {{ $dispatch}}</pre> -->
+
+                            <span style="font-size: 24px"> {{$dispatch->id}} </span> <br>
 
 
                         </div>
