@@ -44,17 +44,27 @@ class DocumentController extends Controller
 
     public function generateDispatchPDF ($dispatch_id) {
         $dispatchData = DB::table('dispatching as d')
-            ->select('d.*', 'e.name as enterprise_name', 'e.nit as nit ')
-            ->join('dispatchingDetail as dd', 'dd.dispatch_id', '=', 'd.id')
+            ->select('d.id as dispatch_id','d.*', 'e.name as enterprise_name',
+            'e.nit as nit', 'c.name as client_name', 'c.*',
+            'u.name as user_name', 'q.*')
             ->join('quotation as q', 'q.id', '=', 'd.quotation_id')
+            ->join('clients as c', 'c.id', '=', 'q.client_id')
+            ->join('users as u', 'u.id', '=', 'q.user')
             ->join('enterprise as e', 'e.id', '=', 'q.enterprise_id')
             ->where('d.id', $dispatch_id)
             ->first();
-        // $dispatchData = json_decode(json_encode($dispatchData), true);
-        // Log::info($dispatchData);
-        // Log::info($dispatchData['enterprise_name']);
-        return Pdf::loadView('dispatch', ['dispatch' => $dispatchData])->setPaper("a4")->stream();
-        // return $dispatchData;
+
+        $dispatchDetail = DB::table('dispatchingDetail as dd')
+            ->join('products as p', 'p.id', '=', 'dd.item_id')
+            ->select('dd.amount', 'dd.item_id', 'dd.id', 'p.name', 'p.description',
+            'p.id as product_id', DB::raw("SUM(amount) as total_debit"))
+            ->where('dd.dispatch_id', $dispatchData->dispatch_id)
+            ->groupBy('dispatchingDetail.item_id')
+            ->get();
+        Log::info(json_decode(json_encode($dispatchData), true));
+        Log::info($dispatchDetail);
+        Log::info($dispatchDetail->groupBy('column')->toArray());
+        return Pdf::loadView('dispatch', ['dispatch' => $dispatchData, 'detail' => $dispatchDetail])->setPaper("a4")->stream();
     }
 
     //
