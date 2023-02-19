@@ -408,7 +408,7 @@ export const expireItems = async (req: Request, res: Response): Promise<boolean>
     }
 }
 
-export const dispatchItem = async (req: Request, res: Response) => {
+export const dispatchItem = async (req: Request, res: Response, io: Server) => {
     const query: productBasicTransaction = req.body
     let quote_total = 0
     let quote_id = 0
@@ -461,14 +461,12 @@ export const dispatchItem = async (req: Request, res: Response) => {
                 let qd: OkPacket | {insertId: number}
                 if(!el.partner_id){
                     const others = payload.filter(pay => pay.id == el.id)
-                    console.log(others)
                     let total = 0
                     if(others.length > 0){
                         others.forEach(oth => {
                             total+= oth.amount
                         })
                     }
-                    console.log(total)
                     qd = await db.insertQuery(`INSERT INTO quotationDetail (
                         item_id, amount, value, quotation_id, dispatching
                     ) VALUES (?, ?, ?, ?, ?)`, [
@@ -544,6 +542,15 @@ export const dispatchItem = async (req: Request, res: Response) => {
         res.json({
             dispatching_id,
             quote_id
+        })
+        io.to('e' +  req.userData.enterprise_id).emit('dispatchCreate', {
+            id: dispatching_id,
+            out_store: moment().format('YYYY-MM-DD HH:mm:ss'),
+            received: moment().format('YYYY-MM-DD HH:mm:ss'),
+            quotation_id: quote_id,
+            created_at: moment().format('YYYY-MM-DD HH:mm:ss'),
+            created_by: req.userData.id,
+            client_id: query.client_id
         })
         // hay que añadir el actualizar la cotización, el dc y el clientData
     } else {

@@ -14,7 +14,7 @@
                         </div>
                     </h1>
                     <div class="flex h-fit ">
-                        <Button v-if="writePer"
+                        <Button v-if="writePer && macros.quote"
                             @click="modalDispatch = true, dispatchSelected = {}, creationDispatch = true, editingDispatch = false"
                             exactColor color="secondary" icon="Add" :content=strings.newDispatch[language] />
                     </div>
@@ -104,7 +104,7 @@ import Header2 from '@/components/Header2.vue';
 import language from '@/services/language';
 import { getDispatch, getDispatchDetail, createDispatch, updateDispatch, formatSerial } from '@/services/accounting'
 import { Button, Modal, Input } from '@/components/Generics/generics';
-import { editPer, writePer } from '@/composables/permissions';
+import { editPer, macros, writePer } from '@/composables/permissions';
 import { onBeforeMount, onMounted, onUnmounted, computed, ref, type Ref, type ComputedRef, watch } from 'vue';
 import { useAuthStore } from '@/stores/auth'
 import type { dispatchScheme, token } from '@/schemas';

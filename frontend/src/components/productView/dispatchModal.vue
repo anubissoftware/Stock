@@ -33,22 +33,26 @@
                     </span>
                     <span class="w-1/2">
                         <input type="number" v-model="pdto.amount"
-                            class=" w-10 outline-primary border-primary border rounded text-center"
+                            class=" w-20 outline-primary border-primary border rounded text-center"
                             @change="shopping.changeLocal($event, pdto.id)">
                     </span>
                 </div>
                 <div class="w-full flex border p-1" v-for="(partner, index) in pdto.partners" :key="index">
                     <span class="w-1/2 border-r italic">
                         <Autocomplete class="w-full" placeholder="" label="" size="sm" v-model="partner.sigla"
-                            :items="partners" value="sigla" color="black" type="text" required @update:model-value="() => {
+                            :items="partners" value="sigla" color="black" type="text" @update:model-value="() => {
                                 if(typeof partner.sigla == 'object'){
                                     partner.partner_id = partner.sigla.id
                                 }
                             }"  />
                     </span>
-                    <div class="w-1/2 flex justify-center items-center">
+                    <div class="w-1/2 flex justify-center items-center relative">
                         <input type="number" v-model="partner.amount"
-                            class=" w-10 outline-primary border-primary border rounded text-center">
+                            class=" w-20 outline-primary border-primary border rounded text-center">
+
+                        <div class="absolute right-0 hover:cursor-pointer duration-200 hover:scale-125" >
+                            <Icon icon="close" />
+                        </div>
                     </div>
                 </div>
                 <div class="w-full flex justify-center italic pt-2">
@@ -74,7 +78,7 @@ import { useAuthStore } from '@/stores/auth';
 import { ref, type Ref, onMounted,computed, type ComputedRef } from 'vue';
 import { getPartners } from '@/services/partners'
 import Button from '../Generics/Button.vue';
-import { Autocomplete, CheckBox } from '../Generics/generics';
+import { Autocomplete, CheckBox, Icon } from '../Generics/generics';
 
 const auth = useAuthStore()
 const dispatchingInfo = ref({

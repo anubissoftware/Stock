@@ -62,7 +62,7 @@
                         <div @click="close(); openHelper()" v-if="projects">
                             Search for projects
                         </div>
-                        <div @click="close(); createQuotation()" v-if="quotate">
+                        <div @click="close(); createQuotation()" v-if="macros.quote">
                             Crear cotización
                         </div>
                         <div @click="close(); removeClient()">
@@ -82,7 +82,7 @@
 import Header2 from '@/components/Header2.vue';
 import language from '@/services/language';
 import { Button, Modal, Input } from '@/components/Generics/generics';
-import { editPer, writePer, quotate, projects } from '@/composables/permissions';
+import { editPer, writePer, projects, macros } from '@/composables/permissions';
 import { onBeforeMount, onMounted, onUnmounted, computed, ref, type Ref, type ComputedRef, watch } from 'vue';
 import { getClients } from '@/services/clients'
 import type { clientEnterpriseSchema, token } from '@/schemas'
