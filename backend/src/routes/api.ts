@@ -6,7 +6,7 @@ import { saveEnterpriseLogo } from './../controllers/mediaController';
 import { validateEmail, validateCellphone, registerUser } from '../controllers/loginController';
 import { sellItems, buyItems, craftItems, expireItems, listPublishedProducts, listHistoric,listAllProducts, registerProduct, removeProduct, updateProduct, dispatchItem, returnItem, returnItemAux } from '../controllers/productController';
 import { getUnits } from '../controllers/unitController';
-import { categoryQuery, productToEmit, decreaseStock, modulesSchema, clientEnterpriseSchema, projectSchema, quotationSchema,  userData, UserLogin, userLogOut, dispatchScheme, returnScheme } from '@/schemas';
+import { categoryQuery, productToEmit, decreaseStock, modulesSchema, clientEnterpriseSchema, projectSchema, quotationSchema,  userData, UserLogin, userLogOut, dispatchScheme, returnScheme, productStock } from '@/schemas';
 import { deleteCategory, getCategories, saveCategory, updateCategory } from '../controllers/categoryController';
 import { Express, NextFunction, Request, Response } from "express"
 import { Server } from "socket.io"
@@ -263,9 +263,10 @@ export default (app: Express, io: Server): void => {
     })
 
     app.post('/product/dispatch', middleware, async (req: Request, res: Response) => {
-        const updated: boolean = await dispatchItem(req, res, io)
+        const updated: boolean = await dispatchItem(req, res)
 
         if(updated){
+            const pdtos = req.body.products.filter((pdto: productStock) => pdto.partner_id == undefined)
             io.to('e' + req.userData.enterprise_id).emit('productDispatched', req.body.products)
         }
     })

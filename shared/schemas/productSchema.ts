@@ -75,7 +75,7 @@ export interface productSchema{
     showAction?: boolean
     infoCategories?: Array<category>
     quotation_detail_id?: number
-    partner?: number
+    partner_id?: number
 }
 
 export type productInMenu = Pick<productSchema, "id" | "currency" | "description" | "enterprise" | "name" | "price">
@@ -83,8 +83,8 @@ export type productToSave = Pick<productSchema, "name" | "description" | "unit" 
 export type productToEmit = Pick<productSchema, "id" | "name" | "description" | "unit" | "stock" | "cost" | "price" | "isRecipe" | "categories" | "wholesale" | "rent">
 export type productToRemove = Pick<productSchema, "id">
 
-export type productStock = Pick<productSchema, "id" | "amount" | "description" | "rent">
-export type productReturning = Pick<productSchema, "id" | "amount" | "quotation_detail_id" | "partner">
+export type productStock = Pick<productSchema, "id" | "amount" | "description" | "rent" | "partner_id">
+export type productReturning = Pick<productSchema, "id" | "amount" | "quotation_detail_id" | "partner_id">
 export interface productBasicTransaction {
     client_id: number;
     products: productStock[]
