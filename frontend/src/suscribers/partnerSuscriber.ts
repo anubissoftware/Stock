@@ -10,9 +10,14 @@ export const subscribe = (partners: Ref<partnerSchema[]>) => {
         partners.value.unshift(newPartner)
     })
     socket.socket?.on('partnerUpdate', (body: partnerSchema | any) => {
-        console.log(body)
-        if (body.remove === '1') {
+        if (body.removed === 1) {
             partners.value.splice(partners.value.findIndex(partner => partner.id == body.id), 1)
+        } else {
+            partners.value.map(partner => {
+                if (partner.id == body.id) {
+                    Object.assign(partner, body)
+                }
+            })
         }
     })
 }
