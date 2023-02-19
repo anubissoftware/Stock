@@ -69,7 +69,7 @@ import { Input, Select, Divider, CheckBox } from './Generics/generics';
 import { defineProps, defineEmits, ref, onBeforeMount, type Ref, computed } from 'vue';
 import moment from 'moment';
 import { getClients } from '@/services/clients'
-import { listQuotations, quotationDetail } from '@/services/accounting'
+import { formatSerial, listQuotations, quotationDetail } from '@/services/accounting'
 import { useAuthStore } from '@/stores/auth'
 import type { clientEnterpriseSchema, returnScheme, quotationDetailSchema, quotationSchema, token } from '@/schemas';
 import { useRouter } from 'vue-router';
@@ -120,7 +120,6 @@ const listInfo = async () => {
     let filter: any = {
         'q.stage': '3,4,5',
         'q.isRenting': '1',
-        '!q.serial': 'null'
     }
     if (router.currentRoute.value.query.id) {
         const query = router.currentRoute.value.query
@@ -130,8 +129,13 @@ const listInfo = async () => {
 
     let quotationResponse = await listQuotations((store.getUser.token as token).value, filter, cancelToken.signal)
     if (!quotationResponse.data) return
-    let quotationsDispatching = quotationResponse.data
-    quotations.value = quotationsDispatching
+    let quotationsDispatching: Array<quotationSchema> = quotationResponse.data
+    quotations.value = quotationsDispatching.map(quote => {
+        if(quote.serial == null) {
+            quote.serial = formatSerial(quote.id)
+        }
+        return quote
+    })
     if(router.currentRoute.value.query.id){
         quotation.value = quotations.value[0]
         updateValue()

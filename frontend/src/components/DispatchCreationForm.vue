@@ -54,7 +54,7 @@
                 props.editing ? 'bg-gray-100' : '']">
                     <div class="flex flex-row justify-between w-full items-center">
                         <div class="flex flex-col justify-start items-start">
-                            <span class="font-bold">{{ detail.name }}</span>
+                            <span class="font-bold">{{ detail.name }}  {{ detail.sigla ? ` > (Socio ${detail.sigla})` : '' }} </span>
                             <span class="text-xs">{{ 'Amount:' + detail.amount_avaliable }}</span>
                             <span class="text-xs">{{ 'Dispatching:' + detail.dispatching }}</span>
 

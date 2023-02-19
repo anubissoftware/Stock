@@ -4,6 +4,7 @@ import { recipeSchema, productToEmit, productSchema, productToSave, productToRem
 import { Request, Response } from "express";
 import { OkPacket } from "mysql";
 import { DataBase, initDatabase } from "../classes/db";
+import { Server } from 'socket.io';
 
 const saveCategories = (categories: Array<object>): string => {
     return JSON.stringify({ values: categories })
@@ -407,7 +408,7 @@ export const expireItems = async (req: Request, res: Response): Promise<boolean>
     }
 }
 
-export const dispatchItem = async (req: Request, res: Response) => {
+export const dispatchItem = async (req: Request, res: Response, io: Server) => {
     const query: productBasicTransaction = req.body
     let quote_total = 0
     let quote_id = 0
@@ -505,6 +506,12 @@ export const dispatchItem = async (req: Request, res: Response) => {
     ])
     db.closeConnection()
     if (dispatching_id > 0) {
+        io.to('e' + req.userData.enterprise_id).emit('dispatchCreate', {
+            id: dispatching_id,
+            out_store: moment().format('YYYY-MM-DD HH:mm:ss'),
+            received: moment().format('YYYY-MM-DD HH:mm:ss'),
+            // quotation_id: 
+        })
         res.json({
             dispatching_id
         })

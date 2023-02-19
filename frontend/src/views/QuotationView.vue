@@ -1,19 +1,22 @@
 <template>
     <Header2>
         <template v-slot:mainContainer>
-            <div class="p-10 flex flex-col items-start min-h-[70vh]">
+            <div class="p-10 flex flex-col items-start min-h-[75vh]">
                 <div class="flex tablet:flex-row justify-between items-center w-full phone:flex-col phone:items-start">
                     <h1 class="flex flex-row justify-center laptop:text-4xl py-2 phone:text-2xl">
-                        <span class="text-left">
+                        <span class="text-left" v-if="macros.quote">
                             Cotizaciones
+                        </span>
+                        <span class="text-lef" v-else>
+                            Flujos únicos
                         </span>
                         <div
                             class="flex items-center px-2 phone:text-xs tablet:text-sm rounded-xl bg-secondary text-white ml-2">
-                            {{ listedQuotations.length + " " + 'cotizaciones' }}
+                            {{ listedQuotations.length + " " + (macros.quote ? 'cotizaciones' : 'Flujos')}}
                         </div>
                     </h1>
                     <div class="flex h-fit ">
-                        <Button v-if="writePer" exactColor color="secondary" icon="Add" :content="'Nueva cotización'"
+                        <Button v-if="writePer && macros.quote" exactColor color="secondary" icon="Add" :content="'Nueva cotización'"
                             @click="router.push({ path: '/dashboard/mystock', query: { quote: '1' } })" />
                     </div>
                 </div>
@@ -24,10 +27,10 @@
                     <span class="italic font-bold px-5">
                         Filtros:
                     </span>
-                    <Tag title="@mee" v-model="filters.byMe" />
-                    <Tag title="Pending" v-model="filters.pending" />
-                    <Tag title="Rejected" v-model="filters.rejected" />
-                    <Tag title="Approved" v-model="filters.approved" />
+                    <Tag title="@mee" v-if="macros.quote" v-model="filters.byMe" />
+                    <Tag title="Pending" v-if="macros.quote" v-model="filters.pending" />
+                    <Tag title="Rejected" v-if="macros.quote" v-model="filters.rejected" />
+                    <Tag title="Approved" v-if="macros.quote" v-model="filters.approved" />
                     <Tag title="This month" v-model="filters.thisMonth" @update:model-value="getQuotations"/>
                     <Tag title="Last month" v-model="filters.lastMonth" @update:model-value="getQuotations"/>
                 </div>
@@ -37,7 +40,7 @@
                 <ContextMenu class="right-click-menu" :left="contextOptions.left" :top="contextOptions.top"
                     v-if="contextOptions.show" @close="contextOptions.show = false">
                     <template v-slot:options>
-                        <div v-if="quoteSelected.stage == 0" @click="editQuotation()">
+                        <div v-if="quoteSelected.stage == 0 && macros.quote" @click="editQuotation()">
                             Editar <span :class="loadingQuotation ? 'inline' : 'hidden'">...</span>
                         </div>
                         <div @click="deleteQuotation()" v-if="quoteSelected.stage == 0">
@@ -53,7 +56,7 @@
                             >
                             Ver remisiones
                         </div>
-                        <div v-if="(quoteSelected.stage == 4 || quoteSelected.stage == 5) && quoteSelected.isRenting == 1"
+                        <div v-if="(quoteSelected.stage == 4 || quoteSelected.stage == 5 || !macros.quote) && quoteSelected.isRenting == 1"
                         @click="creatingReturn()">
                             Crear devolución
                         </div>
@@ -84,7 +87,7 @@
 
 <script lang="ts" setup>
 import Header2 from '@/components/Header2.vue';
-import { editPer, writePer } from '@/composables/permissions';
+import { editPer, macros, writePer } from '@/composables/permissions';
 import { Button, Input } from '@/components/Generics/generics';
 import { ref, onMounted, onUnmounted, type Ref, type ComputedRef, computed } from 'vue';
 import { useRouter } from 'vue-router';

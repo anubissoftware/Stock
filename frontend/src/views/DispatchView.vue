@@ -46,7 +46,13 @@
                                 Dispatch, Quotation {{ formatSerial(dispatchSelected.quotation_serial) }}
                             </span>
                             <span v-else>
-                                Dispatch {{ formatSerial(dispatchSelected.id) }}
+                                <span class="font-bold">
+                                    Dispatch {{ formatSerial(dispatchSelected.id) }} 
+                                </span>
+                                <br> 
+                                <span class="italic text-2xl">
+                                    Serial del flujo: {{ formatSerial(dispatchSelected.quotation_id) }}
+                                </span>
                             </span>
                         </div>
                     </template>

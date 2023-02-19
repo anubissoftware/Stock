@@ -1,7 +1,7 @@
 <template>
     <Header2>
         <template v-slot:mainContainer>
-            <div class="p-10 flex flex-col items-start min-h-[70vh]">
+            <div class="p-10 flex flex-col items-start min-h-[75vh]">
                 <div
                     class="pb-4 flex flex-row justify-between items-center w-full">
                     <h1 class="flex flex-row justify-center laptop:text-4xl py-2 phone:text-2xl">

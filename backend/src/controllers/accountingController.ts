@@ -509,9 +509,10 @@ export const listDispatch = async (req: Request, res: Response) => {
 
 export const dispatchDetail = async (req: Request, res: Response) => {
     const payload = req.query
-    const query: string = `SELECT dd.*, p.name, qd.amount as amount_avaliable, qd.dispatching FROM dispatchingDetail as dd
+    const query: string = `SELECT dd.*, p.name, qd.amount as amount_avaliable, qd.dispatching, part.sigla FROM dispatchingDetail as dd
     INNER JOIN quotationDetail AS qd ON dd.quotation_detail_id = qd.id
     INNER JOIN products AS p ON p.id = qd.item_id
+    LEFT JOIN partners AS part ON part.id = dd.partner_id
     WHERE dispatch_id = ?`
     const values: Array<string> = [
         payload.id.toString()

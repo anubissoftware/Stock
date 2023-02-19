@@ -1,6 +1,6 @@
 export interface quotationSchema {
     id: number
-    serial: number
+    serial: number | string
     description: string
     value: number
     client_id: number

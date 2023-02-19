@@ -263,7 +263,7 @@ export default (app: Express, io: Server): void => {
     })
 
     app.post('/product/dispatch', middleware, async (req: Request, res: Response) => {
-        const updated: boolean = await dispatchItem(req, res)
+        const updated: boolean = await dispatchItem(req, res, io)
 
         if(updated){
             io.to('e' + req.userData.enterprise_id).emit('productDispatched', req.body.products)
