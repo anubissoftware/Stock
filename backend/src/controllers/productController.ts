@@ -413,6 +413,7 @@ export const dispatchItem = async (req: Request, res: Response) => {
     let quote_id = 0
     let dispatching_id = 0
     let client_data = []
+    const relations = []
     const payload: productStock[] = query.products
     const queryQuotation: string = `INSERT INTO quotation (value, client_id, user, isRenting, one_day, stage, enterprise_id) 
     VALUES (0, ?, ?, 1, 1, 3, ?)`
@@ -422,7 +423,7 @@ export const dispatchItem = async (req: Request, res: Response) => {
         VALUES (?, ?, ?, ?)
     `
     let queryDispatchDetail: string = ` 
-        INSERT INTO dispatchingDetail (amount, dispatch_id, item_id, quotation_detail_id)
+        INSERT INTO dispatchingDetail (amount, dispatch_id, item_id, quotation_detail_id, partner_id)
         VALUES (
     `
     const db: DataBase = await initDatabase(res)
@@ -447,22 +448,46 @@ export const dispatchItem = async (req: Request, res: Response) => {
             dispatching_id = dispt.insertId
             let total = 0
             for (const el of payload) {
-                const dd: OkPacket = await db.updateQuery(queryPdto, [
-                    el.amount.toString(),
-                    el.amount.toString(),
-                    el.id.toString()
-                ])
-                total += (el.amount * el.rent)
-                const qd: OkPacket = await db.insertQuery(`INSERT INTO quotationDetail (
-                    item_id, amount, value, quotation_id, dispatching
-                ) VALUES (?, ?, ?, ?, ?)`, [
-                    el.id.toString(), el.amount.toString(), el.rent.toString(), quote_id.toString(), el.amount.toString()
-                ])
-                if (qd.insertId == 0) {
-                    console.log('qd:', el)
-                    throw new Error('Quotation detail not inserted')
+                let dd: OkPacket
+                if(!el.partner_id){
+                    dd = await db.updateQuery(queryPdto, [
+                        el.amount.toString(),
+                        el.amount.toString(),
+                        el.id.toString()
+                    ])
                 }
-                if (dd.affectedRows == 0) {
+                total += (el.amount * el.rent)
+                let qd: OkPacket | {insertId: number}
+                if(!el.partner_id){
+                    const others = payload.filter(pay => pay.id == el.id)
+                    console.log(others)
+                    let total = 0
+                    if(others.length > 0){
+                        others.forEach(oth => {
+                            total+= oth.amount
+                        })
+                    }
+                    console.log(total)
+                    qd = await db.insertQuery(`INSERT INTO quotationDetail (
+                        item_id, amount, value, quotation_id, dispatching
+                    ) VALUES (?, ?, ?, ?, ?)`, [
+                        el.id.toString(), total.toString(), el.rent.toString(), quote_id.toString(), total.toString()
+                    ])
+                    if (qd.insertId == 0) {
+                        console.log('qd:', el)
+                        throw new Error('Quotation detail not inserted')
+                    }
+                    relations.push({
+                        product_id: el.id,
+                        quotation_detail_id: qd.insertId
+                    })
+                }else{
+                    const rel = relations.filter(rel => rel.product_id == el.id)
+                    if(rel.length > 0){
+                        qd = {insertId: rel[0].quotation_detail_id}
+                    }
+                }
+                if (dd?.affectedRows == 0 && !el.partner_id) {
                     throw new Error('Product not updated: ' + queryPdto)
                 }
                 const r = await db.upsert('clientProduct', {
@@ -472,18 +497,28 @@ export const dispatchItem = async (req: Request, res: Response) => {
                     product_id: el.id.toString()
                 })
 
+                if(el.partner_id){
+                    const pp = await db.upsert('partnerProduct', {
+                        amount: 'amount + ' + el.amount.toString()
+                    }, {
+                        partner_id: el.partner_id.toString(),
+                        product_id: el.id.toString()
+                    })
+                }
+
                 if (!r) throw new Error('Table clientProduct not updated')
                 client_data.push(r)
                 const vals: Array<string> = [
                     el.amount.toString(),
                     dispt.insertId.toString(),
                     el.id.toString(),
-                    qd.insertId.toString()
+                    qd.insertId.toString(),
+                    el.partner_id?.toString() ?? 'null' 
                 ]
-                queryDispatchDetail += vals.join(',') + '),'
+                queryDispatchDetail += vals.join(',') + '),('
             }
             quote_total = total
-            queryDispatchDetail = queryDispatchDetail.slice(0, -1)
+            queryDispatchDetail = queryDispatchDetail.slice(0, -2)
 
             const ddd: OkPacket = await db.insertQuery(queryDispatchDetail, [])
             if (ddd.affectedRows == 0) {
@@ -506,7 +541,8 @@ export const dispatchItem = async (req: Request, res: Response) => {
     db.closeConnection()
     if (dispatching_id > 0) {
         res.json({
-            dispatching_id
+            dispatching_id,
+            quote_id
         })
         // hay que añadir el actualizar la cotización, el dc y el clientData
     } else {
