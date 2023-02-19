@@ -39,7 +39,7 @@
                 <ContextMenu class="right-click-menu" @close="contextMenuData.show = false" :top="contextMenuData.top"
                     :left="contextMenuData.left" v-if="contextMenuData.show && editPer">
                     <template v-slot:options>
-                        <div @click="close(), editingPartner = true, modalPartner = true">
+                        <div @click="close(),edit()">
                             Edit
                         </div>
                         <div @click="close(),remove()">
@@ -194,7 +194,6 @@ onUnmounted(() => {
 /**
  * FUNCTIONS
  */
-
 const unSetPartner = () => {
     if (router.currentRoute.value.query.id) {
         let query = Object.assign({}, router.currentRoute.value.query);
@@ -326,7 +325,10 @@ const remove = async () => {
 }
 
 const edit = async () => {
-    
+    editingPartner.value = true
+    creationPartner.value = false
+    modalPartner.value = true
+    partnerSelected.value = {...partnerSelected.value}
 }
 
 
