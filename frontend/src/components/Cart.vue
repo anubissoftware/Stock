@@ -1,10 +1,10 @@
 <template>
     <div class="">
-        <button class="relative px-2 py-1 mr-2 flex justify-center rounded-lg 
+        <button class="relative px-2 py-1 mr-2 flex items-center justify-center rounded-lg 
             hover:bg-white hover:text-primary" :class="listOpened.view ? ' bg-white text-primary' : ''"
             @click="toggleMenu()">
             <Icon icon="local_shipping" />
-            <span class="phone:hidden tablet:flex">
+            <span class="px-1 phone:hidden tablet:flex">
                 {{ strings.shopping[language] }}
             </span>
             <div class="absolute -top-2 -right-2 bg-secondary rounded-full text-xs font-bold text-white h-5 w-5 flex flex-row justify-center items-center"
@@ -12,12 +12,12 @@
                 <div>{{ shopping.listProducts().length < 10 ? shopping.listProducts().length : '9+' }} </div>
                 </div>
         </button>
-        <div v-if="listOpened.view" ref="ShoppingList" class="absolute my-2 bg-white text-black border text-xs rounded-lg tablet:w-96 px-1 right-0
+        <div v-if="listOpened.view" ref="ShoppingList" class="absolute my-2 bg-white text-black border text-xs rounded-lg tablet:w-[30rem] px-1 right-0
                 phone:w-full flex flex-col justify-between phone:h-[90vh] tablet:h-auto
             ">
             <div v-if="shopping.listProducts().length > 0" class="tablet:max-h-[40vh] phone:max-h-[70vh] overflow-y-scroll">
                 <div v-for="(item, index) in shopping.listProducts()" :key="index"
-                    class="py-1 px-2 flex flex-row justify-between flex-wrap">
+                    class="relative py-1 px-2 flex flex-row justify-between flex-wrap border-t first:border-b-0">
                     <img :src="getImageUrl('Recurso 7@2x.png')" class=" w-1/4 h-auto" alt="">
                     <div class=" w-2/4 text-start flex flex-col">
                         <span class=" font-bold text-sm">{{ item.name }}</span>
@@ -25,20 +25,18 @@
                         <span>Rent: {{ currencyFormat((item.renting ?? 0) * item.amount, false) }} / d</span>
                     </div>
                     <div class=" w-1/4 flex flex-col items-center justify-center">
-                        <div class="flex flex-row items-center gap-2">
-                            <span class=" text-base cursor-pointer select-none font-bold text-primary"
-                                @click="shopping.subToProduct(item.id)">
-                                - </span>
-                            <input type="number" v-model="item.amount"
-                                class=" w-10 outline-primary border-primary border rounded text-center"
-                                @change="shopping.changeLocal($event, item.id)">
-                            <span class=" text-base cursor-pointer select-none font-bold text-primary"
+                        <Icon icon="delete" class="absolute top-2 right-2 w-3 h-5 text-sm cursor-pointer text-extra font-bold"
+                                @click="shopping.deleteProduct(item)" />
+                        <div class="flex flex-col items-center">
+                            <span class=" h-4 flex justify-center items-center w-10 text-base cursor-pointer select-none font-bold bg-primary text-white rounded-t-lg opacity-70 hover:opacity-100"
                                 @click="shopping.addToProduct(item.id)">
                                 + </span>
-                        </div>
-                        <div class="flex flex-row items-center justify-center">
-                            <Icon icon="delete" class="w-3 h-5 text-sm cursor-pointer text-extra font-bold"
-                                @click="shopping.deleteProduct(item)" />
+                            <input type="number" v-model="item.amount"
+                            class=" w-10 outline-primary border-primary border text-center"
+                            @change="shopping.changeLocal($event, item.id)">
+                            <span class=" h-4 flex justify-center items-center w-10 text-base cursor-pointer select-none font-bold bg-primary text-white rounded-b-lg opacity-70 hover:opacity-100"
+                                @click="shopping.subToProduct(item.id)">
+                                - </span>
                         </div>
                     </div>
 
@@ -185,7 +183,18 @@ const strings = {
 }
 
 </script>
+<style>
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+</style>
 <style scoped>
 /* Firefox */
 * {

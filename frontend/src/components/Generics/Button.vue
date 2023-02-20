@@ -3,15 +3,18 @@
     :class="[
         props.size == 'lg' ? 'px-3 py-2' :
         props.size == 'md' ? 'px-2 py-1' :
-        props.size == 'sm' ? 'px-1 py-1' : 'tablet:px-3 tablet:py-2 phone:px-2 phone:py-1',
+        props.size == 'sm' ? 'px-1 py-1' : 
+        props.size == 'xs' ? 'px-1' : 'tablet:px-3 tablet:py-2 phone:px-2 phone:py-1',
         exactColor ? `border-${props.color} text-${props.color} hover:bg-${props.color}` : 
         `border-${props.color}-600 text-${props.color}-600 hover:bg-${props.color}-600`,
         'disabled:bg-gray-300 disabled:hover:bg-gray-300 disabled:border-none disabled:text-white',
         props.disabled ? 'hover:bg-opacity-10' : ''
     ]"
     >
-        <Icon v-if="props.icon" :icon="props.icon" />
-        <span v-if="props.content" class="tablet:text-base phone:text-sm">{{ props.content}}</span>
+        <Icon :class="[props.size == 'xs' ? 'tablet:text-sm phone:text-xs' : '']" v-if="props.icon" :icon="props.icon" />
+        <span v-if="props.content" :class="[
+            props.size == 'xs' ? 'tablet:text-sm phone:text-xs' : 'tablet:text-base phone:text-sm'
+        ]">{{ props.content}}</span>
     </button>
 </template>
 <script setup lang="ts">

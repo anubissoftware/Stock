@@ -49,6 +49,17 @@
     border-bottom-color: var(--third);
 }
 
+/* outline */
+.outline-primary {
+    outline-color: var(--primary);
+}
+.outline-secondary {
+    outline-color: var(--secondary);
+}
+.outline-third {
+    outline-color: var(--third);
+}
+
 /* Accent */
 .accent-primary {
     accent-color: var(--primary);

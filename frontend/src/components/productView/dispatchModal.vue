@@ -19,47 +19,63 @@
             <span class="text-xl font-bold">
                 Información de los productos
             </span>
+            <br>
+            <span class="text-xs">Presiona + para añadir productos de socios</span>
         </div>
 
-        <div class="w-full my-1 py-2 border flex flex-row flex-wrap text-sm rounded-lg border-primary"
+        <div class="w-full my-1 py-2 border flex flex-row flex-wrap text-sm rounded-lg border-black shadow-lg   "
             v-for="(pdto, index) in pdtos" :key="index">
-            <div class="phone:w-full laptop:w-1/2 text-left italic font-bold pl-5">
-                {{ pdto.name }}
+            <div class="flex flex-row items-center justify-between py-2 phone:w-full laptop:w-1/2 text-left italic font-bold pl-5">
+                <span>{{ pdto.name }}</span>
+                <Button exactColor color="primary" size="xs" class="mr-2" icon="add"
+                    @click="pdto.partners?.push({ partner_id: 0, amount: 0, sigla: '' })" />
             </div>
             <div class="phone:w-full laptop:w-1/2 flex flex-wrap px-3">
-                <div class="w-full flex border p-1">
-                    <span class="w-1/2 border-r italic">
+                <div class="w-full flex  p-1">
+                    <span class="w-1/2 italic">
                         propio:
                     </span>
-                    <span class="w-1/2">
-                        <input type="number" v-model="pdto.amount"
-                            class=" w-10 outline-primary border-primary border rounded text-center"
+                    <span class="flex justify-center w-1/2">
+                        <div class="flex flex-row items-center">
+                            <span class=" h-6 flex justify-center items-center w-6 text-base cursor-pointer select-none font-bold bg-primary text-white rounded-l-lg opacity-70 hover:opacity-100"
+                                @click="pdto.amount++">
+                                + </span>
+                            <input type="number" v-model="pdto.amount"
+                            class=" w-10 h-6 outline-primary border-primary border text-center"
                             @change="shopping.changeLocal($event, pdto.id)">
+                            <span class=" h-6 flex justify-center items-center w-6 text-base cursor-pointer select-none font-bold bg-primary text-white rounded-r-lg opacity-70 hover:opacity-100"
+                                @click="pdto.amount != 0 ? pdto.amount-- : null">
+                                - </span>
+                        </div>
                     </span>
                 </div>
-                <div class="w-full flex border p-1" v-for="(partner, index) in pdto.partners" :key="index">
-                    <span class="w-1/2 border-r italic">
-                        <Autocomplete class="w-full" placeholder="" label="" size="sm" v-model="partner.sigla"
-                            :items="partners" value="sigla" color="black" type="text" required @update:model-value="() => {
+                <div class="w-full flex p-1" v-for="(partner, index) in pdto.partners" :key="index">
+                    <span class="w-1/2 italic">
+                        <Autocomplete class="w-full" placeholder="Socio.." label="" size="sm" v-model="partner.sigla"
+                            :items="partners" value="sigla" color="black" type="text" @update:model-value="() => {
                                 if(typeof partner.sigla == 'object'){
                                     partner.partner_id = partner.sigla.id
                                 }
                             }"  />
                     </span>
-                    <div class="w-1/2 flex justify-center items-center">
-                        <input type="number" v-model="partner.amount"
-                            class=" w-10 outline-primary border-primary border rounded text-center">
+                    <div class="relative w-1/2 flex justify-center items-center">
+                        <div class="flex flex-row items-center">
+                            <span class=" h-6 flex justify-center items-center w-6 text-base cursor-pointer select-none font-bold bg-primary text-white rounded-l-lg opacity-70 hover:opacity-100"
+                                @click="partner.amount++">
+                                + </span>
+                            <input type="number" v-model="partner.amount"
+                            class=" w-10 h-6 outline-primary border-primary border text-center">
+                            <span class=" h-6 flex justify-center items-center w-6 text-base cursor-pointer select-none font-bold bg-primary text-white rounded-r-lg opacity-70 hover:opacity-100"
+                                @click="partner.amount != 0 ? partner.amount-- : null">
+                                - </span>
+                        </div>
+                        <Icon class=" cursor-pointer absolute right-0 text-md" icon="delete" @click="pdto.partners.splice(index,1)" />
                     </div>
-                </div>
-                <div class="w-full flex justify-center italic pt-2">
-                    <Button exactColor color="secondary" size="sm" class="mr-2" icon="add"
-                        content="Añadir productos de socio"
-                        @click="pdto.partners?.push({ partner_id: 0, amount: 0, sigla: '' })" />
                 </div>
             </div>
         </div>
 
-        <span class="italic text-left">
+        <span class="py-2 text-md italic text-center">
             Verifica que las cantidades correspondan a lo que se remitirá.
         </span>
 
@@ -74,7 +90,7 @@ import { useAuthStore } from '@/stores/auth';
 import { ref, type Ref, onMounted,computed, type ComputedRef } from 'vue';
 import { getPartners } from '@/services/partners'
 import Button from '../Generics/Button.vue';
-import { Autocomplete, CheckBox } from '../Generics/generics';
+import { Autocomplete, CheckBox, Icon } from '../Generics/generics';
 
 const auth = useAuthStore()
 const dispatchingInfo = ref({

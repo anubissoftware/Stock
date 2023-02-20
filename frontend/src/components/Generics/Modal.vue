@@ -31,10 +31,16 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits } from 'vue';
+import { defineEmits, defineProps } from 'vue';
 import { Icon } from '@/components/Generics/generics'
 
+export interface ModalProps {
+  width?: number,
+  heigh?: number,
+}
+
 const emit = defineEmits<{ (e: 'close'): void }>()
+const props = defineProps<ModalProps>();
 
 const close = () => {
   emit('close')
