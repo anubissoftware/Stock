@@ -9,7 +9,7 @@
         <template v-if="props.creation">
             <div v-if="filterByClient" class="w-full pr-2 pb-6">
                 <Select class="w-full" color="black" label="Cliente" v-model="client" :items="clients" size="md"
-                    type="text" value="name" @update:model-value="updateValue()" />
+                    type="text" value="name" @update:model-value="updateValue(); listInfo(); returning = {}; quotation = {}" />
             </div>
         </template>
         <div v-if="!props.creation" class="w-full pr-2 pb-6">
@@ -86,7 +86,7 @@ const emits = defineEmits(['update'])
 const returning: Ref<any | ReturnCreationProps> = ref({})
 const clients: Ref<Array<clientEnterpriseSchema>> = ref([])
 const quotations: Ref<Array<quotationSchema>> = ref([])
-const quotation: Ref<any | quotationSchema> = ref([])
+const quotation: Ref<any | quotationSchema> = ref({})
 const client: Ref<any | clientEnterpriseSchema> = ref({})
 const filterByClient: Ref<boolean> = ref(false)
 
@@ -132,7 +132,7 @@ const listInfo = async () => {
     let quotationsDispatching: Array<quotationSchema> = quotationResponse.data
     quotations.value = quotationsDispatching.map(quote => {
         if(quote.serial == null) {
-            quote.serial = formatSerial(quote.id)
+            quote.serial = ' Flujo ' + formatSerial(quote.id) 
         }
         return quote
     })

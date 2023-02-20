@@ -517,14 +517,15 @@ const createDispatchEspecial = () => {
             if(!data.dispatching_id) return
             sidebarStatus.createDispatch = false
             alertMessageContent.value = {
-                title: `Se ha creado la remisión #${formatSerial(data.dispatching_id)}`,
+                title: `Se ha creado la remisión #${formatSerial(data.dispatching_id)} y el flujo #${formatSerial(data.quote_id)}`,
                 description: 'Este número de remisión será necesario para cuando se realice la devolución del producto',
                 type: 'success',
                 show: true
             }
+            shopping.clearBasket()
             setTimeout(() => {
                 alertMessageContent.value.show = false
-            }, 3000);
+            }, 3800);
         }
     })
 

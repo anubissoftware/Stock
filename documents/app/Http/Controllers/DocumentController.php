@@ -56,10 +56,11 @@ class DocumentController extends Controller
 
         $dispatchDetail = DB::table('dispatchingDetail as dd')
             ->join('products as p', 'p.id', '=', 'dd.item_id')
-            ->select('dd.amount', 'dd.item_id', 'dd.id', 'p.name', 'p.description',
-            'p.id as product_id', DB::raw("SUM(amount) as total_debit"))
+            ->select(DB::raw("SUM(dd.amount) as total_debit"),'dd.item_id', 'dd.id', 'p.name', 'p.description',
+            'p.id as product_id')
+            //
             ->where('dd.dispatch_id', $dispatchData->dispatch_id)
-            ->groupBy('dispatchingDetail.item_id')
+            ->groupBy('dd.item_id')
             ->get();
         Log::info(json_decode(json_encode($dispatchData), true));
         Log::info($dispatchDetail);
