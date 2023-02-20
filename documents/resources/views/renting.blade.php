@@ -79,7 +79,7 @@
                         <div style="min-height:80px; padding: 15px 0px">
                             <span style="font-size: 24px"> {{$quotation->enterprise_name}} </span> <br>
                             <span style="font-style: italic; font-size: 20px;">Nit. {{$quotation->nit}}</span> <br> <br>
-                            <span style="font-style: italic"> Serial de cotización: {{$quotation->prefix_quote}} {{dechex($quotation->serial)}} </span> <br>
+                            <span style="font-style: italic"> Serial de cotización: {{$quotation->prefix_quote}} {{strtoupper(dechex($quotation->serial))}} </span> <br>
                             <span style="font-style: italic"> Alquiler </span>
 
                         </div>
