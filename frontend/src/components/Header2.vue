@@ -89,6 +89,7 @@ import { onClickOutside } from '@vueuse/core';
 import type { notificationSchema } from '@/schemas';
 import { useAuthStore } from '@/stores/auth'
 import { useProductStore } from '@/stores/products';
+import { modalComp } from '@/classes/Modal';
 
 const auth = useAuthStore()
 const pdto = useProductStore()
@@ -97,7 +98,9 @@ const shopping = useShoppingCart()
 const helperContainer = ref()
 
 onClickOutside(helperContainer, () => {
-    setHelper(false)
+    if(!modalComp.modal.showModal){
+        setHelper(false)
+    }
 })
 
 const showCart = computed(() => {

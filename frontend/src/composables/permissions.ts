@@ -13,6 +13,39 @@ export const canShoppingCart = computed(() => {
     return useAuthStore().getPlugins.includes('cart')
 })
 
+export const contactsAmount = computed(() => {
+    const plugins = useAuthStore().getPlugins
+    const contactPlugins = plugins.filter((plg) => plg.includes('contacts'))
+    if(contactPlugins.length > 0){
+        const contactPluginAmount = contactPlugins[0].split('-')[1]
+        return contactPluginAmount
+    }else{
+        return 1
+    }
+})
+
+export const quotationConditionsAmount = computed(() => {
+    const plugins = useAuthStore().getPlugins
+    const quotationPlugins = plugins.filter((plg) => plg.includes('conditions'))
+    if(quotationPlugins.length > 0){
+        const quotationConditionsPluginAmount = quotationPlugins[0].split('-')[1]
+        return quotationConditionsPluginAmount
+    }else{
+        return 1
+    }
+})
+
+export const productHandlerVersion = computed(() => {
+    const plugins = useAuthStore().getPlugins
+    const productPlugin = plugins.filter(plg => plg.includes('productV')) 
+    if(productPlugin.length > 0){
+        const productPluginVersion = productPlugin[0].split('-')[1]
+        return productPluginVersion
+    }else{
+        return 1
+    }
+})
+
 export const productTransactions = computed((): basicProductTransactionPermissions => {
     const trans = useAuthStore().getTransactions
     return {

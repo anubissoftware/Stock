@@ -77,19 +77,21 @@
                     <th style="width: 10%;"></th>
                 </tr>
                 <tr>
-                    <th colspan="10">
+                    <th colspan="8">
                         <div style="min-height:80px; padding: 15px 0px">
                             <span style="font-size: 24px"> {{ $dispatch->enterprise_name }} </span> <br>
-                            <span style="font-style: italic; font-size: 20px;">Nit. {{ $dispatch->enterprise_nit }}</span> <br>
+                            <span style="font-style: italic; font-size: 20px;">Nit.
+                                {{ $dispatch->enterprise_nit }}</span> <br>
                             <br>
-                            <span style="font-style: italic"> Remisión: {{ strtoupper(dechex($dispatch->dispatch_id)) }} </span> <br>
+                            <span style="font-style: italic"> Remisión: {{ strtoupper(dechex($dispatch->dispatch_id)) }}
+                            </span> <br>
                             <span style="font-style: italic"> Alquiler </span>
                         </div>
                     </th>
                     <th colspan="4">
                         <div style="min-height:80px; margin: 0px 0px 0px 40px; text-align: left">
-                            <img style="height: 12px; width: 12px;"
-                                src="http://localhost:8080/public/ourStock/ourStock.svg" alt="logo.png">
+                            <img style="height: 90px; width: 90px;"
+                                src="{{ env('SERVER_HOST') . 'logos/' . $dispatch->shortcut . '.png' }}" alt="logo.png">
                         </div>
                     </th>
                 </tr>
@@ -138,31 +140,45 @@
                 <tr>
                     <div style="min-height: 50px"></div>
                 </tr>
-                <tr class="heading">
-                    <td colspan="5">Nombre</td>
-                    <td colspan="3">Descripción</td>
-                    <td colspan="2">Cantidad</td>
-                </tr>
+
 
 
                 {{-- @php
                     dd($detail[0]);
                 @endphp --}}
+                @if (count($detail) > 0)
 
-                @foreach ($detail as $dt)
-                    <tr class="products">
-                        <td colspan="5"> {{ $dt->name }} </td>
-                        <td colspan="3"> {{ $dt->description }} </td>
-                        <td colspan="2"> {{ $dt->total_debit }} </td>
+
+                    <tr class="heading">
+                        <td colspan="2">Ref</td>
+                        <td colspan="6">Nombre</td>
+                        <td colspan="2">Cantidad</td>
                     </tr>
-                @endforeach
-                @for ($i = 0; $i < 3; $i++)
-                    <tr class="products-empty">
-                        <td colspan="5"></td>
-                        <td colspan="3"></td>
-                        <td colspan="2"></td>
+
+                    @foreach ($detail as $dt)
+                        <tr class="products">
+                            <td colspan="2"> {{ $dt->ref }} </td>
+                            <td colspan="6"> {{ $dt->name }} </td>
+                            <td colspan="2" style="text-align: center"> {{ $dt->total_debit }} </td>
+                        </tr>
+                    @endforeach
+                    @for ($i = 0; $i < 3; $i++)
+                        <tr class="products-empty">
+                            <td colspan="2"></td>
+                            <td colspan="6"></td>
+                            <td colspan="2"></td>
+                        </tr>
+                    @endfor
+
+                @else
+
+                    <tr>
+                        <td colspan="10" style="text-align: center; font-weight: bolder;">
+                            No hay registro de productos.
+                        </td>
                     </tr>
-                @endfor
+
+                @endif
 
                 <br>
                 <tr>
@@ -181,13 +197,13 @@
                     <td colspan="10" style="padding:10px 0px; font-style: italic">
                         {{-- {{ $dispatch->client_name }} <br> Nit: {{ $dispatch->nit }} --}}
                         <span>
-                            Nombre:
+                            <strong>Nombre:</strong> {{ $dispatch->contact_name ?? '' }}
                         </span> <br>
                         <span>
-                            Teléfono:
+                            <strong>Teléfono:</strong> {{ $dispatch->contact_phone ?? '' }}
                         </span> <br>
                         <span>
-                            Cédula:
+                            <strong>Cédula:</strong>
                         </span>
                     </td>
                 </tr>

@@ -56,7 +56,7 @@ const generateMessage = () => {
         welcomeMessage.value = "Buena tarde";
     } else if (currentHour >= 15 && currentHour < 18){
         welcomeMessage.value = "Buena tarde";
-    } else if (currentHour >= 20 ){
+    } else if (currentHour >= 18 ){
         welcomeMessage.value = "Buena noche";
     }
 }

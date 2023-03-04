@@ -1,3 +1,5 @@
+import { clientsContactSchema } from "./clientEnterpriseSchema"
+
 export interface clientschema{
     id: number,
     name: string,
@@ -9,7 +11,8 @@ export interface clientschema{
     code: string,
     contact_email: string,
     contact_name: string,
-    contact_phone: string
+    contact_phone: string,
+    contacts: clientsContactSchema[]
 }
 
 export type clientToRegister = Pick<clientschema, "name" | "email" | "cellphone" | "password">
@@ -22,12 +25,10 @@ export interface projectSchema {
     id: number
     name: string
     address: string
-    contact_name: string
-    contact_phone: string
-    contact_email: string
     client_id: number
     register: string
     budget: number
     renting: boolean | number
+    contacts: clientsContactSchema[]
 }
 

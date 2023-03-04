@@ -5,8 +5,7 @@
                 <span class="text-left">
                     {{ strings.title[language] }}
                 </span>
-                <div
-                    class="flex items-center px-2 phone:text-xs tablet:text-sm rounded-xl bg-secondary text-white ml-2">
+                <div class="flex items-center px-2 phone:text-xs tablet:text-sm rounded-xl bg-secondary text-white ml-2">
                     {{ data.length + strings.products[language] }}
                 </div>
             </h1>
@@ -72,7 +71,7 @@
                         <span v-else>
                             N/A
                         </span>
-                      </div>
+                    </div>
                     <div class="tablet:w-[4%] tablet:flex phone:w-[10%] justify-center">
                         <Icon v-if="editPer" icon="more_vert" class="icon_hover"
                             @click="openProductContext($event, item)" />
@@ -139,8 +138,8 @@
         </div>
         <PdtoContext ref="productContextMenu" v-if="contextProductData.show" :top="contextProductData.top"
             :left="contextProductData.left" :product="itemSelected" @edit="editItem" @dispatch="dispatchItem"
-            @close="contextProductData.show = false; itemSelected = null"
-            @closeWithData="contextProductData.show = false" @return="returnItem" @return-aux="returnItemAux"/>
+            @close="contextProductData.show = false; itemSelected = null" @closeWithData="contextProductData.show = false"
+            @return="returnItem" @return-aux="returnItemAux" />
         <!-- Modal add Item -->
         <AddItem v-if="dialogItem" :process="procesDialog" :product="productToEdit"
             @close="dialogItem = false, productToEdit = null" />
@@ -151,14 +150,14 @@
             </template>
 
             <template v-slot:body>
-                <dispatchModalVue ref="dispatchModal"/>
+                <dispatchModalVue ref="dispatchModal" />
             </template>
 
             <template v-slot:actions>
                 <div class="flex w-full">
                     <Button exactColor color="third" class="mr-2" icon="close" content="Cancelar"
                         @click="sidebarStatus.createDispatch = false;" />
-                        <Button exactColor color="primary" icon="save" content="Guardar" @click="createDispatchEspecial()"/>
+                    <Button exactColor color="primary" icon="save" content="Guardar" @click="createDispatchEspecial()" />
                 </div>
             </template>
         </Modal>
@@ -191,7 +190,7 @@
                 <div class="flex w-full">
                     <Button exactColor color="third" class="mr-2" icon="close" content="Cancelar"
                         @click="dispatchView.show = false;" />
-                    <Button exactColor color="primary" icon="save" content="Guardar" @click="createDispatchItem()"/>
+                    <Button exactColor color="primary" icon="save" content="Guardar" @click="createDispatchItem()" />
                 </div>
             </template>
         </Modal>
@@ -207,7 +206,7 @@
                 <div class="flex w-full">
                     <Button exactColor color="third" class="mr-2" icon="close" content="Cancelar"
                         @click="returnView.show = false;" />
-                    <Button exactColor color="primary" icon="save" content="Guardar" @click="createReturnItem()"/>
+                    <Button exactColor color="primary" icon="save" content="Guardar" @click="createReturnItem()" />
                 </div>
             </template>
         </Modal>
@@ -218,7 +217,7 @@
             </template>
             <template v-slot:body>
                 <p>
-                    Este tipo de devolución solo debe usarse si la remisión no se generó en este 
+                    Este tipo de devolución solo debe usarse si la remisión no se generó en este
                     software y fue importada.
                 </p>
                 <ReturnForm filter-client ref="returnFormAux" :product="itemSelected" />
@@ -227,7 +226,7 @@
                 <div class="flex w-full">
                     <Button exactColor color="third" class="mr-2" icon="close" content="Cancelar"
                         @click="returnView.aux = false;" />
-                    <Button exactColor color="primary" icon="save" content="Guardar" @click="createReturnItemAux()"/>
+                    <Button exactColor color="primary" icon="save" content="Guardar" @click="createReturnItemAux()" />
                 </div>
             </template>
         </Modal>
@@ -243,7 +242,7 @@
 import { computed, type ComputedRef, ref, onMounted, onBeforeUnmount, onBeforeMount, type Ref } from 'vue';
 import { Alert, Icon, Button, Input, Modal } from '@/components/Generics/generics'
 import AddItem from '@/components/NewItem.vue'
-import type { productBasicTransaction, productSchema, productsInCartType, token, productReturnTransaction, productStock } from '@/schemas'
+import type { productBasicTransaction, productSchema, productsInCartType, token, productReturnTransaction, productStock, quotationTermsOnQuote } from '@/schemas'
 import PdtoContext from './pdtoContext.vue';
 import { onClickOutside } from '@vueuse/core'
 import language from '@/services/language';
@@ -399,7 +398,7 @@ const returnItemAux = () => {
 }
 
 const createReturnItem = () => {
-    if(!returnForm.value.canSave) return
+    if (!returnForm.value.canSave) return
 
     const payload: productReturnTransaction = {
         dispatch_id: returnForm.value.returnInfo.dispatch.id,
@@ -422,7 +421,7 @@ const createReturnItem = () => {
     }).then(async (res: promiseResponse) => {
         if (res.success) {
             const token = auth.getUser.token as token
-            let { status, data }  = await returnProduct(token.value, payload)
+            let { status, data } = await returnProduct(token.value, payload)
 
             returnView.value.show = false
             alertMessageContent.value = {
@@ -439,7 +438,7 @@ const createReturnItem = () => {
 }
 
 const createReturnItemAux = () => {
-    if(!returnFormAux.value.canSave) return
+    if (!returnFormAux.value.canSave) return
 
     const payload: productReturnTransaction = {
         client_id: returnFormAux.value.returnInfo.client.client_id,
@@ -476,7 +475,7 @@ const createReturnItemAux = () => {
 }
 
 const createDispatchEspecial = () => {
-    if(!dispatchModal.value.dispatchingInfo.client.id) return
+    if (!dispatchModal.value.dispatchingInfo.client.id) return
 
     console.log(dispatchModal.value.dispatchingInfo, dispatchModal.value.pdtos)
     let productos: productStock[] = []
@@ -488,6 +487,7 @@ const createDispatchEspecial = () => {
             amount: pdto.amount
         })
         pdto.partners?.forEach(ptop => {
+            if (!(ptop.amount > 0) || !ptop.partner_id) return
             productos.push({
                 id: pdto.id,
                 description: '',
@@ -504,6 +504,8 @@ const createDispatchEspecial = () => {
         products: [...productos]
     }
 
+    console.log(payload)
+    
     modalComp.modal.show({
         title: 'Remitiendo Producto',
         description: '',
@@ -513,8 +515,8 @@ const createDispatchEspecial = () => {
         if (res.success) {
             const token = auth.getUser.token as token
             let { status, data } = await dispatchProduct(token.value, payload)
-            
-            if(!data.dispatching_id) return
+
+            if (!data.dispatching_id) return
             sidebarStatus.createDispatch = false
             alertMessageContent.value = {
                 title: `Se ha creado la remisión #${formatSerial(data.dispatching_id)} y el flujo #${formatSerial(data.quote_id)}`,
@@ -609,7 +611,8 @@ const openProductContext = (event: MouseEvent, product: productSchema) => {
 
 const dataTabla = computed(() => {
     return data.value?.filter((body) => {
-        if (body.name.toLowerCase().includes(filter.value.toLowerCase())) {
+        if (body.name.toLowerCase().includes(filter.value.toLowerCase()) ||
+            body.ref?.toLowerCase().includes(filter.value.toLowerCase())) {
             if (filters.value.alquiler.value && body.rent > 0) {
                 return true
             }
@@ -689,6 +692,11 @@ const addNewQuotation = async () => {
         if (r.success) {
             const quote = createQuotationComponent.value.whoQuotate
 
+            const tempTerms: number[] = []
+            createQuotationComponent.value.quotationTerms.forEach((term: quotationTermsOnQuote) => {
+                if(term.checked) tempTerms.push(parseInt(term.id.toString()))
+            })
+
             const payload = {
                 value: createQuotationComponent.value.totalDue.replaceAll('$', '').replaceAll(',', ''),
                 id: route.query.id ?? null,
@@ -707,9 +715,13 @@ const addNewQuotation = async () => {
                     return pdto
                 }),
                 discount: quote.discount,
-                taxing: quote.taxing
+                taxing: quote.taxing,
+                contact_id: quote.contact.id,
+                conditions: JSON.stringify(tempTerms),
+                weight: createQuotationComponent.value.totalWeight,
+                transport: createQuotationComponent.value.whoQuotate.hasTransport ? createQuotationComponent.value.whoQuotate.transport : null 
             }
-
+            console.log('payload', payload)
             let { data } = await saveQuotation((auth.getUser.token as token).value, payload)
             if (data?.ok) {
                 shopping.clearBasket()

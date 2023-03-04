@@ -16,13 +16,13 @@
             <div v-for="(item, index) in props.data" :key="index" @mouseleave="item.showAction = false" class="flex flex-wrap flex-row w-full px-2 py-4 cursor-pointer select-none my-1 border border-black
             rounded-2xl shadow" :class="!item.showAction ? 'hover:bg-gray-50' : ''"
                 @contextmenu.prevent="openOptionContext($event, item)" @click="handleTouch(item)">
-                <div v-for="(head, index) in props.header" :key="index" class=" items-center px-1 text-left" :class="head.width">
+                <div v-for="(head, index) in props.header" :key="index" class=" items-center px-1 text-left overflow-hidden" :class="head.width">
                     <span v-if="head.accesor">
                         {{
                             head.config?.money ? currencyFormat(item[head.accesor]) :
                                 head.config?.timeformat ? moment(item[head.accesor]).format('YYYY-MM-DD') :
                                     head.config?.dateTimeFormat ? (item[head.accesor] != null ? moment(item[head.accesor]).format('YYYY-MM-DDTHH:mm').replace('T',' | ') : '----') :
-                                        head.config?.hex ? formatSerial(item[head.accesor]) != '' ? formatSerial(item[head.accesor]) : formatSerial(item['id']) :
+                                        head.config?.hex ? (formatSerial(item[head.accesor]) != '' ? formatSerial(item[head.accesor]) : '*' + formatSerial(item['id'])) :
                                             item[head.accesor]
                         }}
                     </span>

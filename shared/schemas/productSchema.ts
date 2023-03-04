@@ -17,6 +17,10 @@ export interface productsInCartType {
     value: number
     max?: number
     renting?: number
+    sigla?: string
+    amount_avaliable?: number
+    dispatching?: number
+    weight: number
     partners?: {
         partner_id: number,
         amount: number,
@@ -44,6 +48,7 @@ export type recipeCrafting = Pick<recipeSchema, "required" | "amount" | "unit" |
 export interface productSchema{
     id: number,
     name: string,
+    ref: string,
     description: string,
     unit: number,
     stock: number,
@@ -54,6 +59,11 @@ export interface productSchema{
     price: number,
     cost: number,
     rent: number,
+    weight: number,
+    height: number,
+    width: number,
+    depth: number,
+    lineal: number,
     expired: number,
     wholesale: number,
     onSales: number,
@@ -79,8 +89,11 @@ export interface productSchema{
 }
 
 export type productInMenu = Pick<productSchema, "id" | "currency" | "description" | "enterprise" | "name" | "price">
-export type productToSave = Pick<productSchema, "name" | "description" | "unit" | "stock" |  "cost" | "price" | "wholesale" | "isRecipe" | "categories" | "recipeDetail" | "updateIngre" | "rent">
-export type productToEmit = Pick<productSchema, "id" | "name" | "description" | "unit" | "stock" | "cost" | "price" | "isRecipe" | "categories" | "wholesale" | "rent">
+export type productToSave = Pick<productSchema, "name" | "ref" | "description" | "unit" | "stock" |  "cost" | "price" | 
+"wholesale" | "isRecipe" | "categories" | "recipeDetail" | "updateIngre" | "rent" | "weight" | "height" | "depth" |
+"width" | "lineal">
+export type productToEmit = Pick<productSchema, "id" | "name" | "ref" | "description" | "unit" | "stock" | "cost" | 
+"price" | "isRecipe" | "categories" | "wholesale" | "rent" | "weight" | "height" | "depth" | "width" | "lineal">
 export type productToRemove = Pick<productSchema, "id">
 
 export type productStock = Pick<productSchema, "id" | "amount" | "description" | "rent" | "partner_id">
@@ -94,6 +107,11 @@ export interface productReturnTransaction{
     quotation_id?: number;
     client_id: number;
     products: productReturning[];
+}
+
+export interface addDispatchThread{
+    thread_id: number,
+    products: productStock[]
 }
 
 export type productToSell = Pick<productSchema, "id" | "amount" | "description">

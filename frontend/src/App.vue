@@ -3,6 +3,18 @@
   <ModalSync ref="modal" />
   <ModalProduct ref="modalProduct" />
   <Loader :show="LoaderContent.show" />
+  <Modal v-if="documentViewerAttributes.show" @close="() => {
+    documentViewerAttributes.show = false
+    documentViewerAttributes.src = ''
+    documentViewerAttributes.title = ''
+  }" >
+    <template v-slot:header>
+      {{ documentViewerAttributes.title }}
+    </template>
+    <template v-slot:body>
+      <iframe class="min-h-[65vh] w-full" :src="documentViewerAttributes.src" />
+    </template>
+  </Modal>
 
   <Alert v-show="alertMessageContent.show" @close="alertMessageContent.show = false" :title="alertMessageContent.title"
     :description="alertMessageContent.description" :type="alertMessageContent.type" />
@@ -25,6 +37,8 @@ import { useAuthStore } from './stores/auth'
 import { useProductStore } from './stores/products';
 import type { rentProductType } from '@/stores/products'
 import { alertMessageContent } from './composables/alert';
+import Modal from './components/Generics/Modal.vue';
+import { documentViewerAttributes } from '@/composables/documentViewer'
 
 const showMessage = ref(false)
 const LoaderContent = ref({

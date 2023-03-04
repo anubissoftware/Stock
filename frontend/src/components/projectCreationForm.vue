@@ -17,34 +17,21 @@
                 required @update:model-value="null" v-model="project.renting" />
         </div>
         <hr class="border w-full mb-2">
-        <div class="w-full pb-6">
-            <span class="font-bold text-xl italic">
-                Datos de contacto
-            </span>
-        </div>
-        <div class="laptop:w-1/2 phone:w-full pr-2 pb-6">
-            <Input class=" w-full " color="black" :placeholder="'Nombre'" :label="'Nombre'" size="md" type="text"
-                required @update:model-value="null" v-model="project.contact_name" />
-        </div>
-        <div class="laptop:w-1/2 phone:w-full pr-2 pb-6">
-            <Input class=" w-full " color="black" :placeholder="'Teléfono'" :label="'Teléfono'" size="md" type="text"
-                required @update:model-value="null" v-model="project.contact_phone" />
-        </div>
-        <div class="laptop:w-1/2 phone:w-full pr-2 pb-6">
-            <Input class=" w-full " color="black" :placeholder="'Correo electrónico'" :label="'Correo electrónico'" size="md" type="text"
-                required @update:model-value="null" v-model="project.contact_email" />
-        </div>
+
+        <ClientsContacts :client="client" :project="project" @update:client="updateProject" />
     </div>
 </template>
 
 <script lang="ts" setup>
 import { isRenting } from '@/composables/permissions';
 import { ref, defineProps, defineExpose, onBeforeMount, type Ref } from 'vue';
-import type { projectSchema } from '@/schemas';
+import type { clientEnterpriseSchema, clientsContactSchema, projectSchema } from '@/schemas';
 import { Input, CheckBox } from './Generics/generics';
+import ClientsContacts from './clients/clientsContacts.vue';
 
 export interface projectCreationFormProps {
     projectSelected: projectSchema
+    client: clientEnterpriseSchema
 }
 
 const props = defineProps<projectCreationFormProps>()
@@ -56,6 +43,11 @@ const accessProject = (): projectSchema | any => {
 
 defineExpose({accessProject})
 
+const updateProject = (event: clientsContactSchema[]) => {
+    project.value.contacts = [...event]
+    console.log(project.value)
+}
+
 onBeforeMount(() => {
     const pj: projectSchema ={...props.projectSelected} as projectSchema
     if(pj.id){
@@ -65,11 +57,9 @@ onBeforeMount(() => {
         project.value = {
             name: '',
             address: '',
-            contact_name: '',
-            contact_phone: '',
-            contact_email: '',
             budget: 0,
-            renting: false
+            renting: false,
+            contacts: []
         }
     }
 })

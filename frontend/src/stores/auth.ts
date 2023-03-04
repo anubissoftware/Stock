@@ -1,7 +1,7 @@
 import { sidebarStatus } from './../composables/sidebarStatus';
 import { ref, computed, type Ref, type ComputedRef } from 'vue'
 import { defineStore } from 'pinia'
-import type { clientEnterpriseSchema, modulesSchema, notificationSchema, userSchema } from '@/schemas'
+import type { clientEnterpriseSchema, modulesSchema, notificationSchema, userSchema, clientsTags } from '@/schemas'
 import socket from '@/composables/socket'
 import { setHelper } from '@/composables/sidebarStatus'
 import { useShoppingCart } from '@/composables/ShoppingCart';
@@ -13,6 +13,7 @@ export const useAuthStore = defineStore('auth', () => {
     const modules: Ref<Array<modulesSchema>> = ref([])
     const colors: Ref<any> = ref([])
     const clients: Ref<Array<clientEnterpriseSchema>> = ref([])
+    const clientsTags: Ref<clientsTags[]> = ref([])
     const notifications: Ref<Array<notificationSchema>> = ref([])
 
     const getAuthentication: ComputedRef<boolean> = computed((): boolean => {
@@ -135,7 +136,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     return {
         getAuthentication, getUser, getMenus, getClients, getNotifications,
-        getMacros, getModel, getPlugins, getTransactions,
+        getMacros, getModel, getPlugins, getTransactions, clientsTags,
         setUser, logOut, setModules, setColors, setClients, addClient, removeClient, pushNotification, modules
     }
 })

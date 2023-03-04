@@ -1,4 +1,4 @@
-import { productReturning, productReturnTransaction, productStock } from '@/schemas/productSchema';
+import { productReturning, productReturnTransaction, productStock, clientschema, addDispatchThread } from '@/schemas';
 import moment from 'moment';
 import { recipeSchema, productToEmit, productSchema, productToSave, productToRemove, productToSell, recipeCrafting, productInMenu, productsToSell, decreaseStock, productBasicTransaction } from '@/schemas'
 import { Request, Response } from "express";
@@ -22,15 +22,18 @@ export const registerProduct = async (req: Request, res: Response): Promise<prod
     let error: boolean = false
     try {
         await db.connection.beginTransaction()
-        const query: string = `INSERT INTO products (name, description, 
-            unit, stock, cost, price, isRecipe, categories, enterprise, onBuying, wholesale, rent) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        const query: string = `INSERT INTO products (name, description, ref,
+            unit, stock, cost, price, isRecipe, categories, enterprise, onBuying, wholesale, rent,
+            weight, height, width, depth, lineal) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         const values: Array<string> = [
-            pdto.name, pdto.description, pdto.unit.toString(), pdto.stock.toString(),
+            pdto.name, pdto.description, pdto.ref, pdto.unit.toString(), pdto.stock.toString(),
             pdto.cost.toString(), pdto.price.toString(), pdto.isRecipe,
             saveCategories(pdto.categories), req.userData.enterprise_id.toString(),
             pdto.isRecipe ? '0' : (pdto.cost * pdto.stock).toString(),
-            pdto.wholesale.toString(), pdto.rent.toString()
+            pdto.wholesale.toString(), pdto.rent.toString(),
+            pdto.weight.toString(), pdto.height.toString(), pdto.width.toString(),
+            pdto.depth.toString(), pdto.lineal.toString()
         ]
         const response: OkPacket = await db.insertQuery(query, values)
         if (response.affectedRows > 0 && response.insertId != 0) {
@@ -95,6 +98,7 @@ export const registerProduct = async (req: Request, res: Response): Promise<prod
     if (!error) {
         const saved: productToEmit = {
             id: idProduct,
+            ref: pdto.ref,
             name: pdto.name,
             description: pdto.description,
             unit: pdto.unit,
@@ -104,7 +108,12 @@ export const registerProduct = async (req: Request, res: Response): Promise<prod
             isRecipe: pdto.isRecipe,
             categories: pdto.categories,
             wholesale: pdto.wholesale,
-            rent: pdto.rent
+            rent: pdto.rent,
+            weight: pdto.weight,
+            height: pdto.height,
+            width: pdto.width,
+            depth: pdto.depth,
+            lineal: pdto.lineal
         }
         res.status(200)
         res.end()
@@ -408,6 +417,13 @@ export const expireItems = async (req: Request, res: Response): Promise<boolean>
     }
 }
 
+export const dispatchItemOnThread = async (req: Request, res: Response, io: Server) => {
+    const payload: addDispatchThread = req.body
+    const products: productStock[] = payload.products
+    const db: DataBase = await initDatabase(res, req)
+    // const quotation = db.readQuery()
+}
+
 export const dispatchItem = async (req: Request, res: Response, io: Server) => {
     const query: productBasicTransaction = req.body
     let quote_total = 0
@@ -431,7 +447,7 @@ export const dispatchItem = async (req: Request, res: Response, io: Server) => {
     let response: OkPacket;
     try {
         db.connection.beginTransaction()
-        let quote: OkPacket = await db.insertQuery(queryQuotation, [
+        let quote: OkPacket = await db.insertQuery(queryQuotation, [ 
             query.client_id.toString(), req.userData.id.toString(), req.userData.enterprise_id.toString()
         ])
         if (quote.insertId == 0) {
@@ -461,16 +477,16 @@ export const dispatchItem = async (req: Request, res: Response, io: Server) => {
                 let qd: OkPacket | {insertId: number}
                 if(!el.partner_id){
                     const others = payload.filter(pay => pay.id == el.id)
-                    let total = 0
+                    let totalDetail = 0
                     if(others.length > 0){
                         others.forEach(oth => {
-                            total+= oth.amount
+                            totalDetail+= oth.amount
                         })
                     }
                     qd = await db.insertQuery(`INSERT INTO quotationDetail (
                         item_id, amount, value, quotation_id, dispatching
                     ) VALUES (?, ?, ?, ?, ?)`, [
-                        el.id.toString(), total.toString(), el.rent.toString(), quote_id.toString(), total.toString()
+                        el.id.toString(), totalDetail.toString(), el.rent.toString(), quote_id.toString(), totalDetail.toString()
                     ])
                     if (qd.insertId == 0) {
                         console.log('qd:', el)
@@ -537,6 +553,7 @@ export const dispatchItem = async (req: Request, res: Response, io: Server) => {
     await db.insertQuery('UPDATE quotation SET `value` = ? WHERE id = ?', [
         quote_total.toString(), quote_id.toString()
     ])
+    const client: clientschema[] = await db.readQuery(`SELECT name FROM clients WHERE id = ${query.client_id}`, [])
     db.closeConnection()
     if (dispatching_id > 0) {
         res.json({
@@ -550,7 +567,8 @@ export const dispatchItem = async (req: Request, res: Response, io: Server) => {
             quotation_id: quote_id,
             created_at: moment().format('YYYY-MM-DD HH:mm:ss'),
             created_by: req.userData.id,
-            client_id: query.client_id
+            client_id: query.client_id,
+            name: client[0].name
         })
         // hay que añadir el actualizar la cotización, el dc y el clientData
     } else {

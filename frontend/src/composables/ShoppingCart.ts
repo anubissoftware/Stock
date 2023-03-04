@@ -50,6 +50,13 @@ export const useShoppingCart = () => {
         listProducts: () => {
             return productsInCart
         },
+        getWeight: computed((): number => {
+            let weight = 0
+            productsInCart.forEach((pdto) => {
+                weight += (pdto.amount * pdto.weight)
+            })
+            return weight
+        }),
         showCart: () => {
             return (productsInCart.length > 0
             || route.value == '/dashboard/mystock') && auth.getPlugins.includes('cart')
@@ -84,7 +91,7 @@ export const useShoppingCart = () => {
             })
             useShoppingCart().updateStorage()
         },
-        changeLocal: (event: any, id: number) => {
+        changeLocal: (event: any, id: number, ignore_max: boolean = false) => {
             const product: Array<productSchema> = pdtos.listProducts.filter(pdto => pdto.id == id)
             const max = product[0].stock
             if(max && event.target.value > max){

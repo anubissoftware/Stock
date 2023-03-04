@@ -23,17 +23,6 @@
                 <Input class="my-2 px-2 tablet:w-1/2 phone:w-full rounded-lg border-solid outline-secondary"
                     :placeholder=strings.search[language] :label=strings.search[language] v-model="filter"
                     @update:model-value="listPartners()" />
-                <!-- Filters -->
-                <div class="flex items-center flex-wrap">
-                    <span class="italic font-bold px-5">
-                        Filtros:
-                    </span>
-                    <div class="flex">
-                        <Tag class="phone:text-sm tablet:text-base" title="Relanded" v-if="relanded" v-model="relanded" @click="unSetPartner()" />
-                        <Tag class="phone:text-xs tablet:text-base" title="This month" v-model="dates.thisMonth" @update:model-value="listPartners"/>
-                        <Tag class="phone:text-xs tablet:text-base" title="Last Month" v-model="dates.lastMonth" @update:model-value="listPartners"/>
-                    </div>
-                </div>
                 <DataTable :header="headers" :data="partners" :configTable="configTable"
                     @open-context="handleContextMenu" />
                 <ContextMenu class="right-click-menu" @close="contextMenuData.show = false" :top="contextMenuData.top"
@@ -238,31 +227,8 @@ const listPartners = async () => {
 
     cancelToken.value = new AbortController();
     let filters: any = {}
-    if (router.currentRoute.value.query.id && router.currentRoute.value.query.action == '0' && relanded.value) {
-        console.log(router.currentRoute.value.query)
-        filters['q.id'] = router.currentRoute.value.query.id
-    }
-    if(dates.value.thisMonth && dates.value.lastMonth){
-        filters = {
-            date: 'created_at',
-            min_date: moment().add(-1, 'month').startOf('month').format('YYYY-MM-DD'),
-            max_date: moment().endOf('month').format('YYYY-MM-DD')
-        }
-    }else if(dates.value.thisMonth){
-        filters = {
-            date: 'created_at',
-            min_date: moment().startOf('month').format('YYYY-MM-DD'),
-            max_date: moment().endOf('month').format('YYYY-MM-DD')
-        }
-    }else if(dates.value.lastMonth){
-        filters = {
-            date: 'created_at',
-            min_date: moment().add(-1, 'month').startOf('month').format('YYYY-MM-DD'),
-            max_date: moment().add(-1, 'month').endOf('month').format('YYYY-MM-DD')
-        }
-    }
 
-    let { data } = await getPartners((store.getUser.token as token).value, { 'p.name': filter.value, ...filters }, cancelToken.value.signal)
+    let { data } = await getPartners((store.getUser.token as token).value, { 'p.name,p.sigla': filter.value, ...filters }, cancelToken.value.signal)
     cancelToken.value = undefined
     if (!data) {
         partners.value = []

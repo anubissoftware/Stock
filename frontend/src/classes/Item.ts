@@ -3,6 +3,7 @@ export class Item {
     name: string
     description: string
     unit: any
+    ref: string
     stock: number
     sold: number
     toCraft: number
@@ -21,9 +22,17 @@ export class Item {
     expired: number
     rent: number
 
+    weight: number
+    height: number
+    width: number
+    depth: number
+    lineal: number
+
+
 	constructor( ) {
 		this.id = 0;
 		this.name = '';
+        this.ref = ''
         this.description = ''
 		this.unit = 0;
         this.stock = 1
@@ -43,6 +52,12 @@ export class Item {
         this.expired = 0
         this.onLosses = 0
         this.rent = 0
+
+        this.weight = 0
+        this.height = 0
+        this.width = 0
+        this.depth = 0
+        this.lineal = 0
 	}
 }
 

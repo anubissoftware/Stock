@@ -41,14 +41,14 @@
                 <Modal v-if="modalReturn" @close="modalReturn = false, creationReturn = true">
                     <template v-slot:header>
                         <div v-if="creationReturn">
-                            Creation Return
+                            Creación de devolución
                         </div>
                         <div v-else>
                             <span v-if="returnSelected.quotation_serial">
-                                Returning, Quotation {{ formatSerial(returnSelected.quotation_serial) }}
+                                Devolución, Cotización {{ formatSerial(returnSelected.quotation_serial) }}
                             </span>
                             <span v-else>
-                                Returning {{ formatSerial(returnSelected.id) }}
+                                Devolución {{ formatSerial(returnSelected.id) }}
                             </span>
                         </div>
                     </template>

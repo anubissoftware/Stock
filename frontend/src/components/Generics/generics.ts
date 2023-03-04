@@ -17,6 +17,7 @@ import Textarea from '@/components/Generics/Textarea.vue';
 import Loader from '@/components/Generics/Loader.vue';
 import ColorPicker from '@/components/Generics/ColorPicker.vue';
 import Tag from '@/components/Generics/Tag.vue';
+import Sortable from './Sortable.vue';
 
 export {
     Autocomplete,
@@ -37,5 +38,6 @@ export {
     Textarea, 
     Loader, 
     ColorPicker, 
-    Tag
+    Tag,
+    Sortable
 }

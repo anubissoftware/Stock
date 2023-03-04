@@ -27,7 +27,7 @@
                 </div>
             </template>
             <template v-slot:body>
-                <ProjectCreationForm :project-selected="projectSelected" ref="projectCreationForm"/>
+                <ProjectCreationForm :client="props.client" :project-selected="projectSelected" ref="projectCreationForm"/>
             </template>
             <template v-slot:actions>
                 <div class="flex w-full">
@@ -44,10 +44,10 @@
                 <div @click="contextMenuData.show = false; clientCreationModal = true">
                     Edit
                 </div>
-                <div @click="createQuotation()">
+                <div @click="createQuotation()" v-if="macros.quote">
                     Crear cotización
                 </div>
-                <div>
+                <div v-if="macros.quote">
                     Open quotations
                 </div>
                 <div @click="contextMenuData.show = false; deleteProject()">
@@ -68,7 +68,7 @@ import ContextMenu from './context/ContextMenu.vue';
 import ProjectCreationForm from './projectCreationForm.vue';
 import socket from '@/composables/socket';
 import moment from 'moment';
-import { editPer, writePer } from '@/composables/permissions';
+import { editPer, macros, writePer } from '@/composables/permissions';
 import { useRouter } from 'vue-router';
 import { sidebarStatus } from '@/composables/sidebarStatus';
 import { useAuthStore } from '@/stores/auth'
@@ -185,6 +185,7 @@ const handleContext = (body: any) => {
 
 const addNewProject = async () => {
     let projectToSave = projectCreationForm.value.accessProject()
+    console.log('project', projectToSave)
     if(!projectToSave.client_id){
         projectToSave.client_id = props.client.id
     }

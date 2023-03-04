@@ -1,3 +1,4 @@
+import { currencyFormat } from '@/composables/utils';
 import type { token } from '@/schemas';
 import { ApiCLient } from '@/services/index';
 import { useAuthStore } from '@/stores/auth';
@@ -8,6 +9,13 @@ export const formatSerial = (id: number): string => {
 
 export const convertSerial = (id: string): number => {
     return !Number.isNaN(parseInt(id, 16)) && !parseInt(id, 16) ? parseInt(id, 16) : 0
+}
+
+export const getTotalValue = (baseValue: number, transport: number, discount: number, taxing: number, inFormat: boolean): string | number => {
+    let steps = (baseValue * (1 - (discount / 100)) * (1 +(taxing / 100 ))) + 
+    (Number.isNaN(parseInt(transport.toString()))? 0 : parseInt(transport.toString()))
+
+    return inFormat ? currencyFormat(steps) : steps
 }
 
 export const listInvoices = (params: any, signal: any) => {

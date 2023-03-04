@@ -78,7 +78,11 @@ export class DataBase {
     async insertQuery(query: string, values: Array<string> | null): Promise<OkPacket> {
         return await new Promise((resolve, reject) => {
             this.connection.query(query, [...values], (err, res) => {
-                if (err) reject(new Error(err.sqlMessage))
+                if (err) {
+                    console.log(query, values)
+                    reject(new Error(err.sqlMessage))
+                
+                }
                 resolve(res)
             })
         })
@@ -157,6 +161,16 @@ export class DataBase {
                         }
                     }
                     str += ')'
+                } else if(key.split(',').length > 1){
+                    const localKey = key.split(',')
+                    str += '('
+                    for ( const [index, keyVal] of localKey.entries()){
+                        str += `${keyVal} like '%${val}%'`
+                        if (index < localKey.length - 1) {
+                            str += ' or '
+                        }
+                    }
+                    str += ')'
                 } else {
                     if (key.includes('!')) {
                         const aux = key.replace('!', '')
@@ -171,7 +185,11 @@ export class DataBase {
                         const aux = key.replace('>', '')
                         str += ` ${aux} > ${val} `
                     } else {
-                        str += ` ${key} like '%${val}%' `
+                        if(val == 'null'){
+                            str += ` ${key} is NULL `
+                        }else{
+                            str += ` ${key} like '%${val}%' `
+                        }
                     }
                 }
                 if (index < (len)) {
@@ -266,6 +284,16 @@ export class DataBase {
                     }
                 }
                 str += ')'
+            } else if(key.split(',').length > 1){
+                const localKey = key.split(',')
+                str += '('
+                for ( const [index, keyVal] of localKey.entries()){
+                    str += `${keyVal} like %${val}%`
+                    if (index < localKey.length - 1) {
+                        str += ' or '
+                    }
+                }
+                str += ')'
             } else {
                 if (key.includes('!')) {
                     const aux = key.replace('!', '')
@@ -275,7 +303,11 @@ export class DataBase {
                         str += ` ${aux} not like '%${val}%' `
                     }
                 } else {
-                    str += ` ${key} like '%${val}%' `
+                    if(val == 'null'){
+                        str += ` ${key} = 0 `
+                    }else{
+                        str += ` ${key} like '%${val}%' `
+                    }
                 }
             }
             if (index < (len)) {
@@ -292,7 +324,12 @@ export class DataBase {
         for(const [index, key] of Object.keys(toInsert).entries()){
             this.validateParam(key)
             this.validateParam(toInsert[key])
-            setter += ` ${key} = ${toInsert[key]},`
+            const aux: string = toInsert[key] 
+            if(aux.includes('+') || aux.includes('-')){
+                setter += ` ${key} = ${aux},`
+            }else{
+                setter += ` ${key} = '${aux}',`
+            }
         }
         setter = setter.slice(0,-1)
 
@@ -314,14 +351,17 @@ export class DataBase {
             this.validateParam(key)
             this.validateParam(values[key])
             headers.push(key)
-            const val = (values[key] as string).replace(key, '').replaceAll('+', '').replaceAll('-', '').replaceAll(' ', '')
+            const replaceSpace = (values[key] as string).includes('+') || (values[key] as string).includes('-')
+            let tempVal = (values[key] as string).replace(key, '').replaceAll('+', '').replaceAll('-', '')
+            if(replaceSpace) tempVal.replaceAll(' ', '')
+            const val = `'${tempVal}'`
             vals.push(val)
         }
 
         return `INSERT INTO ${table} (${headers.join()}) VALUES (${vals.join()})`
     }
 
-    async upsert(table: string, toInsert: any, conditions: any) {
+    async upsert(table: string, toInsert: {[key: string]: string}, conditions: {[key: string]: string}) {
         if (Object.keys(conditions).length == 0) {
             this.response.json({
                 message: 'Cannot upsert without conditions'
@@ -337,6 +377,7 @@ export class DataBase {
 
         const there: Array<any> = await new Promise((rsv, rej) => {
             const query = this.dynamicConditionalQueryGet(table, conditions)
+            console.log(query)
             this.connection.query(query, [], (err, res) => {
                 if(err){
                     console.error(err)
@@ -347,6 +388,7 @@ export class DataBase {
         })
 
         if(there.length > 0){
+            console.log(there)
             //update
             const query = this.dynamicConditionalQueryUpdate(table, toInsert, conditions)
             const updated: OkPacket = await new Promise((resolve, reject) => {
@@ -358,10 +400,14 @@ export class DataBase {
                     resolve(res)
                 })
             })
-            if(updated.changedRows == 0) return null
+            if(updated.affectedRows == 0) {
+                console.error('UPSERT: update error')
+                return null
+            }
             return {...toInsert, ...conditions}
         }else{
             //insert
+            delete conditions.id
             const query = this.dynamicConditionalQueryInsert(table, {...toInsert, ...conditions})
             const inserted: OkPacket = await new Promise((resolve, reject) => {
                 this.connection.query(query, [], (err, res) => {
@@ -372,8 +418,11 @@ export class DataBase {
                     resolve(res)
                 })
             })
-            if(inserted.insertId == 0) return null
-            return {id: inserted.insertId, ...toInsert, ...conditions}
+            if(inserted.insertId == 0) {
+                console.error('UPSERT: insert error')
+                return null
+            }
+            return {...conditions, id: inserted.insertId, ...toInsert}
         }
     }
 

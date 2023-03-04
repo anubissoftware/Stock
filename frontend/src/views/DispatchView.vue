@@ -14,7 +14,7 @@
                         </div>
                     </h1>
                     <div class="flex h-fit ">
-                        <Button v-if="writePer && macros.quote"
+                        <Button v-if="writePer && macros.quote && macros.dispatch"
                             @click="modalDispatch = true, dispatchSelected = {}, creationDispatch = true, editingDispatch = false"
                             exactColor color="secondary" icon="Add" :content=strings.newDispatch[language] />
                     </div>
@@ -59,7 +59,7 @@
 
                     <template v-slot:body>
                         <DispatchCreationForm :dispatch="dispatchSelected" @update="updateFinal"
-                            :creation="creationDispatch" :editing="editingDispatch" />
+                            :creation="creationDispatch" :editing="editingDispatch" ref="dispatchCreationForm" :partners="partners"/>
                     </template>
 
                     <template v-slot:actions>
@@ -82,6 +82,9 @@
                     <template v-slot:options>
                         <div @click="close(); viewDetail()">
                             Ver detalle
+                        </div>
+                        <div @click="showDispatch()">
+                            Visualizar
                         </div>
                         <div @click="close(); editDispatch()">
                             Edit
@@ -107,7 +110,7 @@ import { Button, Modal, Input } from '@/components/Generics/generics';
 import { editPer, macros, writePer } from '@/composables/permissions';
 import { onBeforeMount, onMounted, onUnmounted, computed, ref, type Ref, type ComputedRef, watch } from 'vue';
 import { useAuthStore } from '@/stores/auth'
-import type { dispatchScheme, token } from '@/schemas';
+import type { dispatchDetailSchema, dispatchScheme, partnerSchema, token } from '@/schemas';
 import DataTable from '@/components/datatable/DataTable.vue';
 import DispatchCreationForm from '@/components/DispatchCreationForm.vue';
 import ContextMenu from '@/components/context/ContextMenu.vue';
@@ -117,6 +120,9 @@ import { setHelper } from '@/composables/sidebarStatus';
 import { useRouter } from 'vue-router';
 import Tag from '@/components/Generics/Tag.vue';
 import moment from 'moment';
+import { getPartners } from '@/services/partners';
+import { setDocumentViewerAttributes } from '@/composables/documentViewer';
+import { dispatchURL } from '@/config';
 
 const router = useRouter()
 const strings = {
@@ -164,6 +170,7 @@ const dispatchCache = {
 }
 const dispatchSelected: Ref<dispatchScheme | any> = ref(dispatchCache)
 let dispatchFinal = {}
+const dispatchCreationForm  = ref()
 
 const dispatchs: Ref<Array<dispatchScheme>> = ref([])
 
@@ -208,6 +215,7 @@ const close = () => { contextMenuData.value.show = false }
 const store = useAuthStore()
 const creationDispatch: Ref<boolean> = ref(true)
 const editingDispatch: Ref<boolean> = ref(false)
+const partners: Ref<partnerSchema[]> = ref([])
 
 onBeforeMount(async () => {
     if (router.currentRoute.value.query.id && router.currentRoute.value.query.action == '1') {
@@ -216,8 +224,23 @@ onBeforeMount(async () => {
         creationDispatch.value = true
         editingDispatch.value = false
     }
+    listingPartners()
     await listDispatchs()
 })
+
+const showDispatch = () => {
+    contextMenuData.value.show = false
+    setDocumentViewerAttributes(
+        'Remisión '+ formatSerial(dispatchSelected.value.id),
+        dispatchURL + dispatchSelected.value.id
+    )
+}
+
+const listingPartners = async () => {
+    const token: token = store.getUser.token as token
+    let {data} = await getPartners(token.value, { 'p.name': '' }, new AbortController().signal)
+    partners.value = data
+}
 
 const cancelToken: Ref<AbortController | undefined> = ref()
 const filter: Ref<string> = ref('')
@@ -318,8 +341,12 @@ const handleContextMenu = (body: any) => {
 
 const viewDetail = async () => {
     console.log(dispatchSelected)
-    let { data } = await getDispatchDetail((store.getUser.token as token).value, { id: dispatchSelected.value.id })
-    dispatchSelected.value.detail = data
+    let { data } = await getDispatchDetail((store.getUser.token as token).value, { id: dispatchSelected.value.id }) 
+    
+    console.log('detail', data)
+    
+    
+    dispatchSelected.value.detail = (data as dispatchDetailSchema)
     creationDispatch.value = false
     modalDispatch.value = true
 }
@@ -334,17 +361,32 @@ const editDispatch = async () => {
 }
 
 const addNewDispatch = async () => {
+    console.log('form', dispatchCreationForm.value.userToSend, 
+    dispatchCreationForm.value.contactToReceive)
+    console.log(dispatchSelected.value)
+
     if (!dispatchSelected.value.quotation_id || !dispatchSelected.value.detail) {
         alertMessage('Faltan datos',
             'Debes seleccionar una cotización y productos a entregar',
             'error');
+        console.error('cotización y productos')
         return
     } else {
-        let productResult = dispatchSelected.value.detail.find((product:any) => product.amount > 0)
+        let productResult = dispatchSelected.value.detail.find((product:any) => {
+            if(product.amount > 0){
+                return true
+            }
+            const anyPartner = (product?.partners as any[])?.filter(pdto => pdto.amount > 0)
+            if(anyPartner.length > 0){
+                return true
+            }
+            return false
+        })
         if (!productResult) {
             alertMessage('Faltan datos',
             'Debes llenar productos a entregar',
             'error');
+            console.error('cantidad de productos')
             return
         } else {
             //Find if any product missing to dispatch amount
@@ -360,6 +402,7 @@ const addNewDispatch = async () => {
                 alertMessage('Error en fechas',
                 'La fecha de recibido debe ser despues a la de salida de tienda',
                 'error');
+                console.error('fecha de recibido')
                 return
             }
             delete dispatchSelected.value.check_out
@@ -368,17 +411,32 @@ const addNewDispatch = async () => {
             dispatchSelected.value.products = []
             let products = dispatchSelected.value.detail
             for (const product of products) {
-                if (product.amount != 0) {
+                const anyPartner = (product?.partners as any[])?.filter(pdto => pdto.amount > 0)
+                if (product.amount != 0 || anyPartner.length > 0) {
                     const productToDispatch = {
-                        quotation_detail_id: product.id,
-                        amount: product.amount
+                        quotation_detail_id: product.detail_id,
+                        amount: product.amount,
+                        item_id: product.item_id,
+                        partners: (product?.partners as any[])?.map(pdto => {
+                            return {
+                                amount: pdto.amount,
+                                partner_id: pdto.partner_id
+                            }
+                        })
                     }
                     dispatchSelected.value.products.push(productToDispatch)
                 }
             }
             dispatchSelected.value.created_by = store.getUser.id
-            console.log(dispatchSelected.value)
-            let creationResult = await createDispatch((store.getUser.token as token).value, dispatchSelected.value)
+            const payload = {
+                ...dispatchSelected.value,
+                contact_received: dispatchCreationForm.value.contactToReceive.contact.id ?? null,
+                plate: dispatchCreationForm.value.userToSend.plate ?? '',
+                user_sent: dispatchCreationForm.value.userToSend.user.id ?? null,
+                name_sent: dispatchCreationForm.value.userToSend.name ?? '',
+                client_id: dispatchCreationForm.value.quotation.client_id ?? null
+            }
+            let creationResult = await createDispatch((store.getUser.token as token).value, payload)
             if (creationResult.status == 200) {
                 modalDispatch.value = false
                 alertMessage(`Proceso completado`,
@@ -393,7 +451,6 @@ const addNewDispatch = async () => {
 
 const validateDate = async (): Promise<boolean> => {
     //Validate dates 
-    if(!dispatchSelected.value.check_out) dispatchSelected.value.out_store = null
     if(!dispatchSelected.value.check_received) dispatchSelected.value.received = null
     if (dispatchSelected.value.received == null || dispatchSelected.value.out_store == null) {
         return true

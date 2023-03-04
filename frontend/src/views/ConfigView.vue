@@ -163,6 +163,16 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="tablet:w-2/3 phone:w-full flex flex-col tablet:p-8 phone:p-2 gap-5" v-if="menuActive.key == 5">
+                            <div class="flex flex-row flex-wrap items-center">
+                                <div class="w-full text-left text-2xl font-bold">
+                                    <span>
+                                        Configuración de cotizaciones
+                                    </span>
+                                </div>
+                                <conditionsConfigVue />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </template>
@@ -189,6 +199,7 @@ import { useAuthStore } from '@/stores/auth'
 import { useSettingsStore } from '@/stores/settings';
 import type { token } from '@/schemas';
 import { alertMessageApp} from '@/composables/alertFunction'
+import conditionsConfigVue from '@/components/quotation/conditionsConfig.vue';
 
 const auth = useAuthStore()
 const settings = useSettingsStore()
@@ -313,6 +324,13 @@ const menus = computed(() => {
     ]
     if (user.value.enterprise_id > 0) {
         if(user.value.isAdmin == '1'){
+            options.unshift({
+                name: {
+                    Spanish: 'Cotizaciones',
+                    English: 'Quotations'
+                },
+                key: 5
+            })
             options.unshift({
                 name: {
                     Spanish: 'Tienda',

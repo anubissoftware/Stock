@@ -43,10 +43,13 @@
                         <div v-if="quoteSelected.stage == 0 && macros.quote" @click="editQuotation()">
                             Editar <span :class="loadingQuotation ? 'inline' : 'hidden'">...</span>
                         </div>
+                        <div @click="showQuotation()">
+                            Visualizar
+                        </div>
                         <div @click="deleteQuotation()" v-if="quoteSelected.stage == 0">
                             Eliminar
                         </div>
-                        <div v-if="quoteSelected.stage == 2 || quoteSelected.stage == 3"
+                        <div v-if="(quoteSelected.stage == 2 || quoteSelected.stage == 3) && quoteSelected.serial != null"
                             @click="creatingDispatch()"
                         >
                             Crear remisión
@@ -92,7 +95,7 @@ import { Button, Input } from '@/components/Generics/generics';
 import { ref, onMounted, onUnmounted, type Ref, type ComputedRef, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import type { quotationSchema, quotationDetailSchema, token } from '@/schemas';
-import { listQuotations, removeQuotation, rejectQuotation, approveQuotation, quotationDetail, resendQuotation } from '@/services/accounting'
+import { listQuotations, removeQuotation, rejectQuotation, approveQuotation, quotationDetail, resendQuotation, getTotalValue, formatSerial } from '@/services/accounting'
 import DataTable from '@/components/datatable/DataTable.vue';
 import socket from '@/composables/socket';
 import moment from 'moment';
@@ -102,6 +105,8 @@ import Tag from '@/components/Generics/Tag.vue';
 import { useShoppingCart, loaded } from '@/composables/ShoppingCart';
 import { useProductStore } from '@/stores/products';
 import { useAuthStore } from '@/stores/auth'
+import { setDocumentViewerAttributes } from '@/composables/documentViewer';
+import { quotationURL } from '@/config';
 
 const cancelToken: Ref<AbortController | undefined> = ref(undefined)
 const router = useRouter()
@@ -179,6 +184,7 @@ onMounted(() => {
                 return quotation
             })
         } else {
+            body.value = getTotalValue(body.value, (body.transport ?? 0), body.discount, body.taxing, false) as number
             if (body.creation) {
                 quotations.value = quotations.value.map((quotation) => {
                     if (quotation.id == body.id) {
@@ -198,6 +204,16 @@ onMounted(() => {
 onUnmounted(() => {
     socket.socket?.removeListener('quotationChange')
 })
+
+const showQuotation = () => {
+    contextOptions.value.show = false
+    setDocumentViewerAttributes(
+        'Cotización ' + (quoteSelected.value.serial == null ? 
+            formatSerial(quoteSelected.value.id) : 
+            formatSerial(quoteSelected.value.serial)),
+        quotationURL + quoteSelected.value.id
+    )
+}
 
 const getQuotations = async () => {
     if (cancelToken.value) {
@@ -229,7 +245,10 @@ const getQuotations = async () => {
     let { data } = await listQuotations((auth.getUser.token as token).value, {'c.name': filter.value, ...queries}, cancelToken.value.signal)
     cancelToken.value = undefined
     if (data) {
-        quotations.value = data
+        quotations.value = data.map((quote: quotationSchema) => {
+            quote.value = getTotalValue(quote.value, (quote.transport ?? 0), quote.discount, quote.taxing, false) as number
+            return quote
+        })
     } else {
         quotations.value = []
     }
@@ -254,6 +273,7 @@ const editQuotation = async () => {
     loadingQuotation.value = false
     shopping.clearBasket()
     const quotation = quoteSelected.value as quotationSchema
+    console.log('quotationSelected', quotation)
     loaded.quotation = {
         min_date: quotation.min_validity,
         max_date: quotation.max_validity,
@@ -263,7 +283,10 @@ const editQuotation = async () => {
         one_day: quotation.one_day == 1 ? true : false,
         email: quotation.email,
         discount: quotation.discount,
-        taxing: quotation.taxing
+        taxing: quotation.taxing,
+        contact_id: quotation.contact_id,
+        conditions: quotation.conditions,
+        transport: quotation.transport
     }
     data.forEach((element: quotationDetailSchema) => {
         shopping.addProduct({
@@ -275,7 +298,8 @@ const editQuotation = async () => {
             end_rent: element.to,
             name: element.name ?? '',
             value: element.value,
-            renting: element.value
+            renting: element.value,
+            weight: element.weight
         })
     });
 

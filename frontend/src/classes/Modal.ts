@@ -3,7 +3,8 @@ import { reactive } from "vue";
 
 interface modal {
     modal: {
-        show(modalInfo: bodyModal): Promise<any>
+        show(modalInfo: bodyModal): Promise<any>,
+        showModal: boolean
     }
 }
 interface modalProduct {
@@ -51,6 +52,7 @@ export const modalComp: UnwrapNestedRefs<modal> = reactive({
         show: async () => {
             return 
         },
+        showModal: false
     }
 })
 

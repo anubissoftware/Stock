@@ -10,7 +10,7 @@ export type basicProductTransactions = 'sale' | 'bought' | 'whole' | 'dispatch' 
  * proj = Proyectos - Modulo clientes
  * cart = Carrito de compras - Casi todos los módulos
  */
-export type allPlugins = 'proj' | 'cart'
+export type allPlugins = 'proj' | 'cart' | 'contacts'
 
 // Action in views
 export type basicOperations = 'create' | 'update' | 'list' | 'delete'

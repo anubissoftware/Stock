@@ -1,4 +1,4 @@
-import { modulesSchema, userData, UserLogin } from '@/schemas'
+import { modulesSchema, userData, UserLogin, userSchema } from '@/schemas'
 import { OkPacket } from "mysql"
 import { Response, Request } from "express";
 import { DataBase, initDatabase } from "../classes/db";
@@ -13,8 +13,7 @@ import { menusInRol } from './loginController';
 
 const loginQuerySelect: string = `
     SELECT u.id, u.name, u.nickname, u.email, u.email_verified ,u.isAdmin, u.enterprise as enterprise_id, e.name as enterprise_name,
-    m.path as enterprise_path, e.shortcut, u.rol, e.renting, e.quoting, e.selling, e.projects, e.colors,
-    e.cart, e.macros, e.transactions, e.models, e.plugins
+    m.path as enterprise_path, e.shortcut, u.rol, e.colors, e.macros, e.transactions, e.models, e.plugins
     FROM users AS u 
     INNER JOIN enterprise as e ON e.id = u.enterprise
     LEFT JOIN media as m ON m.id = e.logo
@@ -156,5 +155,16 @@ export const changePassword = async (req: Request, res: Response): Promise<any> 
         })
         res.end()
     }
+}
+
+export const listUsers = async (req: Request, res: Response) => {
+    const db: DataBase = await initDatabase(res, req)
+    const query: string = `
+        SELECT id, name FROM users WHERE enterprise = ?
+    `
+    const values: string[] = [req.userData.enterprise_id.toString()]
+    const resp: userSchema[] = await db.readQuery<userSchema>(query, values)
+
+    res.json(resp)
 }
 

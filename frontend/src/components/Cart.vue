@@ -13,7 +13,7 @@
                 </div>
         </button>
         <div v-if="listOpened.view" ref="ShoppingList" class="absolute my-2 bg-white text-black border text-xs rounded-lg tablet:w-[30rem] px-1 right-0
-                phone:w-full flex flex-col justify-between phone:h-[90vh] tablet:h-auto
+                phone:w-full flex flex-col justify-between phone:h-[85vh] tablet:h-auto
             ">
             <div v-if="shopping.listProducts().length > 0" class="tablet:max-h-[40vh] phone:max-h-[70vh] overflow-y-scroll">
                 <div v-for="(item, index) in shopping.listProducts()" :key="index"
@@ -23,6 +23,7 @@
                         <span class=" font-bold text-sm">{{ item.name }}</span>
                         <span>Price: {{ currencyFormat(item.value * item.amount, false) }}</span>
                         <span>Rent: {{ currencyFormat((item.renting ?? 0) * item.amount, false) }} / d</span>
+                        <span>Peso: {{item.weight * item.amount}}</span>
                     </div>
                     <div class=" w-1/4 flex flex-col items-center justify-center">
                         <Icon icon="delete" class="absolute top-2 right-2 w-3 h-5 text-sm cursor-pointer text-extra font-bold"
@@ -55,15 +56,24 @@
                 <div class="flex pb-2 flex-row flex-wrap" v-if="shopping.listProducts().length > 0">
                     <div class="flex py-1 rounded phone:w-full justify-center items-center cursor-pointer text-secondary hover:text-white hover:bg-secondary
                  font-bold
-                " @click="sidebarStatus.createQuotation = true"
+                " @click="() => {
+                    sidebarStatus.createQuotation = true;
+                    if(router.currentRoute.value.path !== '/dashboard/mystock'){
+                        router.push({
+                            path: '/dashboard/mystock'
+                        })
+                    }
+                }"
                     v-if="macros.quote"
                 >
                         <Icon icon="request_quote" />
                         {{ strings.quote[language] }}
                     </div>
-                    <div class="flex py-1 rounded phone:w-full tablet:w-1/2 justify-center items-center cursor-pointer text-extra hover:text-white hover:bg-extra
+                    <div class="flex py-1 rounded phone:w-full justify-center items-center cursor-pointer text-extra hover:text-white hover:bg-extra
                  font-bold
-                " @click="shopping.clearBasket()">
+                " 
+                :class="[macros.dispatch ? 'tablet:w-1/2' : '']"
+                @click="shopping.clearBasket()">
                         <Icon icon="delete_forever" />
                         <span>
                             {{ strings.clear[language] }}

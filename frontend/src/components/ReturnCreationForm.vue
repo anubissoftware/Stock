@@ -20,9 +20,9 @@
             <Select v-if="props.creation" class="w-full" color="black" label="Quotation" v-model="quotation"
                 :items="quotationsListed" size="md" type="text" value="serial" required
                 @update:model-value="updateValue()" />
-            <Input v-else class=" w-full " color="black" :placeholder="'Cotización'" :label="'Cotización'" size="md"
+            <!-- <Input v-else class=" w-full " color="black" :placeholder="'Cotización'" :label="'Cotización'" size="md"
                 type="text" required v-model="returning.quotation_serial" @update:model-value="updateValue()"
-                :disabled="!props.creation" />
+                :disabled="!props.creation" /> -->
         </div>
         <div class="laptop:w-1/2 phone:w-full pr-2 pb-6">
             <Input class=" w-full py-4" color="black"
@@ -83,7 +83,9 @@ const router = useRouter()
 const props = defineProps<ReturnCreationProps>()
 const store = useAuthStore()
 const emits = defineEmits(['update'])
-const returning: Ref<any | ReturnCreationProps> = ref({})
+const returning: Ref<any | ReturnCreationProps> = ref({
+    return_date: moment().format('YYYY-MM-DD HH:mm:ss')
+})
 const clients: Ref<Array<clientEnterpriseSchema>> = ref([])
 const quotations: Ref<Array<quotationSchema>> = ref([])
 const quotation: Ref<any | quotationSchema> = ref({})
@@ -94,12 +96,12 @@ onBeforeMount(async () => {
     if (props.creation) {
         await listInfo()
     }
-    returning.value = { ...props.return}
+    returning.value = { ...returning.value, ...props.return}
     if(!props.return.quotation_serial){
         returning.value.quotation_serial = ''
     }
-    returning.value.return_date = moment(returning.value.return_date).format('YYYY-MM-DDTHH:mm:ss')
-    console.log('RETURNING',returning)
+    // returning.value.return_date = moment(props.return.return_date).format('YYYY-MM-DD HH:mm:ss')
+    console.log('RETURNING',returning.value)
     emits('update', returning.value)
 })
 
@@ -150,7 +152,12 @@ const quotationsListed = computed(() => {
             }
         })
     } else {
-        return quotations.value
+        return quotations.value.map((quote) => {
+            if(quote.serial.toString().split(' ').length == 1){
+                quote.serial = formatSerial(parseInt(quote.serial.toString()))
+            }
+            return quote
+        })
     }
 })
 

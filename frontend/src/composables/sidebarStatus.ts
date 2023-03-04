@@ -9,6 +9,7 @@ export const sidebarStatus = reactive({
 })
 
 export const setSidebar = (status: boolean) => {
+    console.log('set sidebar')
     sidebarStatus.open = status
     if(status && sidebarStatus.helper){
         sidebarStatus.helper = false
@@ -16,6 +17,7 @@ export const setSidebar = (status: boolean) => {
 }
 
 export const setHelper = (status: boolean) => {
+    console.log('set helper')
     sidebarStatus.helper = status
     if(status && sidebarStatus.open){
         sidebarStatus.open = false

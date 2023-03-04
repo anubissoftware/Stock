@@ -109,7 +109,7 @@ import type { categorySchema } from '@/schemas';
 export interface contentSelect {
   color?: string
   label: string
-  modelValue: any[] | any
+  modelValue: any[] | any | object
   size?: string
   type?: string 
   items: any

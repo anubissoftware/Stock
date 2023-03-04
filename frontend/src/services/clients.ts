@@ -1,5 +1,6 @@
 import { ApiCLient } from '@/services/index';
-import type { clientEnterpriseSchema, projectSchema } from '@/schemas';
+import type { clientEnterpriseSchema, projectSchema, token } from '@/schemas';
+import { useAuthStore } from '@/stores/auth';
 
 
 export const getClients =  (token: string, filter: any, signal: any) => {
@@ -11,6 +12,29 @@ export const getClients =  (token: string, filter: any, signal: any) => {
         ...filter
        },
        signal
+    })
+}
+
+export const getClientsTags =  () => {
+    const auth = useAuthStore()
+    const token = (auth.getUser.token as token).value
+    return ApiCLient.get('clients/tags', {
+       headers: {
+           'authorization': `bearer ${token}`
+       },
+    })
+} 
+
+export const getClientsContacts =  (body: any) => {
+    const auth = useAuthStore()
+    const token = (auth.getUser.token as token).value
+    return ApiCLient.get('clients/contacts', {
+       headers: {
+           'authorization': `bearer ${token}`
+       },
+       params: {
+        ...body
+       }
     })
 }
 

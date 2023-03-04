@@ -12,7 +12,7 @@
         </div>
         <div class="phone:w-full tablet:w-1/2 p-2 phone:py-4 tablet:py-2">
             <Input class="w-full" color="black" placeholder="Cantidad" label="cantidad" size="md" type="number"
-                @update:model-value="null" v-model="returnInfo.amount" required/>
+                @update:model-value="null" v-model="returnInfo.amount" required @blur="validateMaximum()"/>
         </div>
         <div class="italic" v-if="(typeof returnInfo.dispatch == 'object') && !props.filterClient">
             La pendiente del producto por devolver es: {{ returnInfo.dispatch.dispatching - returnInfo.dispatch.returning }}
@@ -62,7 +62,7 @@ watch(
             returnInfo.value.amount = aux
         }
     },
-    {deep: true, immediate:true}
+    {deep: true}
 )
 
 const canSave = computed(() => {
@@ -124,6 +124,12 @@ onBeforeMount(() => {
     }
 })
 
+const validateMaximum = () => {
+    console.log('validating')
+    // if(returnInfo.value.amount > (returnInfo.dispatch.dispatching - returnInfo.dispatch.returning) ){
+    //     returnInfo.value.amount = returnInfo.dispatch.dispatching - returnInfo.dispatch.returning 
+    // }
+}
 </script>
 
 <style>

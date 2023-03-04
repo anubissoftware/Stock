@@ -1,23 +1,24 @@
 import { createNewDispatch, createNewReturn, dispatchDetail, dispatchUpdate, editQuotation, getAllQuotation, listDispatch, listInvoices, listReturn, quotationDetail, returnDetail, returnUpdate, sendQuotationEmail, updateQuotationStage } from './../controllers/accountingController';
-import { addClient, clientProductReading, deleteClient, deleteProject, editClient, getProjects, importClients, readClients, saveProject } from './../controllers/clientController';
+import { addClient, clientProductReading, deleteClient, deleteProject, editClient, getProjects, importClients, readClients, readClientsTags, readContacts, saveProject } from './../controllers/clientController';
 import { loginCustomer, setTokenCustomer } from '../controllers/customerController';
 import { activateCustomer, menusInRol } from './../controllers/loginController';
 import { saveEnterpriseLogo } from './../controllers/mediaController';
 import { validateEmail, validateCellphone, registerUser } from '../controllers/loginController';
 import { sellItems, buyItems, craftItems, expireItems, listPublishedProducts, listHistoric,listAllProducts, registerProduct, removeProduct, updateProduct, dispatchItem, returnItem, returnItemAux } from '../controllers/productController';
 import { getUnits } from '../controllers/unitController';
-import { categoryQuery, productToEmit, decreaseStock, modulesSchema, clientEnterpriseSchema, projectSchema, quotationSchema,  userData, UserLogin, userLogOut, dispatchScheme, returnScheme, productStock } from '@/schemas';
+import { categoryQuery, productToEmit, decreaseStock, modulesSchema, clientEnterpriseSchema, projectSchema, quotationSchema,  userData, UserLogin, userLogOut, dispatchScheme, returnScheme, productStock, quotationTermsSchema } from '@/schemas';
 import { deleteCategory, getCategories, saveCategory, updateCategory } from '../controllers/categoryController';
 import { Express, NextFunction, Request, Response } from "express"
 import { Server } from "socket.io"
 
 import { DataBase, initDatabase } from "../classes/db";
-import { login, setToken, syncUserWithGoogle, unSetToken, validateToken, googleLogin, changePassword } from "../controllers/userController"
+import { login, setToken, syncUserWithGoogle, unSetToken, validateToken, googleLogin, changePassword, listUsers } from "../controllers/userController"
 import moment from 'moment'
 import { OkPacket } from "mysql";
 import { changeBrandColors, validateEnterprise } from '../controllers/enterpriseController';
 import { createNewQuotation, deleteQuotation, listQuotations, generateQuotationDocument } from '../controllers/accountingController';
 import { createNewPartner, listPartners, updatePartner } from '../controllers/partnerController';
+import { listQuotationTerms, saveQuotationTerm } from '../controllers/quotationController';
 
 declare global {
     namespace Express {
@@ -125,6 +126,8 @@ export default (app: Express, io: Server): void => {
             res.end()
         }
     })
+
+    app.get('/user', middleware, listUsers)
 
     app.post('/user/loginGoogle', async (req: Request, res: Response) => {
         const data: Array<string> = await googleLogin(req, res, io)
@@ -334,6 +337,10 @@ export default (app: Express, io: Server): void => {
 
     app.get('/clients/', middleware, readClients)
 
+    app.get('/clients/contacts', middleware, readContacts)
+
+    app.get('/clients/tags', middleware, readClientsTags)
+
     app.post('/clients/', middleware, async (req: Request, res: Response) => {
         const data: clientEnterpriseSchema = await addClient(req, res)
 
@@ -384,6 +391,15 @@ export default (app: Express, io: Server): void => {
     })
 
     app.get('/clients/products/renting', middleware, clientProductReading)
+
+    app.get('/quotation/terms', middleware, listQuotationTerms)
+
+    app.post('/quotation/terms', middleware, async (req: Request, res: Response) => {
+        let response: quotationTermsSchema[] = await saveQuotationTerm(req, res)
+        if(response.length > 0){
+            io.to('e' + req.userData.enterprise_id).emit('quotationTerms', response)
+        }
+    })
 
     app.post('/quotation/', middleware, async (req: Request, res: Response) => {
         let data: quotationSchema | any;
@@ -476,6 +492,8 @@ export default (app: Express, io: Server): void => {
 
     //Dispatch
     app.post('/dispatch/', middleware, async (req: Request, res: Response) => {
+        // res.end()
+        // return
         const data: dispatchScheme = await createNewDispatch(req, res, io)
         //create ws
         if(data?.id){

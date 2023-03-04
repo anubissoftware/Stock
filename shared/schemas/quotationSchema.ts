@@ -2,8 +2,13 @@ export interface quotationSchema {
     id: number
     serial: number | string
     description: string
+    conditions: string
+    weight: number
+    transport: number
     value: number
     client_id: number
+    contact_id: number
+    contact_email: string
     project_id: number
     min_validity: string
     max_validity: string
@@ -40,6 +45,18 @@ export interface quotationDetailSchema{
     dispatching: number
     amount_avaliable: number
     returning: number
+    weight: number
 
     name?: string
+}
+
+export interface quotationTermsSchema{
+    id: number | string
+    enterprise_id: number
+    condition_text: string
+    place: number
+}
+
+export interface quotationTermsOnQuote extends quotationTermsSchema{
+    checked: boolean
 }

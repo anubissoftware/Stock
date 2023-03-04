@@ -107,7 +107,7 @@ const asignProps = async (props: bodyModal) => {
 
 
 defineExpose({
-  show
+  show, showModal
 })
 
 </script>
